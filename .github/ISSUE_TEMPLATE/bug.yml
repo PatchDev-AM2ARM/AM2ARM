@@ -1,0 +1,60 @@
+name: Bug or compatibility report
+description: Report installation, controls, display, audio or gameplay problems.
+title: "[Platform / device] Short description"
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please use the matching release files and include the exact device and firmware.
+        Do not attach the original game ZIP or a complete installed game. Review logs for personal paths.
+  - type: input
+    id: version
+    attributes:
+      label: AM2ARM version and downloaded filename
+      placeholder: AM2ARM 1.6.1
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [Android, ARM64 Linux]
+    validations:
+      required: true
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Edition
+      options: [Standard, Dual Screen, Autopatcher before edition selection]
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Exact device model and firmware or Android version
+      placeholder: Include model variant and stock/custom firmware version if known.
+    validations:
+      required: true
+  - type: input
+    id: settings
+    attributes:
+      label: Nano, display profile and system performance preset
+      placeholder: State the settings used; leave unknown details blank.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened and how to repeat it
+      description: Include the room or landmark, actions, expected result and any exact error message.
+    validations:
+      required: true
+  - type: textarea
+    id: timing
+    attributes:
+      label: When does it happen?
+      description: First visit, every visit, after sleep/resume, after longer play, or during installation? Was screen recording active?
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or pictures
+      description: Linux compatibility.txt or Android installation report if available. No personal paths, original game ZIP or complete game folders.

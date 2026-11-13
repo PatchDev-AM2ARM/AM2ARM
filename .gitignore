@@ -1,0 +1,52 @@
+# Local build outputs and restored media stay outside the source repository.
+**/build/
+**/.gradle/
+**/.cxx/
+**/local.properties
+**/__pycache__/
+*.pyc
+*.apk
+*.keystore
+*.jks
+**/patch-bundle/
+**/patch-data/
+**/state/
+**/config.ini
+**/save1
+**/save2
+**/save3
+**/data.sav
+**/extras.sav
+
+# Game projects and native build support are supplied as release archives.
+/game/
+/native/
+/restoration/
+/release-assets/
+
+# Download archives and compiled games belong outside the repository.
+*.zip
+*.unx
+*.win
+*.droid
+*.so
+
+# Restored interface media is local to each developer checkout.
+/autopatcher/android/app-android/app/src/main/res/drawable-nodpi/am2arm_banner.png
+/autopatcher/android/app-android/app/src/main/res/drawable-nodpi/ic_launcher_fg.png
+/autopatcher/android/app-android/app/src/main/res/drawable-nodpi/title_background.png
+/autopatcher/android/app-android/app/src/main/res/font/am2r_menu.ttf
+/autopatcher/android/app-android/app/src/main/res/font/am2r_small.ttf
+/autopatcher/android/app-android/app/src/main/res/raw/menu_move.wav
+/autopatcher/android/game-metadata/artwork/am2r-box-back.png
+/autopatcher/android/game-metadata/artwork/am2r-box-front.jpg
+/autopatcher/android/game-metadata/artwork/am2r-dual-controller-splash.png
+/autopatcher/android/game-metadata/artwork/am2r-hero.jpg
+/autopatcher/android/game-metadata/artwork/am2r-icon.png
+/autopatcher/android/game-metadata/artwork/am2r-logo.png
+/autopatcher/android/game-metadata/artwork/am2r-portrait.png
+/autopatcher/linux/assets/am2arm-banner.png
+/autopatcher/linux/assets/menu.ttf
+/autopatcher/linux/assets/menu_move.wav
+/autopatcher/linux/assets/small.ttf
+/autopatcher/linux/assets/title-background.png

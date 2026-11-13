@@ -1,0 +1,51 @@
+{
+  "product": "AM2ARM",
+  "version": "1.6.1",
+  "title_version": "V1.6.1",
+  "base_game": "AM2R Community Updates 1.5.5",
+  "repository": "https://github.com/PatchDev-AM2ARM/AM2ARM",
+  "release_tag": "v1.6.1",
+  "channel": "release",
+  "platforms": [
+    "android-arm64",
+    "linux-arm64"
+  ],
+  "editions": [
+    "standard",
+    "dual-screen"
+  ],
+  "android": {
+    "game_version_code": 1005016,
+    "patcher_version_code": 20,
+    "standard_package": "com.community.am2r",
+    "dual_package": "com.community.am2rdual"
+  },
+  "linux": {
+    "verified_platforms": [
+      "Original RG DS stock Linux 1.1-261008",
+      "RG DS ROCKNIX Standard",
+      "G350 ROCKNIX Standard",
+      "TrimUI Brick NextUI 20261013-0 Standard",
+      "TrimUI Brick stock menu 1.0.6 Standard (internal CrossMix 1.3.9 marker)"
+    ],
+    "exact_final_standard_acceptance": "G350 ROCKNIX: controls, Backup/Restore, 4:3/3:2/16:9 gameplay and menus; ordinary X and Core-X shader transformations checked with Nano enabled",
+    "fresh_card_installation": "RG DS stock Linux verified",
+    "other_firmware": "See README.md#compatibility",
+    "trimui_brick": {
+      "download": "AM2ARM-Autopatcher-1.6.1-trimui-brick-arm64.zip",
+      "editions": [
+        "standard"
+      ],
+      "verified": "startup, full-screen display, controller navigation, opening gameplay and printed face buttons",
+      "save_picker": "not separately checked on Brick",
+      "frontends": [
+        "NextUI",
+        "stock Apps"
+      ],
+      "rumble": "damage vibration verified on stock; NextUI recheck pending",
+      "stock_image": "fresh card; internal CrossMix marker retained"
+    }
+  },
+  "original_input": "Original Windows AM2R 1.1 ZIP",
+  "complete_game_in_download": false
+}

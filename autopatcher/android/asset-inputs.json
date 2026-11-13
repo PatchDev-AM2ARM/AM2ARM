@@ -1,0 +1,391 @@
+{
+  "schema": 2,
+  "edition": "autopatcher",
+  "platform": "android",
+  "project_kind": "autopatcher",
+  "snapshot": "v1.6.1",
+  "project_file": "am2r_android_patcher.py",
+  "bundle_path": "patcher-assets",
+  "bundle_sha256": "3c3e532b2aa3cc755b8fcd012c24bf535dc2b232ce189725ad6d046581ceed63",
+  "source_files": [
+    {
+      "path": ".gitignore",
+      "size": 265,
+      "sha256": "227636006d250ea5340057c008933ab5643c412678b4bdd2ba9b340b1ec497fa"
+    },
+    {
+      "path": "LICENSE",
+      "size": 1387,
+      "sha256": "2fa059564fbc17bc3b97a17d039456fd82aa98c4279802b46b80ac5af02a8451"
+    },
+    {
+      "path": "README.md",
+      "size": 2229,
+      "sha256": "03ffd8ab3905a9eac596bd5b5fcd5fc831256430d5c81c3686bde4fe5dfd8c21"
+    },
+    {
+      "path": "README.txt",
+      "size": 2468,
+      "sha256": "963e7b8a92163a8cd95af07bd755f4078f8d2d28ffcd5412e4fe0d882b44ab2a"
+    },
+    {
+      "path": "RELEASE-NOTES.txt",
+      "size": 1543,
+      "sha256": "8b0ca37a35f892f0a8457aff22aa1b3296525d9cc4d5d319b73e101d7a41b7f6"
+    },
+    {
+      "path": "SAVE-SYNC.txt",
+      "size": 3408,
+      "sha256": "bce7ea1d191fd08f4139ea327b5826550bbc9287e413b877739d2353cb78f968"
+    },
+    {
+      "path": "am2r_android_patcher.py",
+      "size": 16113,
+      "sha256": "ffc854b5782511ce81c4615734a20b646b561c80e0537d2f0d235aa802ca6bbc"
+    },
+    {
+      "path": "app-android/app/build.gradle",
+      "size": 2696,
+      "sha256": "3f25b4078014c028f69cc2deb5bd0165fb2ed9ff62a70d9705de8e5df45401e8"
+    },
+    {
+      "path": "app-android/app/src/main/AndroidManifest.xml",
+      "size": 1006,
+      "sha256": "69f3a8f93b7f16ad69327a1c3f7e0bf56029adfdb230c1ef2b5d6bd0f3886a28"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/InstallActivity.java",
+      "size": 14172,
+      "sha256": "ce213f12a7cb21d82aa521f244f26686a504bac61b908ca2a4cba26451f44740"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/InstallReport.java",
+      "size": 1833,
+      "sha256": "03e8a89b6246c2eade988af8a27196ab9e8930fe1a8feb1979b7a88e917f56fd"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/InstallReports.java",
+      "size": 1845,
+      "sha256": "48d798943f19c568f16653fa32e0d565a1e3cfbcd549161836450fb135ddc8fe"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/PatchJob.java",
+      "size": 14284,
+      "sha256": "3a2707c33a6c62b7bc95d317f258501f5b8f0e83f47820d8a03d18caf2e38bb3"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/PatcherActivity.java",
+      "size": 19534,
+      "sha256": "0883ea1354c29c84d769262b66604265273eeb58d49b77d8b341ed48e0da61c9"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/TitleBackdrop.java",
+      "size": 1539,
+      "sha256": "ecb075d04b466dc7c34f9937b651ae1086163ee3d1dfbdff85f90feb478cd647"
+    },
+    {
+      "path": "app-android/app/src/main/java/com/community/am2r/patcher/Xd3.java",
+      "size": 389,
+      "sha256": "1aad6e7e23f0ccbda231a395416d8e92e62f55de7d7058e670cc69c8eaaa2cff"
+    },
+    {
+      "path": "app-android/app/src/main/jni/Android.mk",
+      "size": 271,
+      "sha256": "a1d67da9cfe85b615c0f7eedb009b15c32f193c5cf969e53074cdb9239670fe8"
+    },
+    {
+      "path": "app-android/app/src/main/jni/Application.mk",
+      "size": 64,
+      "sha256": "86d239720f1e52312cd08a7a8f6a1bf75c46de110d3e43c26eab6e6331cb52ff"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xd3jni.c",
+      "size": 3199,
+      "sha256": "6eedf024aeead0ba6c331eb3d6e2c9ec4ce80afe0801b96454e437dbaea78e47"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/LICENSE",
+      "size": 11477,
+      "sha256": "dace0957595da78ececf869dadb60b6cc890ce77efe5320c1d45a89cc1614581"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-blkcache.h",
+      "size": 14465,
+      "sha256": "d441ad88b1753db48be6c1283ee66126b7cab76b178458d73d5e48de0b49e844"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-cfgs.h",
+      "size": 4222,
+      "sha256": "588bf05b026aca2f76a97c8eb33b1a02d763748904f1e5ace8a49580e4c688c8"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-decode.h",
+      "size": 33197,
+      "sha256": "55c8bd80cfde9b9150ddb3d6af1c211c37a5ef52a50af7c9ceadfb4a880f3683"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-djw.h",
+      "size": 47550,
+      "sha256": "2dbfd7bc6133c9dc49fa453a7f28b23bb7bcee40d34e311ce20dca0e3ecf6fcd"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-fgk.h",
+      "size": 22461,
+      "sha256": "3df06f1d2c295f56fd02e7fe86a48d0a01eb527210b4d45a2f709275a151ac06"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-hash.h",
+      "size": 4509,
+      "sha256": "07c5d7bb982ad06df3cccb50e3f97cfa7443cd4d14b3247ab5af13a8a251d165"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-internal.h",
+      "size": 14965,
+      "sha256": "fd8846c2832aa4e94848d3be207cff906a62582b6e7c19c59a3b9cbb4818796a"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-list.h",
+      "size": 8763,
+      "sha256": "54ba7f6a510e23e0809edb313295b3a96923ad97335888a7aa210600b00c7858"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-lzma.h",
+      "size": 4602,
+      "sha256": "5f9b2d9fc169050cc00c8a29e5dde050250f7604606de47e8efe9f22cc391052"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-main.h",
+      "size": 103963,
+      "sha256": "b27c7153af60c63b646868b021df3b7809e7575dc385076e77e890891a7054eb"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-merge.h",
+      "size": 13941,
+      "sha256": "b869b11c7cf0cc42e0a6c2cd9a5cf69c276513b2e404244540c2a7b88399ffdc"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-second.h",
+      "size": 7326,
+      "sha256": "4e25fe3cb1a78dc3317c6af73d88f216cdd0f54d218df1b8abac7dfb394b243f"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3-test.h",
+      "size": 80654,
+      "sha256": "badbd8306b02b5fcfddbef767ecc748078265f64335c6f1604ef9e7f145794d9"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3.c",
+      "size": 135073,
+      "sha256": "71d77ff92f35f19a56585eeaf256c46774b0c78420cf4f80cf1be0a9946f2377"
+    },
+    {
+      "path": "app-android/app/src/main/jni/xdelta3/xdelta3.h",
+      "size": 48998,
+      "sha256": "09f0cd47fa39ce97f493ab31b40ac53c1a64b259914da3e5637ab47ae7cc3cb5"
+    },
+    {
+      "path": "app-android/app/src/main/res/drawable/ic_launcher_bg.xml",
+      "size": 153,
+      "sha256": "374a71574da962f6ca64995190147eb23256d651ef1416a946b1f36c866a3baf"
+    },
+    {
+      "path": "app-android/app/src/main/res/drawable/ic_launcher_fg_inset.xml",
+      "size": 180,
+      "sha256": "9cde04b1d416193bbe4fd55e178a80370152207515b06090e91d6276fce008df"
+    },
+    {
+      "path": "app-android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+      "size": 263,
+      "sha256": "0909ef46ab6cfc13f0b5e5c39952c4d78549f1adea5b050c8090fe704ff4dee4"
+    },
+    {
+      "path": "app-android/build.gradle",
+      "size": 73,
+      "sha256": "c3c0cf04da0fc239f391c774554d97d890018ab6e37e87cc62f6070d0c8c9909"
+    },
+    {
+      "path": "app-android/gradle.properties",
+      "size": 85,
+      "sha256": "04d1ddcf82eb34d363149be906090a8e4ad07b63b077c784fb83a4ea6dd6c2e5"
+    },
+    {
+      "path": "app-android/settings.gradle",
+      "size": 272,
+      "sha256": "ffc6d2c2fb30fb4982487b2f022fa9ee5e2f21969da11362b11c74d77c863a04"
+    },
+    {
+      "path": "build-windows-exe.yml",
+      "size": 855,
+      "sha256": "d9f8fee50b7e29a8ff466577e27485c6bf2b40dbf87119658aa56e84ba7391b3"
+    },
+    {
+      "path": "export_game_metadata.py",
+      "size": 2390,
+      "sha256": "287272de2ac946a7d72e7cfc6aff05b5e2dc4fd79a7161fe63d632c5731ef83f"
+    },
+    {
+      "path": "game-metadata/README.txt",
+      "size": 3853,
+      "sha256": "0a2429f10579de5fac63b0f2641c8a793b9eb53f7230b04093b02bd2fd7d9ef4"
+    },
+    {
+      "path": "game-metadata/game.json",
+      "size": 3050,
+      "sha256": "c165b1232f8cac5ab910022b56eef3d61bc7a325fe9b40ae6cbdc403a6ab8119"
+    },
+    {
+      "path": "make_patch_data.py",
+      "size": 9478,
+      "sha256": "3069681a5a86afdc91c7c5911dd33fafebf4389d21cb2571c16301ec18b08b46"
+    },
+    {
+      "path": "prepare_game_metadata.py",
+      "size": 5557,
+      "sha256": "0f8750c67e407611d48c3794b897f6dd3b80850f4584b651071118f240547e3e"
+    },
+    {
+      "path": "prepare_runtime_performance.py",
+      "size": 2483,
+      "sha256": "b54d87fd4794fb4e07514d691549e73478ece6b19caaa8620fecc732f259fc1f"
+    },
+    {
+      "path": "test_patch_editions.py",
+      "size": 5088,
+      "sha256": "3e4f3e9a339ec6690a72e14dd786f1c1a488b025ce6e8b5cf3124afe97f260c8"
+    },
+    {
+      "path": "tests/InstallReportTest.java",
+      "size": 1112,
+      "sha256": "7abdfa3c30f8dbe1a31f1e91e6f3b63e03ddf2cf0b910e942451a5540de0357d"
+    },
+    {
+      "path": "tests/test_apk_compatibility.py",
+      "size": 2507,
+      "sha256": "4e68f50d4c030a1154847516511c8827e490ee082c1162a3a4ed202a86a54f94"
+    },
+    {
+      "path": "verify_apk_compatibility.py",
+      "size": 7914,
+      "sha256": "ec919bb66aae986289a2fe060356555b5852268885259667a740e735355973b8"
+    }
+  ],
+  "files": [
+    {
+      "path": "app-android/app/src/main/res/drawable-nodpi/am2arm_banner.png",
+      "size": 369138,
+      "sha256": "49554aca22e76dee735d6c53f63abf1db11bf5e238f4a5c334a20f0596687408"
+    },
+    {
+      "path": "app-android/app/src/main/res/drawable-nodpi/ic_launcher_fg.png",
+      "size": 5803,
+      "sha256": "b7638a6dc7325f7415d5eaf7b70d38bb6f8b660f57bf7d37612868311801fd8d"
+    },
+    {
+      "path": "app-android/app/src/main/res/drawable-nodpi/title_background.png",
+      "size": 346971,
+      "sha256": "4bfa45655da57886bbf0f14512576faedcc1c9ea8449ba7d42024a330aad87ea"
+    },
+    {
+      "path": "app-android/app/src/main/res/font/am2r_menu.ttf",
+      "size": 947036,
+      "sha256": "b3c5a8217ca13e615067796d50a17410e40529e5cd551d18e1ed30ae6763c4f0"
+    },
+    {
+      "path": "app-android/app/src/main/res/font/am2r_small.ttf",
+      "size": 1296552,
+      "sha256": "abe5d3d934885a3338c3dde9097f24f8a8eab86e3b5fc55ec2d4a6d96e9798cb"
+    },
+    {
+      "path": "app-android/app/src/main/res/raw/menu_move.wav",
+      "size": 4854,
+      "sha256": "c9999560194a10e897bc7cfa7b58604e14f17f39ea3693f3a774af278a6cba23"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-box-back.png",
+      "size": 245244,
+      "sha256": "f279d72b59ea2c843015f32174ead864cd3ea39b74499175928d0a93b087d3b6"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-box-front.jpg",
+      "size": 69847,
+      "sha256": "63eb95f0ce7855dfa7620fbc9d733fbcd13c81e4aac1fab140e3e473d416feca"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-dual-controller-splash.png",
+      "size": 707487,
+      "sha256": "5083e91c02a85cfc4b31a3a8ef845b3e2dd688ce0ee05051280d1d0d456548c8"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-hero.jpg",
+      "size": 1418983,
+      "sha256": "e9c0bd96b9b931facf965d21eb082ba9175f9b3d0163da8e32c0bd1312da4637"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-icon.png",
+      "size": 1867624,
+      "sha256": "57de47b0e4756ff00af8d4156abd3d4e60f9b51aed601747bd14b749e41bdc0e"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-logo.png",
+      "size": 45052,
+      "sha256": "856735ed6f5d12caa8377359868160d0f4510e087a803cd381aec779049854d4"
+    },
+    {
+      "path": "game-metadata/artwork/am2r-portrait.png",
+      "size": 112721,
+      "sha256": "5dd995bf5c747bfd2efd2bd1a5e87aefca28ea293a094a226816e6d09db3ca54"
+    }
+  ],
+  "generated_inputs": [
+    {
+      "path": "patch-bundle/dual/assembly.json",
+      "size": 783,
+      "sha256": "a7cbbe6c62c089268f5936f0595f91dbb170ee2b0aed809eeb50aa5b0d936dd6",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/dual/droid.xdelta",
+      "size": 33124788,
+      "sha256": "41680203b9d3ed6b2f9152aaefbf61f5a35d70393832351427417f21d4a21cb4",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/dual/wrapper.bin",
+      "size": 289199859,
+      "sha256": "2eb8fea0db4ff0a5fc04333652719f414a8be4e535dba5fec95e53d0fa2f13d3",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/standard/assembly.json",
+      "size": 780,
+      "sha256": "8037e836b41943f6c4f3c190de81ffc5f29a650a4b491cb88c179f4129ea6abe",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/standard/droid.xdelta",
+      "size": 33091802,
+      "sha256": "072e0f90146d45ee85675b3c266fc80784f128962726f0587a11d348cdc63912",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/standard/wrapper.bin",
+      "size": 288339187,
+      "sha256": "5f814a2c5c21946a2a08ab7a76646a25067639ce68d23cff98f8763d0b35c5a9",
+      "build_from": "make_patch_data.py"
+    }
+  ],
+  "external_tools": [
+    {
+      "path": "vendor/xdelta3/LICENSE",
+      "size": 11477,
+      "sha256": "dace0957595da78ececf869dadb60b6cc890ce77efe5320c1d45a89cc1614581",
+      "purpose": "Optional desktop decoder; use an installed xdelta3 or rebuild the documented version."
+    },
+    {
+      "path": "vendor/xdelta3/windows-x64/xdelta3.exe",
+      "size": 548804,
+      "sha256": "9bf8d067de9448e521afe1f8108caa0f85b4b7c7933641efd44bc43533920565",
+      "purpose": "Optional desktop decoder; use an installed xdelta3 or rebuild the documented version."
+    }
+  ]
+}

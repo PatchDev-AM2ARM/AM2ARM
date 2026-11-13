@@ -1,0 +1,32 @@
+AM2ARM Android — 1.6.1 (Full Release)
+
+A redesigned Autopatcher and improved X transformations.
+
+Both editions
+- Android and Linux now share the AM2ARM name and release number.
+- The Autopatcher uses a vertical title-style menu with the planet background
+  and the AM2ARM banner.
+- Improved X parasite and Core-X transformation performance with a new
+  pixelation shader, preserving the effect and transformation timing.
+- The game title screen shows V1.6.1 and the AM2ARM repository address.
+
+Includes the touch-control adjustments, Retroid Dual Screen Add-on support,
+translations and earlier fixes from 1.5.5.14.
+
+Updating
+Install AM2ARM Autopatcher, select your original AM2R_11.zip, and rebuild the
+edition you use. Install the generated APK over the existing game. Updating
+only the Autopatcher does not update an already installed game. Package IDs,
+signing identity and save identity remain unchanged. Back up saves before
+updating; do not uninstall the game. Standard and Dual Screen remain separate.
+Both games use versionCode 1005016 and versionName 1.6.1. The Autopatcher
+uses versionCode 20 and versionName 1.6.1.
+
+Distribution
+Only the Autopatcher APK and media-pruned source are public. Full playable
+APKs remain private. The original AM2R 1.1 ZIP is required. Source archives
+retain code and resource definitions; artwork, audio, fonts, compiled games
+and generated patch payloads are omitted. Restore assets only using the
+matching source restoration instructions.
+
+Support: https://github.com/PatchDev-AM2ARM/AM2ARM/issues

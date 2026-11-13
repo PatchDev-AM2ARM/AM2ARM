@@ -1,0 +1,370 @@
+{
+  "schema": 2,
+  "edition": "autopatcher",
+  "platform": "linux",
+  "project_kind": "autopatcher",
+  "snapshot": "v1.6.1",
+  "project_file": "linux_patcher.py",
+  "bundle_path": "patcher-assets",
+  "bundle_sha256": "3c3e532b2aa3cc755b8fcd012c24bf535dc2b232ce189725ad6d046581ceed63",
+  "source_files": [
+    {
+      "path": "LICENSE",
+      "size": 1649,
+      "sha256": "398fd9c91701aaadbc1ae9c5dd2c65b11bc0ef0cf5972b009dfe94c54b2e4c10"
+    },
+    {
+      "path": "README.txt",
+      "size": 2407,
+      "sha256": "8245a0bd0a612b9b80ad6357d360ade7889eea56deb2fe7f93208012a4148563"
+    },
+    {
+      "path": "RUNNING.txt",
+      "size": 7674,
+      "sha256": "a3851916bda3493f01ad74677f79ad03c0aa52fe7eb3caaa4c66aa443b77e416"
+    },
+    {
+      "path": "build_portable.py",
+      "size": 1169,
+      "sha256": "72fb08240aa33a383faf0ad72c8fc50750d0e2a0bdc57aa96cbec800dd4bffed"
+    },
+    {
+      "path": "compatibility-check.sh",
+      "size": 2634,
+      "sha256": "f26b57249054a594df11541580535567578f03b68f6156d52479a750a21d3852"
+    },
+    {
+      "path": "desktop-README.txt",
+      "size": 1424,
+      "sha256": "d3a84c1b2069256cdbe16213371d36531ec2b6096b9dca91cbc26fd9e1f06883"
+    },
+    {
+      "path": "handheld-launch.sh",
+      "size": 603,
+      "sha256": "a0cc55a123cb98ca9dd6ae30023238ba51ed9c69776878388b6a7f1844ac43ed"
+    },
+    {
+      "path": "handheld-ports.sh",
+      "size": 140,
+      "sha256": "ede62d98a0334596b3dd010d5444d1ff3864667be4e7368fb15dac7d2b0d4783"
+    },
+    {
+      "path": "handheld_gui.py",
+      "size": 23145,
+      "sha256": "95c0ae9c943fcc0cac718688af30b5969dca5dd1b8f08be32461ea6843b7b493"
+    },
+    {
+      "path": "handheld_input.py",
+      "size": 8278,
+      "sha256": "4c207d7b25ccb5cf1126ea4347601c4e54f18e52923b05140d7c7630feab311a"
+    },
+    {
+      "path": "handheld_launch.py",
+      "size": 4682,
+      "sha256": "c3f9f2f054b79042e8530ef9282ea52a44ad5bb9c705f74f7db6951b39b81a82"
+    },
+    {
+      "path": "handheld_platform.py",
+      "size": 2512,
+      "sha256": "6879cb28a1279c40375e30840c6d54d774e68c6c67f8ad62737a0860c3647c79"
+    },
+    {
+      "path": "handheld_sound.py",
+      "size": 1657,
+      "sha256": "f313482eb361f2ec7bea9897781243037d7d7d675949289818ab5732910efc87"
+    },
+    {
+      "path": "handheld_visuals.py",
+      "size": 8269,
+      "sha256": "aff6291114ee2fefacafc39966bbc4281ac5f4dbf12255ba6aecd91e8519d65a"
+    },
+    {
+      "path": "licenses/BLAKE3-LICENSE-APACHE.txt",
+      "size": 11361,
+      "sha256": "00fcc7a934ddbc9ece2a7cc063ac788e284b703b1d705ccbba72d462aa97921e"
+    },
+    {
+      "path": "licenses/PyInstaller-COPYING.txt",
+      "size": 32604,
+      "sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64"
+    },
+    {
+      "path": "licenses/Python-LICENSE.txt",
+      "size": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "licenses/blt.txt",
+      "size": 11606,
+      "sha256": "8ffa1d05f43fd7ba7d115c92bce8aed16c8e195fa59a33a4bb9093169c64876d"
+    },
+    {
+      "path": "licenses/dependencies.json",
+      "size": 2324,
+      "sha256": "59fe722f3bf63b1776aa7d9bb8816d239c071c81f6c5f559dd99fca79ac91298"
+    },
+    {
+      "path": "licenses/libbrotli1.txt",
+      "size": 1354,
+      "sha256": "24a64e5bb83d0960d1835696a1e23c0896ad6055b0ca47c66ab0eb9a766324b1"
+    },
+    {
+      "path": "licenses/libbsd0.txt",
+      "size": 23960,
+      "sha256": "00fd7be5d907a6bcc409a80f2d565f508673db4761d54623691f89ae3aa20fc7"
+    },
+    {
+      "path": "licenses/libbz2-1.0.txt",
+      "size": 2228,
+      "sha256": "832ed535ff3c3d025a8d2348eb1b697b89addcf2eaadbc17650262040b9145e2"
+    },
+    {
+      "path": "licenses/libexpat1.txt",
+      "size": 1756,
+      "sha256": "60919fe1a156395ff14511bb6ff79756c50ade2fff59ac60c9bae1d8a7fe6292"
+    },
+    {
+      "path": "licenses/libffi8.txt",
+      "size": 10165,
+      "sha256": "f83d2ecba1ea4d99957e81c50bebbd076a128194288a3ec22cc8ccdb77c43087"
+    },
+    {
+      "path": "licenses/libfontconfig1.txt",
+      "size": 1301,
+      "sha256": "b215a61cdd3e62b5b17cc28b1852c78acb3dd38be0fb30706f7efc050dba91db"
+    },
+    {
+      "path": "licenses/libfreetype6.txt",
+      "size": 25069,
+      "sha256": "70a7a0a06e6440777417f6875476cb712b03943010abed1c32297798c8cc8ed8"
+    },
+    {
+      "path": "licenses/liblzma5.txt",
+      "size": 15465,
+      "sha256": "a2dc8fac0f496e1c58aff67018cf0c6b88336316afa5642f9335b71642e28aa8"
+    },
+    {
+      "path": "licenses/libmd0.txt",
+      "size": 8018,
+      "sha256": "4365ef6255ad553fce69dd4bc0e093472c5d0e41b8ea493a545cc926ce171aa6"
+    },
+    {
+      "path": "licenses/libpng16-16.txt",
+      "size": 12976,
+      "sha256": "68bd3997355bc44ccb97ff5e2bb146360e762c7d9c721945a4fabf77d1349e4a"
+    },
+    {
+      "path": "licenses/libssl3.txt",
+      "size": 2543,
+      "sha256": "6a7da622fe0637a334d2a8fc470852d2ffb77d9a2b2f930f854e32a41ad6ef35"
+    },
+    {
+      "path": "licenses/libtcl8.6.txt",
+      "size": 7062,
+      "sha256": "e925aa8863f0c9eda3625ce2cb16c0d5017fca248c5bd6af97006df5d9c6199c"
+    },
+    {
+      "path": "licenses/libtk8.6.txt",
+      "size": 3657,
+      "sha256": "55756939bc322e1ddb187794a0deb8bdf72349ecba34b429446782cd04ea4cef"
+    },
+    {
+      "path": "licenses/libx11-6.txt",
+      "size": 47102,
+      "sha256": "0b380a7fd5b2228f26e9585e56f14812efd3350f3df307507d2bc055dfd8de3e"
+    },
+    {
+      "path": "licenses/libxau6.txt",
+      "size": 1224,
+      "sha256": "118dd263a7b91c8f21c489f949bf13281dff9e766deea92b829dac4dce66601a"
+    },
+    {
+      "path": "licenses/libxcb1.txt",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "path": "licenses/libxdmcp6.txt",
+      "size": 1265,
+      "sha256": "1bcbb50f8603fe8b86d330bfa460b772ea04fbd3c70e4499f0768b5340b9fd6e"
+    },
+    {
+      "path": "licenses/libxext6.txt",
+      "size": 10421,
+      "sha256": "bc57e445ca1d9fe082c8d54189dd411ff26caa8552c9c63d44ea06a982f32124"
+    },
+    {
+      "path": "licenses/libxft2.txt",
+      "size": 1438,
+      "sha256": "5960983c962c864d7d73eae6bb9b3b06c1940a23fc6d22ce10ef0f0cde8fd48d"
+    },
+    {
+      "path": "licenses/libxrender1.txt",
+      "size": 2252,
+      "sha256": "ed2a78123a5076b4f11da38cb1ffb85b5cb9fdc26b5746c517b1d7e7a9029704"
+    },
+    {
+      "path": "licenses/libxss1.txt",
+      "size": 2679,
+      "sha256": "3ebbe713ac6980aefc18dcf407c94f51bbf02852463294bbb6dc1ee1f9fad9c3"
+    },
+    {
+      "path": "licenses/tk8.6-blt2.5.txt",
+      "size": 11606,
+      "sha256": "8ffa1d05f43fd7ba7d115c92bce8aed16c8e195fa59a33a4bb9093169c64876d"
+    },
+    {
+      "path": "licenses/xdelta3-LICENSE.txt",
+      "size": 9156,
+      "sha256": "6cf63d87586c7c25c3ab8e62eef5c75bbaa982b0a6f9c00c59e2720255aac9ec"
+    },
+    {
+      "path": "licenses/xdelta3-README.txt",
+      "size": 8492,
+      "sha256": "0602947a8b214a3eaf8b2c6b2d7bbdde438d36c510af266eb3faa641db9a0188"
+    },
+    {
+      "path": "licenses/xz-COPYING.txt",
+      "size": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "path": "licenses/zlib1g.txt",
+      "size": 2927,
+      "sha256": "9e5b96d63773a5d177ba264254390f792be07e41748ebd94730981c6cac31cc6"
+    },
+    {
+      "path": "linux_patcher.py",
+      "size": 6223,
+      "sha256": "4317a176658378679b057de79255896b264066f813eb0f1c51da409fd9f7ae5f"
+    },
+    {
+      "path": "make_patch_data.py",
+      "size": 9577,
+      "sha256": "b4178c61d07938c36add8e7ef575f3a12ff9452bb78957723a4a95b44deb8a7f"
+    },
+    {
+      "path": "patch_core.py",
+      "size": 10740,
+      "sha256": "14677b7e519ea767d4a8e1fc880c26a6155e7d3fcc78b8d692efa2c45ccc7a82"
+    },
+    {
+      "path": "patcher_gui.py",
+      "size": 970,
+      "sha256": "69e9fe2db83914f61e2a0c9c069e18adb50109add37ebaacf8697753d4b19284"
+    },
+    {
+      "path": "test_compatibility_check.py",
+      "size": 3451,
+      "sha256": "a9918fed76f1f895bd7c4e660e3d2d8bebd22d29cef35e23b0bbead1dbe2827f"
+    },
+    {
+      "path": "test_decoder.py",
+      "size": 2457,
+      "sha256": "38b004cccc9ed9fcbd120f106be0ac0c4445a83a7323cbd50231c6af36f32d11"
+    },
+    {
+      "path": "test_handheld_gui.py",
+      "size": 5995,
+      "sha256": "f3c74f306c0cadc013552ac712cb97234883a9870a933472539bf93d30b1a579"
+    },
+    {
+      "path": "test_handheld_input.py",
+      "size": 8446,
+      "sha256": "add98e54ba162ebdd5bfae90ff9d939bbd56a96d1f281ebf4896a3eda4931590"
+    },
+    {
+      "path": "test_handheld_platform.py",
+      "size": 2163,
+      "sha256": "7441e799c13a1bf916f2bf1d56c2d33b91356243a12de321305aa12c593a33a6"
+    },
+    {
+      "path": "test_handheld_sound.py",
+      "size": 613,
+      "sha256": "6ef729ecf9cb8628bb2e3b76dfc0187b8ec3b3a4be94ce62cce2234b0e4650fd"
+    },
+    {
+      "path": "test_install.py",
+      "size": 4530,
+      "sha256": "841e1fb04e1fa390f0f89c7f7a45c21f722b16717ac3f44c0daab2d1e00453b5"
+    },
+    {
+      "path": "test_temporary_storage.py",
+      "size": 2090,
+      "sha256": "eb7e87abc456db8b4b271d61d5ec52fccc760548c68f3f34dd2b2cf6897d2129"
+    }
+  ],
+  "files": [
+    {
+      "path": "assets/am2arm-banner.png",
+      "size": 369138,
+      "sha256": "49554aca22e76dee735d6c53f63abf1db11bf5e238f4a5c334a20f0596687408"
+    },
+    {
+      "path": "assets/menu.ttf",
+      "size": 947036,
+      "sha256": "b3c5a8217ca13e615067796d50a17410e40529e5cd551d18e1ed30ae6763c4f0"
+    },
+    {
+      "path": "assets/menu_move.wav",
+      "size": 4854,
+      "sha256": "c9999560194a10e897bc7cfa7b58604e14f17f39ea3693f3a774af278a6cba23"
+    },
+    {
+      "path": "assets/small.ttf",
+      "size": 1296552,
+      "sha256": "abe5d3d934885a3338c3dde9097f24f8a8eab86e3b5fc55ec2d4a6d96e9798cb"
+    },
+    {
+      "path": "assets/title-background.png",
+      "size": 346971,
+      "sha256": "4bfa45655da57886bbf0f14512576faedcc1c9ea8449ba7d42024a330aad87ea"
+    }
+  ],
+  "generated_inputs": [
+    {
+      "path": "patch-bundle/dual/assembly.json",
+      "size": 783,
+      "sha256": "d099e6d209a7117350f19dab792c283d2276d4da6d8a14552bbf40bacdf65f72",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/dual/game_data.xdelta",
+      "size": 33085835,
+      "sha256": "12c85466f8ea1936e34c9dd21de34726904e36fede97684a43b5c0e5c0ea0bc2",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/dual/wrapper.bin",
+      "size": 258285121,
+      "sha256": "cd8cc188d1c9f830fe477771bb6b4aa95b02ba4f9e6ef0c35a6ddeadf9ff2b4d",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/standard/assembly.json",
+      "size": 780,
+      "sha256": "0547ce69ae1cd423980b975f127ed3d927695f8f1e0f7389f67407f5b403cc08",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/standard/game_data.xdelta",
+      "size": 33061715,
+      "sha256": "17f3f47d5c06a1774b97564037dad95fa865855209b147821fd36d198acb61bb",
+      "build_from": "make_patch_data.py"
+    },
+    {
+      "path": "patch-bundle/standard/wrapper.bin",
+      "size": 257946337,
+      "sha256": "1452536a7dd044d458697da62552316b2e72b479352fa42e7cd26733fe8d92e1",
+      "build_from": "make_patch_data.py"
+    }
+  ],
+  "external_tools": [
+    {
+      "path": "vendor/xdelta3/linux-x64/xdelta3",
+      "size": 498624,
+      "sha256": "709508773841aa1e96d39e86b143c4aee496be8eb42a3185bf42fc480dc26ebd",
+      "purpose": "Optional desktop decoder; use an installed xdelta3 or rebuild the documented version."
+    }
+  ]
+}
