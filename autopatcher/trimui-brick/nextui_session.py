@@ -20,6 +20,7 @@ import xml.etree.ElementTree as ET
 from nextui_layout import installed_game, stock_menu
 from nextui_controls import brick_mappings
 from brick_rumble import BrickRumble
+from trimui_device import current_device, display_size
 
 RUNTIME = Path(__file__).resolve().parent
 ROOT = RUNTIME.parent
@@ -85,8 +86,9 @@ def firmware_library(names):
     raise RuntimeError('Missing firmware library: '+names[0])
 
 
-def report():
-    details = {'package': 'AM2ARM 1.6.1 Brick', 'frontend': 'stock' if stock_menu() else 'NextUI',
+def report(device):
+    details = {'package': 'AM2ARM 1.6.1 TrimUI', 'frontend': 'stock' if stock_menu() else 'NextUI',
+               'device': device, 'display': display_size(device),
                'machine': platform.machine(),
                'kernel': platform.release(), 'firmware': {}, 'input': []}
     for label, file in [('model', Path('/proc/device-tree/model')),
@@ -111,7 +113,7 @@ def report():
     (ROOT/'logs/device.json').write_text(json.dumps(details, indent=2)+'\n')
 
 
-def game_options(game):
+def game_options(game, device='brick'):
     metadata = json.loads((game/'edition.json').read_text())
     spec = importlib.util.spec_from_file_location('game_launch', game/'runtime/launch.py')
     module = importlib.util.module_from_spec(spec)
@@ -123,8 +125,9 @@ def game_options(game):
     options.mkdir(parents=True, exist_ok=True)
     config = options/'config.ini'
     if not config.exists():
-        config.write_text('[Screen]\nFullscreen=0\nScale=2\nWidescreen=0\nAspectRatio=0\nNano=0\n')
-    mappings = (game/'data/gamecontrollerdb.txt').read_text()+'\n'+brick_mappings()
+        wide = int(device == 'smartpro')
+        config.write_text(f'[Screen]\nFullscreen=0\nScale=2\nWidescreen={wide}\nAspectRatio={wide}\nNano=0\n')
+    mappings = (game/'data/gamecontrollerdb.txt').read_text()+'\n'+brick_mappings(device)
     module.prepare_controller_database(options, mappings)
     print('Save folder:', options, flush=True)
     return options, metadata
@@ -159,7 +162,10 @@ def prepare_rumble(game):
 def run(mode):
     if mode not in ('patcher', 'game'):
         raise RuntimeError('Unknown launch mode.')
-    report()
+    device = current_device()
+    width, height = display_size(device)
+    report(device)
+    print('TrimUI model:', device, 'Display:', f'{width}x{height}', flush=True)
     stamp = time.strftime('%Y%m%d-%H%M%S')+'-'+str(os.getpid())
     logs = ROOT/'logs'
     sdl = firmware_library(('libSDL2-2.0.so.0', 'libSDL2.so', 'libSDL2-2.0.so'))
@@ -178,7 +184,7 @@ def run(mode):
         authority.chmod(0o600)
         env = dict(os.environ, DISPLAY=f':{number}', XAUTHORITY=str(authority),
                    XLOCALEDIR=str(RUNTIME/'share/X11/locale'), XMODIFIERS='@im=none',
-                   AM2ARM_FIRMWARE_SDL=str(sdl))
+                   AM2ARM_FIRMWARE_SDL=str(sdl), AM2ARM_TRIMUI_DEVICE=device)
         fonts = ET.Element('fontconfig')
         ET.SubElement(fonts, 'dir').text = str(ROOT/'patcher/assets')
         ET.SubElement(fonts, 'cachedir').text = str(work/'font-cache')
@@ -188,7 +194,7 @@ def run(mode):
         env['FONTCONFIG_PATH'] = str(work)
         env.pop('LD_PRELOAD', None)
         env.pop('LD_LIBRARY_PATH', None)
-        xserver = start(command(RUNTIME/'bin/Xvfb', [env['DISPLAY'], '-screen', '0', '1024x768x24',
+        xserver = start(command(RUNTIME/'bin/Xvfb', [env['DISPLAY'], '-screen', '0', f'{width}x{height}x24',
             '-nolisten', 'tcp', '-auth', authority, '-xkbdir', RUNTIME/'share/X11/xkb',
             '-fp', 'built-ins', '-noreset']), env, logs/(stamp+'-display.log'), RUNTIME/'bin')
         wait_ready(xserver, lambda: Path(f'/tmp/.X11-unix/X{number}').is_socket(), 'Input display')
@@ -201,17 +207,17 @@ def run(mode):
             app = start(python(RUNTIME/'nextui_gui.py'), env, logs/(stamp+'-installer.log'), ROOT/'patcher')
         else:
             game = installed_game(CARD)
-            options, metadata = game_options(game)
+            options, metadata = game_options(game, device)
             if prepare_rumble(game):
-                mapping = brick_mappings().partition(',')[0]
+                mapping = brick_mappings(device).partition(',')[0]
                 if len(mapping) == 32:
                     try:
                         rumble = resources.enter_context(BrickRumble(work/'rumble.sock'))
                         env.update(AM2ARM_RUMBLE_SOCKET=str(work/'rumble.sock'),
                                    AM2ARM_RUMBLE_GUID=mapping)
-                        print('Brick vibration enabled.', flush=True)
+                        print('TrimUI vibration enabled.', flush=True)
                     except OSError as error:
-                        print('Brick vibration unavailable:', error, flush=True)
+                        print('TrimUI vibration unavailable:', error, flush=True)
             egl = firmware_library(('libEGL.so.1', 'libEGL.so'))
             gles = firmware_library(('libGLESv2.so.2', 'libGLESv2.so'))
             print('Firmware EGL:', egl, 'GLES:', gles, flush=True)
@@ -221,7 +227,7 @@ def run(mode):
                                  ('libGLESv2.so', gles), ('libGLESv2.so.2', gles)]:
                 (aliases/name).symlink_to(source)
             env.update(CRUSTY_LIBEGL=str(egl), CRUSTY_LIBSDL=str(sdl), CRUSTY_GL4ES='1',
-                       CRUSTY_WLMODE='0', CRUSTY_RESOLUTION='1024x768', CRUSTY_SHOW_CURSOR='0',
+                       CRUSTY_WLMODE='0', CRUSTY_RESOLUTION=f'{width}x{height}', CRUSTY_SHOW_CURSOR='0',
                        SDL_AUDIODRIVER='alsa', XDG_SESSION_TYPE='x11',
                        LIBGL_ES='2', LIBGL_GL='21', LIBGL_NOPSA='1', LIBGL_GLES=str(gles),
                        LIBGL_NATIVE_WAYLAND='1',

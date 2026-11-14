@@ -2,7 +2,7 @@
 
 Turns **your own original AM2R 1.1 Windows ZIP** into Standard or Dual Screen
 for **ARM64 Android and Linux**. Android and the Ports-based Linux package offer both
-editions; the Brick package offers Standard. Nothing playable is hosted here: the patcher rebuilds the game from
+editions; the TrimUI package offers Standard. Nothing playable is hosted here: the patcher rebuilds the game from
 your files and verifies it before installation.
 
 AM2ARM is based on **AM2R Community Updates 1.5.5**. **1.6.1 is this port's
@@ -18,7 +18,7 @@ Download from [AM2ARM 1.6.1](https://github.com/PatchDev-AM2ARM/AM2ARM/releases/
 | --- | --- |
 | Android | **AM2ARM-Autopatcher-1.6.1.apk** |
 | ARM64 Linux with a supported Ports menu | **AM2ARM-Autopatcher-1.6.1-linux-arm64.zip** |
-| TrimUI Brick / NextUI or stock menu | **AM2ARM-Autopatcher-1.6.1-trimui-brick-arm64.zip** (Standard) |
+| TrimUI Brick or original Smart Pro / NextUI or stock menu | **AM2ARM-Autopatcher-1.6.1-trimui-arm64.zip** (Standard) |
 
 All require the original **2016 AM2R_11.zip**. Keep it zipped; modded copies
 and Community Updates packages are not accepted. The Linux installer and
@@ -32,8 +32,9 @@ GitHub's automatic **Source code** download is for development, not installation
 Standard and Dual Screen now run natively on supported ARM64 Linux handhelds.
 The Linux Autopatcher works offline with physical controls, and the game includes
 controller-operated **Backup / Restore** for transfers with Android and PC
-Community Updates 1.5.5. TrimUI Brick has a separate package for NextUI and the
-stock Apps menu.
+Community Updates 1.5.5. TrimUI has a shared package for Brick and original Smart Pro on NextUI
+or the stock Apps menu, with automatic model and resolution selection.
+Smart Pro hardware confirmation is still pending.
 
 Both Autopatchers use a vertical title-style menu with the planet background
 and AM2ARM banner. The game title screen shows V1.6.1 and the repository address.
@@ -74,7 +75,7 @@ uninstalling deletes its private saves. Package IDs and signing are preserved.
 ## Install on Linux
 
 Check [compatibility](#compatibility) first and leave **at least 3 GB free** on
-the data card. Use the package for your firmware. **Brick users follow the
+the data card. Use the package for your firmware. **TrimUI users follow the
 separate instructions below.** Installation on a supported handheld works
 offline; no terminal or system package installation is needed.
 
@@ -128,9 +129,9 @@ transfer route was not established on the tested stock BATLEXPOS image, so
 use a card reader for that setup. This is separate from game compatibility:
 the Ports download below does not support stock BATLEXPOS.
 
-### TrimUI Brick / NextUI and stock menu
+### TrimUI / NextUI and stock menu
 
-Use **AM2ARM-Autopatcher-1.6.1-trimui-brick-arm64.zip**, not the Ports package.
+Use **AM2ARM-Autopatcher-1.6.1-trimui-arm64.zip**, not the Ports package.
 
 1. Back up your saves and extract the package on the computer.
 2. Copy **AM2ARM/**, **Tools/** and **Apps/** to the SD-card root, preserving
@@ -144,6 +145,15 @@ Use **AM2ARM-Autopatcher-1.6.1-trimui-brick-arm64.zip**, not the Ports package.
 5. At **INSTALLATION COMPLETE**, exit the installer and open **AM2ARM
    Standard** from the same menu. Leave and reopen that menu if the new
    entry is missing. You do not need to patch it again.
+
+The launcher automatically selects **1024x768 on Brick** or **1280x720
+on Smart Pro**. New installations default to 4:3 or 16:9 respectively,
+without stretching; existing display settings are preserved.
+
+For this launcher-only update, back up your card, close the game and
+installer, then merge the extracted AM2ARM, Tools and Apps folders with
+their existing folders. Keep the installed game and saved data. An
+existing 1.6.1 Standard game does not need to be patched again.
 
 Both launchers use the same Standard game data. Firmware and clocks remain
 unchanged. NextUI saves stay in its hidden
@@ -180,8 +190,13 @@ repeatedly installing the same download will not fix it.
 | Linux | Original RG DS, stock Linux 1.1-261008 | Fresh installation, Standard and Dual Screen, controls, sound, touch and Standard vibration |
 | Linux | RG DS, ROCKNIX 20261101 | Installer and Standard; Dual Screen on this firmware unverified |
 | Linux | BATLEXP G350, ROCKNIX | Installer, Standard, save transfer and aspect-ratio checks |
-| Linux / Brick package | TrimUI Brick, NextUI 20261013-0 | Installer, Standard startup/gameplay, full-screen display, music output and printed A/B/X/Y mapping |
-| Linux / Brick package | TrimUI Brick, stock menu 1.0.6 | Fresh-card installation, fullscreen gameplay, music, controls and damage vibration |
+| Linux / TrimUI package | TrimUI Brick, NextUI 20261013-0 | Installer, Standard startup/gameplay, full-screen display, music output and printed A/B/X/Y mapping |
+| Linux / TrimUI package | TrimUI Brick, stock menu 1.0.6 | Fresh-card installation, fullscreen gameplay, music, controls and damage vibration |
+
+**Original Smart Pro: provisional support.** Model detection, 1280x720
+installer navigation, controller mapping and settings preservation pass
+software checks. Installation, actual gameplay, audio and vibration still
+need physical confirmation. Smart Pro S and Brick Pro are not enabled.
 
 The stock-menu check used a fresh card on a Brick retaining an internal
 CrossMix 1.3.9 marker; a completely unmodified factory image was not checked.
@@ -189,7 +204,7 @@ The new Brick vibration path was verified on stock and is also included for
 NextUI; its physical NextUI recheck remains outstanding.
 
 The Ports package requires compatible **ARM64 userspace and a Wayland display
-session**. The separate Brick package uses its firmware display backend.
+session**. The separate TrimUI package uses its firmware display backend.
 The package uses the firmware's graphics/audio drivers and bundled app-local
 support libraries; it does not change drivers, firmware or clock settings.
 G350 stock **BATLEXPOS is not supported by this download**.

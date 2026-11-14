@@ -31,19 +31,36 @@
     "exact_final_standard_acceptance": "G350 ROCKNIX: controls, Backup/Restore, 4:3/3:2/16:9 gameplay and menus; ordinary X and Core-X shader transformations checked with Nano enabled",
     "fresh_card_installation": "RG DS stock Linux verified",
     "other_firmware": "See README.md#compatibility",
-    "trimui_brick": {
-      "download": "AM2ARM-Autopatcher-1.6.1-trimui-brick-arm64.zip",
+    "trimui": {
+      "download": "AM2ARM-Autopatcher-1.6.1-trimui-arm64.zip",
       "editions": [
         "standard"
       ],
-      "verified": "startup, full-screen display, controller navigation, opening gameplay and printed face buttons",
+      "verified": "Brick: startup, full-screen display, controller navigation, opening gameplay and printed face buttons",
       "save_picker": "not separately checked on Brick",
       "frontends": [
         "NextUI",
         "stock Apps"
       ],
       "rumble": "damage vibration verified on stock; NextUI recheck pending",
-      "stock_image": "fresh card; internal CrossMix marker retained"
+      "stock_image": "fresh card; internal CrossMix marker retained",
+      "models": {
+        "brick": {
+          "resolution": [
+            1024,
+            768
+          ],
+          "hardware_verified": true
+        },
+        "smartpro": {
+          "resolution": [
+            1280,
+            720
+          ],
+          "hardware_verified": false,
+          "status": "software checks passed; physical confirmation pending"
+        }
+      }
     }
   },
   "original_input": "Original Windows AM2R 1.1 ZIP",

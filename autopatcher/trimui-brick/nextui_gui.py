@@ -5,6 +5,7 @@ import tkinter as tk
 import handheld_gui
 import handheld_input
 from nextui_controls import firmware_face_buttons
+from trimui_device import display_size
 
 handheld_input.firmware_face_buttons = firmware_face_buttons
 
@@ -25,7 +26,7 @@ def main():
     root = tk.Tk()
     root.overrideredirect(True)
     card = Path(os.environ.get('SDCARD_PATH', '/mnt/SDCARD'))
-    BrickWindow(root, output=card/'AM2ARM/games', size=(1024, 768))
+    BrickWindow(root, output=card/'AM2ARM/games', size=display_size())
     root.mainloop()
 
 

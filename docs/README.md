@@ -7,7 +7,7 @@ The repository's Code tab contains both patchers and release documentation:
 ```text
 autopatcher/android/         Android Autopatcher
 autopatcher/linux/           Linux Autopatcher
-autopatcher/trimui-brick/    TrimUI Brick stock/NextUI adapters
+autopatcher/trimui-brick/    TrimUI stock/NextUI adapters
 ```
 
 Download the named source archives from the release Assets section for game
@@ -27,8 +27,8 @@ Extract each downloaded project into its own working folder:
   AM2ARM-Source-Restore        Command-line asset restoration utility
 ```
 
-The Brick adapters use the Linux Standard project and common patcher. They
-need no separate game project or media catalog. See [Brick integration](../autopatcher/trimui-brick/README.md).
+The TrimUI adapters use the Linux Standard project and common patcher. They
+need no separate game project or media catalog. See [TrimUI integration](../autopatcher/trimui-brick/README.md).
 
 The separation is intentional. Shared gameplay is maintained across the
 projects, while target options, platform guards and display/input extensions
@@ -48,7 +48,7 @@ Other source downloads
 - AM2ARM-Autopatcher-1.6.1-android-source.zip
 - AM2ARM-Autopatcher-1.6.1-linux-source.zip
 - AM2ARM-1.6.1-linux-integration-source.zip
-- AM2ARM-1.6.1-trimui-brick-integration-source.zip
+- AM2ARM-1.6.1-trimui-integration-source.zip
 - AM2ARM-1.6.1-trimui-brick-dependency-sources.zip
 - AM2ARM-Source-Restore-1.6.1.zip
 - AM2ARM-1.6.1-dependency-sources.zip

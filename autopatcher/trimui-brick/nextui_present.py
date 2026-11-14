@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import signal
 import time
+from trimui_device import display_size
 
 
 class XImage(C.Structure):
@@ -22,6 +23,7 @@ def function(library, name, result, arguments):
 
 
 def main():
+    width, height = display_size()
     ptr, integer, uint = C.c_void_p, C.c_int, C.c_uint
     x = C.CDLL('libX11.so.6')
     open_display = function(x, 'XOpenDisplay', ptr, [C.c_char_p])
@@ -72,7 +74,7 @@ def main():
         if api['VideoInit'](selected.encode()) < 0:
             raise RuntimeError('Firmware video failed: '+api['GetError']().decode())
         api['SetHint'](b'SDL_RENDER_SCALE_QUALITY', b'0')
-        window = api['CreateWindow'](b'AM2ARM Autopatcher', 0, 0, 1024, 768, 0x1005)
+        window = api['CreateWindow'](b'AM2ARM Autopatcher', 0, 0, width, height, 0x1005)
         if not window:
             raise RuntimeError('Installer window failed: '+api['GetError']().decode())
         renderer = api['CreateRenderer'](window, -1, 2) or api['CreateRenderer'](window, -1, 1)
@@ -80,7 +82,7 @@ def main():
             raise RuntimeError('Installer renderer failed: '+api['GetError']().decode())
         # SDL_PIXELFORMAT_RGB888, streaming access; Xvfb supplies 24-bit RGB
         # in 32-bit little-endian words. Both descriptions are checked below.
-        texture = api['CreateTexture'](renderer, 0x16161804, 1, 1024, 768)
+        texture = api['CreateTexture'](renderer, 0x16161804, 1, width, height)
         if not texture:
             raise RuntimeError('Installer canvas failed: '+api['GetError']().decode())
         api['ShowCursor'](0)
@@ -92,7 +94,7 @@ def main():
             while api['PollEvent'](event):
                 if int.from_bytes(event.raw[:4], 'little') == 0x100:
                     running[0] = False
-            snapshot = get_image(display, root, 0, 0, 1024, 768, C.c_ulong(-1).value, 2)
+            snapshot = get_image(display, root, 0, 0, width, height, C.c_ulong(-1).value, 2)
             if not snapshot:
                 raise RuntimeError('Installer canvas is unavailable.')
             try:
@@ -104,10 +106,10 @@ def main():
                 if api['LockTexture'](texture, None, C.byref(pixels), C.byref(pitch)) < 0:
                     raise RuntimeError('Installer canvas update failed: '+api['GetError']().decode())
                 if pitch.value == source.bytes_per_line:
-                    C.memmove(pixels, source.data, pitch.value*768)
+                    C.memmove(pixels, source.data, pitch.value*height)
                 else:
-                    for row in range(768):
-                        C.memmove(pixels.value+row*pitch.value, source.data+row*source.bytes_per_line, 1024*4)
+                    for row in range(height):
+                        C.memmove(pixels.value+row*pitch.value, source.data+row*source.bytes_per_line, width*4)
                 api['UnlockTexture'](texture)
             finally:
                 destroy_image(snapshot)
