@@ -54,6 +54,11 @@ function touch_keys() {
 	// Virtual keycodes
 	if (gamepad_is_supported()) {
 	    if (gamepad_is_connected(global.opjoyid) && global.joydetected && !global.compatibilitymode) {    
+	        // The motors keep their last strength, so send 0 when vibration is off.
+	        if (!global.android_app) {
+	            var _drill = (sfx_isplaying(sndDrillLoop) && global.ingame) ? 0.1 : 0;
+	            gamepad_set_vibration(global.opjoyid, global.opxjoyvib * max(global.vibL, _drill), global.opxjoyvib * max(global.vibR, _drill));
+	        }
 	        xjoyx = gamepad_axis_value(global.opjoyid, gp_axislh);
 	        xjoyy = gamepad_axis_value(global.opjoyid, gp_axislv);
 	        if (is_past_deadzone(xjoyx, xjoyy, 1)) {
@@ -334,6 +339,11 @@ function touch_keys() {
 	        ctrl_R = 1;
 	        global.controltype = 0;
 	    }
+	    // Use the same Select action as a controller without changing Hold or Toggle rules.
+	    if (touch_weapon_select_available() && oTouchControls.weapon_select_pressed != -1) {
+	        ctrl_Select = 1;
+	        global.controltype = 0;
+	    }
 	    if (oTouchControls.pause_pressed[0] != -1) {
 	        ctrl_Start = 1;
 	        global.controltype = 0;
@@ -375,6 +385,12 @@ function touch_keys() {
 }
 
 
+// Show a separate selector only when Hold mode has two owned missile types.
+function touch_weapon_select_available() {
+    return global.ingame && global.opmslstyle == 0
+        && global.maxmissiles > 0 && global.maxsmissiles > 0;
+}
+
 // --- Immersion haptics SDK bridge (GM2026 port) ---
 // The GMS 1.4 Immersion haptics functions were removed in GameMaker 2026.
 // These forward the original Immersion UHL effect ids to the AM2RHaptics
@@ -382,8 +398,8 @@ function touch_keys() {
 // which approximates each effect with android.os.Vibrator waveforms.
 // Defined here (outside touch_keys()) so they register as global functions.
 function immersion_stop() {
-	if (os_type == os_android) AM2RHaptics_Stop();
+	if (global.android_app) AM2RHaptics_Stop();
 }
 function immersion_play_effect(_effect) {
-	if (os_type == os_android) AM2RHaptics_Play(_effect);
+	if (global.android_app) AM2RHaptics_Play(_effect);
 }

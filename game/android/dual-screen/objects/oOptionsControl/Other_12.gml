@@ -48,11 +48,12 @@ if (global.curropt == 3) {
     if (global.opspdstyle == 2) global.tiptext = get_text("OptionsControl", "SpiderballActivation_Hold_Tip");
 }
 
-op[9].optext = string(abs(oControl.touch_scale-9));
-// Apply a touch-size change to the active layout as soon as the option display refreshes.
-if (instance_exists(oTouchControls)) {
-    with (oTouchControls) {
-        event_user(0);
-    }
+op[9].slwidth = op[9].w * touch_options_value(9);
+op[10].slwidth = op[10].w * touch_options_value(10);
+op[11].slwidth = op[11].w * touch_options_value(11);
+// Refresh only after a geometry change; unrelated options do not move held touches.
+with (oTouchControls) {
+    if (scale != oControl.touch_scale || layout_inset != oControl.touch_inset
+        || layout_aim_balance != oControl.touch_aim_balance) event_user(0);
 }
 

@@ -1,10 +1,9 @@
-if (active) {
+if (active && touch_slider_finger < 0) {
     if (oControl.kDown > 0 && (oControl.kDownPushedSteps == 0 || oControl.kDownPushedSteps > 30 && timer == 0) && !inputdel) {
         global.curropt += 1;
         if (global.curropt > lastitem) global.curropt = 0;
         while (canedit[global.curropt] == 0) global.curropt += 1;
         targety = op[global.curropt].y + 8 + 8;
-        if (targety > 192) targety = 192;
         sfx_play(sndMenuMove);
         global.tiptext = tip[global.curropt];
     }
@@ -13,38 +12,21 @@ if (active) {
         if (global.curropt < 0) global.curropt = lastitem;
         while (canedit[global.curropt] == 0) global.curropt -= 1;
         targety = op[global.curropt].y + 8 + 8;
-        if (targety > 192) targety = 192;
         sfx_play(sndMenuMove);
         global.tiptext = tip[global.curropt];
     }
-    if (oControl.kLeft > 0 && oControl.kLeftPushedSteps == 0 && oControl.kDown == 0 && oControl.kUp == 0) {
-        if (global.curropt == 3) {
-            global.opspdstyle -= 1;
-            if (global.opspdstyle < 0) global.opspdstyle = 2;
-        } 
-        else if (global.curropt == 9) { // TOUCH SCALE
-            if (floor(oControl.touch_scale) < 8) {
-                oControl.touch_scale ++;
-                sfx_play(sndMenuMove); // no clue why this one is needed here but not on left but I'm done asking questions
+    if (!oControl.kDown && !oControl.kUp) {
+        var _direction = (oControl.kRight > 0) - (oControl.kLeft > 0);
+        var _held = _direction > 0 ? oControl.kRightPushedSteps : oControl.kLeftPushedSteps;
+        if (global.curropt == 3 && _direction != 0 && _held == 0)
+            global.opspdstyle = (global.opspdstyle + _direction + 3) mod 3;
+        if ((global.curropt >= 9 && global.curropt <= 11) && canedit[global.curropt]
+            && _direction != 0 && (_held == 0 || _held > 8)) {
+            if (touch_options_set(global.curropt, touch_options_value(global.curropt) + _direction * 0.01)) {
+                if (_held == 0) sfx_play(sndMenuMove);
                 event_user(2);
-                inputdel = 30;
             }
         }
-    }
-    if ((oControl.kRight > 0) && (oControl.kRightPushedSteps == 0) && (oControl.kDown == 0) && (oControl.kUp == 0)) {
-        if (global.curropt == 3) {
-            global.opspdstyle += 1;
-            if (global.opspdstyle > 2) global.opspdstyle = 0;
-        } 
-        else if (global.curropt == 9) { // TOUCH SCALE
-            if ((floor(oControl.touch_scale) > 1) && (oTouchControls.st_radius < (display_get_height()/3))) {
-                oControl.touch_scale --;
-                sfx_play(sndMenuMove);
-                event_user(2);
-                inputdel = 30;
-            }
-        }
-        
     }
     if (((oControl.kLeft > 0 && oControl.kLeftPushedSteps == 0) || (oControl.kRight > 0 && oControl.kRightPushedSteps == 0)) && (((os_type != os_android) && global.curropt < 6) || ((os_type == os_android || os_type == os_linux) && global.curropt < 8)) && ((oControl.kDown == 0) && (oControl.kUp == 0))) {
         if (global.curropt == 0) global.opaimstyle = !global.opaimstyle;
@@ -88,7 +70,7 @@ if (active) {
             instance_destroy();
             sfx_play(sndMenuSel);
         }
-        if (global.curropt == 10) {
+        if (global.curropt == lastitem) {
             save_gameoptions();
             __view_set( e__VW.Object, 0, noone );
             __view_set( e__VW.YView, 0, 0 );

@@ -1,2 +1,0 @@
-targety = y;
-

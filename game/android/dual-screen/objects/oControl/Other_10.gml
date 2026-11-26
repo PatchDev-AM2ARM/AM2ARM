@@ -1,9 +1,9 @@
 // Capture the current game view and keep the room for returning from the pause screen.
 if (global.ingame == 1 && global.enablecontrol == 1 && room != rm_transition && ((!keyboard_check(vk_alt)) || (os_type == os_linux))) {
     // Marker and Menu requests play their sound when the requested page action opens.
-    if (thor_enabled && thor_pending_action == 0) sfx_play(sndMenuMove);
+    if (dual_enabled && dual_pending_action == 0) sfx_play(sndMenuMove);
     // Keep a health-and-ammo snapshot available if its screen is changed while paused.
-    if (thor_enabled) thor_capture_upper_hud();
+    if (dual_enabled) dual_capture_upper_hud();
     event_user(3);
     global.ingame = 0;
     global.targetx = oCharacter.x;

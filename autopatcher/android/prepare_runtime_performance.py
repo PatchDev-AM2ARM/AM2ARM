@@ -34,7 +34,7 @@ def prepare_runtime(runtime):
     newline = "\r\n" if "\r\n" in text else "\n"
     text = text.replace("\r\n", "\n")
     if text.count(ANCHOR) != 1:
-        raise ValueError("Unexpected runner; use an isolated copy of runtime 2026.100.0.1046")
+        raise ValueError("Unexpected runner; use an isolated copy of runtime 2026.1.1.30")
     if "extensionMethodLists" in text or CACHED in text:
         if text.count(HELPER) != 1 or text.count(CACHED) != 1 or ORIGINAL in text:
             raise ValueError("Existing extension cache differs; inspect the runtime copy")

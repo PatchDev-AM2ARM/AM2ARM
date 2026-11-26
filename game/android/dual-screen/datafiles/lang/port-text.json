@@ -1,0 +1,307 @@
+{
+  "catalan": {
+    "OptionsDisplay": {
+      "AspectRatio": "Relació d'aspecte",
+      "AspectRatio_Tip": "Tria 4:3, 16:9 o 3:2. Durant el joc, el canvi s'aplica en passar a una altra sala.",
+      "Orientation": "Orientació",
+      "Orientation_Landscape": "Horitzontal",
+      "Orientation_Portrait": "Vertical",
+      "Orientation_Automatic": "Automàtica",
+      "Orientation_Tip": "Tria l'orientació horitzontal, vertical o la rotació automàtica de la pantalla.",
+      "Nano_Tip": "Menys partícules i llums; efectes d’aigua més lleugers."
+    },
+    "Android": {
+      "TouchScale_Tip": "Arrossega el lliscador o mantén esquerra/dreta per canviar la mida dels controls tàctils.",
+      "TouchInset": "Separació dels controls",
+      "TouchInset_Tip": "Arrossega a l'esquerra per acostar els controls o a la dreta per separar-los.",
+      "TouchAimBalance": "Mida de diagonals",
+      "TouchAimBalance_Tip": "Amplia les fletxes diagonals i redueix la palanca dins de la mateixa zona de control."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Intercanvia les pantalles de joc i mapa."
+    }
+  },
+  "czech": {
+    "OptionsDisplay": {
+      "AspectRatio": "Poměr stran",
+      "AspectRatio_Tip": "Vyberte 4:3, 16:9 nebo 3:2. Ve hře se změna projeví při příštím přechodu mezi místnostmi.",
+      "Orientation": "Orientace",
+      "Orientation_Landscape": "Na šířku",
+      "Orientation_Portrait": "Na výšku",
+      "Orientation_Automatic": "Automatická",
+      "Orientation_Tip": "Vyberte orientaci na šířku, na výšku nebo automatické otáčení obrazovky.",
+      "Nano_Tip": "Méně částic a světel; jednodušší vodní efekty."
+    },
+    "Android": {
+      "TouchScale_Tip": "Tažením posuvníku nebo podržením vlevo/vpravo změníte velikost dotykových ovladačů.",
+      "TouchInset": "Rozestup ovladačů",
+      "TouchInset_Tip": "Tažením vlevo ovladače přiblížíte, vpravo zvětšíte jejich rozestup.",
+      "TouchAimBalance": "Velikost diagonál",
+      "TouchAimBalance_Tip": "Zvětší diagonální šipky a zmenší páčku ve stejné oblasti ovládání."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Prohodí herní obrazovku a mapu."
+    }
+  },
+  "english": {
+    "OptionsDisplay": {
+      "AspectRatio": "Aspect Ratio",
+      "AspectRatio_Tip": "Choose 4:3, 16:9 or 3:2. Changes apply on the next room transition in-game.",
+      "Orientation": "Orientation",
+      "Orientation_Landscape": "Landscape",
+      "Orientation_Portrait": "Portrait",
+      "Orientation_Automatic": "Automatic",
+      "Orientation_Tip": "Choose landscape, portrait, or automatic screen rotation.",
+      "Nano_Tip": "Fewer particles and lights; lighter water effects."
+    },
+    "Android": {
+      "TouchScale_Tip": "Drag the slider or hold left/right to resize touch controls.",
+      "TouchInset": "Control Spacing",
+      "TouchInset_Tip": "Drag left for closer controls, right for wider spacing.",
+      "TouchAimBalance": "Diagonal Aim Size",
+      "TouchAimBalance_Tip": "Larger diagonal arrows and a smaller stick, within the same control area."
+    }
+  },
+  "french": {
+    "OptionsDisplay": {
+      "AspectRatio": "Format de l'image",
+      "AspectRatio_Tip": "Choisissez 4:3, 16:9 ou 3:2. En jeu, le changement s'applique au prochain changement de salle.",
+      "Orientation": "Orientation",
+      "Orientation_Landscape": "Paysage",
+      "Orientation_Portrait": "Portrait",
+      "Orientation_Automatic": "Automatique",
+      "Orientation_Tip": "Choisissez le mode paysage, portrait ou la rotation automatique de l'écran.",
+      "Nano_Tip": "Moins de particules et de lumières ; effets aquatiques allégés."
+    },
+    "Android": {
+      "TouchScale_Tip": "Faites glisser le curseur ou maintenez gauche/droite pour redimensionner les commandes tactiles.",
+      "TouchInset": "Espacement des commandes",
+      "TouchInset_Tip": "Glissez à gauche pour rapprocher les commandes, à droite pour les espacer.",
+      "TouchAimBalance": "Taille des diagonales",
+      "TouchAimBalance_Tip": "Agrandit les flèches diagonales et réduit le stick dans la même zone de contrôle."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Inversez les écrans de jeu et de carte."
+    }
+  },
+  "german": {
+    "OptionsDisplay": {
+      "AspectRatio": "Seitenverhältnis",
+      "AspectRatio_Tip": "Wähle 4:3, 16:9 oder 3:2. Im Spiel wird die Änderung beim nächsten Raumwechsel wirksam.",
+      "Orientation": "Ausrichtung",
+      "Orientation_Landscape": "Querformat",
+      "Orientation_Portrait": "Hochformat",
+      "Orientation_Automatic": "Automatisch",
+      "Orientation_Tip": "Wähle Querformat, Hochformat oder automatische Bildschirmdrehung.",
+      "Nano_Tip": "Weniger Partikel und Lichter; einfachere Wassereffekte."
+    },
+    "Android": {
+      "TouchScale_Tip": "Ziehe den Regler oder halte Links/Rechts, um die Touch-Elemente zu vergrößern oder zu verkleinern.",
+      "TouchInset": "Abstand der Touch-Elemente",
+      "TouchInset_Tip": "Ziehe nach links für engere, nach rechts für größere Abstände.",
+      "TouchAimBalance": "Diagonalzielgröße",
+      "TouchAimBalance_Tip": "Vergrößert die diagonalen Pfeile und verkleinert den Stick im selben Steuerbereich."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Tauscht Spiel- und Kartenbildschirm."
+    }
+  },
+  "germanwide": {
+    "OptionsDisplay": {
+      "AspectRatio": "Seitenverhältnis",
+      "AspectRatio_Tip": "Wähle 4:3, 16:9 oder 3:2. Im Spiel wird die Änderung beim nächsten Raumwechsel wirksam.",
+      "Orientation": "Ausrichtung",
+      "Orientation_Landscape": "Querformat",
+      "Orientation_Portrait": "Hochformat",
+      "Orientation_Automatic": "Automatisch",
+      "Orientation_Tip": "Wähle Querformat, Hochformat oder automatische Bildschirmdrehung.",
+      "Nano_Tip": "Weniger Partikel und Lichter; einfachere Wassereffekte."
+    },
+    "Android": {
+      "TouchScale_Tip": "Ziehe den Regler oder halte Links/Rechts, um die Touch-Elemente zu vergrößern oder zu verkleinern.",
+      "TouchInset": "Abstand der Touch-Elemente",
+      "TouchInset_Tip": "Ziehe nach links für engere, nach rechts für größere Abstände.",
+      "TouchAimBalance": "Diagonalzielgröße",
+      "TouchAimBalance_Tip": "Vergrößert die diagonalen Pfeile und verkleinert den Stick im selben Steuerbereich."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Tauscht Spiel- und Kartenbildschirm."
+    }
+  },
+  "italian": {
+    "OptionsDisplay": {
+      "AspectRatio": "Proporzioni schermo",
+      "AspectRatio_Tip": "Scegli 4:3, 16:9 o 3:2. In gioco, le modifiche si applicano al prossimo cambio di stanza.",
+      "Orientation": "Orientamento",
+      "Orientation_Landscape": "Orizzontale",
+      "Orientation_Portrait": "Verticale",
+      "Orientation_Automatic": "Automatico",
+      "Orientation_Tip": "Scegli l'orientamento orizzontale, verticale o la rotazione automatica dello schermo.",
+      "Nano_Tip": "Meno particelle e luci; effetti acquatici più leggeri."
+    },
+    "Android": {
+      "TouchScale_Tip": "Trascina il cursore o tieni premuto sinistra/destra per ridimensionare i comandi touch.",
+      "TouchInset": "Distanza dei comandi",
+      "TouchInset_Tip": "Trascina a sinistra per avvicinare i comandi, a destra per distanziarli.",
+      "TouchAimBalance": "Dimensione diagonali",
+      "TouchAimBalance_Tip": "Ingrandisce le frecce diagonali e riduce lo stick nella stessa area di controllo."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Scambia gli schermi di gioco e della mappa."
+    }
+  },
+  "japanese": {
+    "OptionsDisplay": {
+      "AspectRatio": "画面の縦横比",
+      "AspectRatio_Tip": "4:3、16:9、3:2から選びます。プレイ中は次の部屋への移動時に反映されます。",
+      "Orientation": "画面の向き",
+      "Orientation_Landscape": "横向き",
+      "Orientation_Portrait": "縦向き",
+      "Orientation_Automatic": "自動",
+      "Orientation_Tip": "画面の向きを横、縦、または自動回転に設定します。",
+      "Nano_Tip": "粒子と光を減らし、水の効果を軽くします。"
+    },
+    "Android": {
+      "TouchScale_Tip": "スライダーをドラッグするか左右を押し続けると、タッチ操作の大きさを変更できます。",
+      "TouchInset": "操作ボタンの間隔",
+      "TouchInset_Tip": "左にドラッグするとボタンが近づき、右にドラッグすると間隔が広がります。",
+      "TouchAimBalance": "斜め照準のサイズ",
+      "TouchAimBalance_Tip": "操作エリアの広さを変えずに、斜め矢印を大きく、スティックを小さくします。"
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "ゲーム画面とマップ画面を入れ替えます。"
+    }
+  },
+  "portuguese-br": {
+    "OptionsDisplay": {
+      "AspectRatio": "Proporção da tela",
+      "AspectRatio_Tip": "Escolha 4:3, 16:9 ou 3:2. Durante o jogo, a mudança é aplicada na próxima troca de sala.",
+      "Orientation": "Orientação",
+      "Orientation_Landscape": "Paisagem",
+      "Orientation_Portrait": "Retrato",
+      "Orientation_Automatic": "Automática",
+      "Orientation_Tip": "Escolha paisagem, retrato ou rotação automática da tela.",
+      "Nano_Tip": "Menos partículas e luzes; efeitos de água mais leves."
+    },
+    "Android": {
+      "TouchScale_Tip": "Arraste o controle deslizante ou segure esquerda/direita para mudar o tamanho dos controles na tela.",
+      "TouchInset": "Espaçamento dos controles",
+      "TouchInset_Tip": "Arraste para a esquerda para aproximar os controles ou para a direita para afastá-los.",
+      "TouchAimBalance": "Tamanho das diagonais",
+      "TouchAimBalance_Tip": "Aumenta as setas diagonais e reduz o direcional dentro da mesma área de controle."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Troca as telas de jogo e mapa."
+    }
+  },
+  "portuguese-pt": {
+    "OptionsDisplay": {
+      "AspectRatio": "Proporção do ecrã",
+      "AspectRatio_Tip": "Escolhe 4:3, 16:9 ou 3:2. Durante o jogo, a alteração aplica-se na próxima mudança de sala.",
+      "Orientation": "Orientação",
+      "Orientation_Landscape": "Horizontal",
+      "Orientation_Portrait": "Vertical",
+      "Orientation_Automatic": "Automática",
+      "Orientation_Tip": "Escolhe a orientação horizontal, vertical ou a rotação automática do ecrã.",
+      "Nano_Tip": "Menos partículas e luzes; efeitos de água mais leves."
+    },
+    "Android": {
+      "TouchScale_Tip": "Arrasta o cursor ou mantém esquerda/direita premido para mudar o tamanho dos controlos táteis.",
+      "TouchInset": "Espaçamento dos controlos",
+      "TouchInset_Tip": "Arrasta para a esquerda para aproximar os controlos ou para a direita para os afastar.",
+      "TouchAimBalance": "Tamanho das diagonais",
+      "TouchAimBalance_Tip": "Aumenta as setas diagonais e reduz o manípulo na mesma área de controlo."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Troca os ecrãs de jogo e mapa."
+    }
+  },
+  "russian": {
+    "OptionsDisplay": {
+      "AspectRatio": "Соотношение сторон",
+      "AspectRatio_Tip": "Выберите 4:3, 16:9 или 3:2. Во время игры изменение вступит в силу при переходе в другую комнату.",
+      "Orientation": "Ориентация",
+      "Orientation_Landscape": "Альбомная",
+      "Orientation_Portrait": "Портретная",
+      "Orientation_Automatic": "Автоматическая",
+      "Orientation_Tip": "Выберите альбомную, портретную ориентацию или автоматический поворот экрана.",
+      "Nano_Tip": "Меньше частиц и света; упрощённые эффекты воды."
+    },
+    "Android": {
+      "TouchScale_Tip": "Двигайте ползунок или удерживайте влево/вправо, чтобы изменить размер сенсорных кнопок.",
+      "TouchInset": "Расстояние между кнопками",
+      "TouchInset_Tip": "Двигайте влево, чтобы сблизить кнопки, или вправо, чтобы увеличить расстояние.",
+      "TouchAimBalance": "Размер диагоналей",
+      "TouchAimBalance_Tip": "Увеличивает диагональные стрелки и уменьшает стик в той же области управления."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Меняет местами экраны игры и карты."
+    }
+  },
+  "spanish": {
+    "OptionsDisplay": {
+      "AspectRatio": "Relación de aspecto",
+      "AspectRatio_Tip": "Elige 4:3, 16:9 o 3:2. Durante el juego, el cambio se aplica al pasar a otra sala.",
+      "Orientation": "Orientación",
+      "Orientation_Landscape": "Horizontal",
+      "Orientation_Portrait": "Vertical",
+      "Orientation_Automatic": "Automática",
+      "Orientation_Tip": "Elige orientación horizontal, vertical o rotación automática de la pantalla.",
+      "Nano_Tip": "Menos partículas y luces; efectos de agua más ligeros."
+    },
+    "Android": {
+      "TouchScale_Tip": "Arrastra el deslizador o mantén izquierda/derecha para cambiar el tamaño de los controles táctiles.",
+      "TouchInset": "Separación de controles",
+      "TouchInset_Tip": "Arrastra a la izquierda para acercar los controles o a la derecha para separarlos.",
+      "TouchAimBalance": "Tamaño de diagonales",
+      "TouchAimBalance_Tip": "Agranda las flechas diagonales y reduce la palanca dentro de la misma zona de control."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Intercambia las pantallas de juego y mapa."
+    }
+  },
+  "swedish": {
+    "OptionsDisplay": {
+      "AspectRatio": "Bildformat",
+      "AspectRatio_Tip": "Välj 4:3, 16:9 eller 3:2. Under spel träder ändringen i kraft vid nästa rumsbyte.",
+      "Orientation": "Skärmorientering",
+      "Orientation_Landscape": "Liggande",
+      "Orientation_Portrait": "Stående",
+      "Orientation_Automatic": "Automatisk",
+      "Orientation_Tip": "Välj liggande, stående eller automatisk skärmrotation.",
+      "Nano_Tip": "Färre partiklar och ljus; enklare vatteneffekter."
+    },
+    "Android": {
+      "TouchScale_Tip": "Dra reglaget eller håll vänster/höger för att ändra storlek på beröringskontrollerna.",
+      "TouchInset": "Kontrollavstånd",
+      "TouchInset_Tip": "Dra åt vänster för att flytta kontrollerna närmare varandra, åt höger för större avstånd.",
+      "TouchAimBalance": "Storlek på diagonaler",
+      "TouchAimBalance_Tip": "Förstorar diagonalpilarna och förminskar styrspaken inom samma kontrollyta."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Byt plats på spel- och kartskärmen."
+    }
+  },
+  "ukrainian": {
+    "OptionsDisplay": {
+      "AspectRatio": "Співвідношення сторін",
+      "AspectRatio_Tip": "Оберіть 4:3, 16:9 або 3:2. Під час гри зміна набуде чинності при переході до іншої кімнати.",
+      "Orientation": "Орієнтація",
+      "Orientation_Landscape": "Альбомна",
+      "Orientation_Portrait": "Портретна",
+      "Orientation_Automatic": "Автоматична",
+      "Orientation_Tip": "Оберіть альбомну, портретну орієнтацію або автоматичне обертання екрана.",
+      "Nano_Tip": "Менше частинок і світла; спрощені ефекти води."
+    },
+    "Android": {
+      "TouchScale_Tip": "Перетягуйте повзунок або утримуйте ліворуч/праворуч, щоб змінити розмір дотикових кнопок.",
+      "TouchInset": "Відстань між кнопками",
+      "TouchInset_Tip": "Перетягуйте ліворуч, щоб зблизити кнопки, або праворуч, щоб збільшити відстань.",
+      "TouchAimBalance": "Розмір діагоналей",
+      "TouchAimBalance_Tip": "Збільшує діагональні стрілки та зменшує стік у тій самій області керування."
+    },
+    "PortUI": {
+      "Swap the gameplay and map screens.": "Міняє місцями екрани гри та мапи."
+    }
+  }
+}

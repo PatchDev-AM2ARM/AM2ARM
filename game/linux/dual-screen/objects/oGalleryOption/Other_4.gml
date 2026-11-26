@@ -1,2 +1,0 @@
-enabled = global.gallery[optionid];
-

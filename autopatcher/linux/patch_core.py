@@ -1,5 +1,4 @@
-"""Verified ZIP reconstruction, derived from the AM2R Android Autopatcher."""
-import argparse
+"""Rebuild the game from the player's AM2R 1.1 copy and a release's port data."""
 import hashlib
 import json
 import os
@@ -8,13 +7,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import threading
 import zipfile
 from pathlib import Path
 
-
-# ----------------------------------------------------------------------------
-# Core
 
 class PatchError(Exception):
     pass
@@ -59,18 +54,12 @@ def sha256_file(path, chunk=1 << 20):
     return h.hexdigest()
 
 
-def load_manifest(edition="standard", patch_root=None):
-    if edition not in ("standard", "dual"):
-        raise PatchError("Choose the Standard or Dual Screen edition.")
-    patch_root = patch_root or os.environ.get("AM2ARM_PATCH_ROOT") or None
-    root = Path(patch_root) if patch_root else base_dir() / "patch-bundle"
-    p = root / edition / "assembly.json"
-    # Older single-edition downloads remain usable; never substitute them for Dual Screen.
-    if patch_root is None and not root.exists() and edition == "standard":
-        p = base_dir() / "patch-data" / "assembly.json"
-    if not p.is_file():
-        raise PatchError(f"patch data missing: {p}")
-    return json.loads(p.read_text()), p.parent
+def read_manifest(bundle):
+    try:
+        with zipfile.ZipFile(bundle) as archive:
+            return json.loads(archive.read("manifest.json"))
+    except (OSError, KeyError, ValueError, zipfile.BadZipFile) as error:
+        raise PatchError("The AM2ARM game data is missing or damaged. Extract the complete download again.") from error
 
 
 def locate_datawin(source, expected_sha, progress, temporary_dir=None):
@@ -125,125 +114,55 @@ def locate_datawin(source, expected_sha, progress, temporary_dir=None):
         raise
 
 
-def read_zip_member(source, member):
-    source = Path(source)
-    if source.is_dir():
-        p = source / member
-        if not p.is_file():
-            raise PatchError(f"missing file in your 1.1 copy: {member}")
-        return p.read_bytes()
-    # Allow an original ZIP to wrap its member paths in a containing directory.
-    with zipfile.ZipFile(source) as z:
-        for n in z.namelist():
-            if n == member or n.endswith("/" + member):
-                return z.read(n)
-    raise PatchError(f"missing file in your 1.1 zip: {member}")
-
-
-def patch(source_zip, out_dir, progress, edition="standard", patch_root=None):
-    """Build the game archive. Returns (archive_path, sha256)."""
-    # Keep the selected edition's manifest, wrapper, and delta together for the entire operation.
-    manifest, data_dir = load_manifest(edition, patch_root)
+def build_port(source, bundle, port, progress):
+    """Write the archive gmloader-next runs. Returns its SHA-256."""
+    manifest = read_manifest(bundle)
+    droid = manifest["game.droid"]
+    bundle, port = Path(bundle), Path(port)
     xdelta = find_xdelta3()
-    wrapper = data_dir / "wrapper.bin"
-    if not wrapper.is_file():
-        raise PatchError(f"patch data missing: {wrapper}")
+    port.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=".am2arm-build-", dir=port.parent) as folder, \
+            zipfile.ZipFile(bundle) as release:
+        work = Path(folder)
+        members = [i for i in release.infolist() if i.filename.startswith(("assets/", "lib/")) and not i.is_dir()]
+        total = droid["size"] + sum(i.file_size for i in members)
+        if shutil.disk_usage(work).free < droid["size"] * 2 + total + 64 * 1024 * 1024:
+            raise PatchError("More free space is needed on the game card.")
 
-    out_dir = Path(out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    datawin = locate_datawin(source_zip, manifest["datawin_sha256"], progress, out_dir)
-    game_data_tmp = None
-    try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".game_data", dir=out_dir) as temporary_game_data:
-            game_data_tmp = Path(temporary_game_data.name)
+        # Rebuild game data in temporary storage and check it before using it.
+        datawin = locate_datawin(source, manifest["datawin_sha256"], progress, work)
         progress(0, 1, "Rebuilding game data from your copy…")
-        # Rebuild game data in temporary storage and check its hash before assembling the game archive.
-        r = subprocess.run(
-            [xdelta, "-d", "-f", "-s", str(datawin), str(data_dir / manifest["game_data"]["xdelta"]), str(game_data_tmp)],
-            capture_output=True, text=True)
+        with release.open("game.xdelta") as delta, (work / "game.xdelta").open("wb") as out:
+            shutil.copyfileobj(delta, out, 1 << 20)
+        rebuilt = work / "game.droid"
+        r = subprocess.run([xdelta, "-d", "-f", "-s", str(datawin), str(work / "game.xdelta"), str(rebuilt)],
+                           capture_output=True, text=True)
         if r.returncode != 0:
             raise PatchError(f"xdelta3 failed:\n{r.stderr.strip()}")
-        if sha256_file(game_data_tmp) != manifest["game_data"]["sha256"]:
+        if rebuilt.stat().st_size != droid["size"] or sha256_file(rebuilt) != droid["sha256"]:
             raise PatchError("Rebuilt game data failed verification (corrupt download?).")
+        datawin.unlink()
 
-        name = manifest["archive_name"]
-        if Path(name).name != name or not name.endswith(".zip"):
-            raise PatchError("Invalid output filename in patch data.")
-        archive_path = out_dir / name
-        total = manifest["final_size"]
         done = 0
-        final = hashlib.sha256()
-
-        # Assemble beside the destination under a temporary name until the full output passes verification.
-        temporary = tempfile.NamedTemporaryFile(prefix=".patch-", suffix=".tmp", dir=out_dir, delete=False)
-        pending = Path(temporary.name)
-        try:
-            with temporary as out, open(wrapper, "rb") as w, open(game_data_tmp, "rb") as d:
-                assemble(manifest, source_zip, out, w, d, final, progress)
-            digest = final.hexdigest()
-            done = pending.stat().st_size
-            if done != total or digest != manifest["final_sha256"]:
-                raise PatchError("Final game archive failed verification — patching aborted, nothing was kept.")
-            # Keep an existing matching game archive, but refuse to replace a different file with the same output name.
-            if archive_path.exists():
-                if sha256_file(archive_path) != digest:
-                    raise PatchError("A different file already uses the output name. Choose another output folder.")
-            else:
-                os.replace(pending, archive_path)
-        # Remove the temporary game archive after either a successful move or a failed verification.
-        finally:
-            pending.unlink(missing_ok=True)
-        progress(total, total, "Done")
-        return archive_path, digest
-    # Release the verified source copy and rebuilt game data when this operation ends.
-    finally:
-        datawin.unlink(missing_ok=True)
-        if game_data_tmp is not None:
-            game_data_tmp.unlink(missing_ok=True)
-
-
-def assemble(manifest, source_zip, out, w, d, final, progress):
-    total = manifest["final_size"]
-    done = 0
-    # Reconstruct the original game archive byte order from wrapper ranges, rebuilt game data, and source ZIP members.
-    for seg in manifest["segments"]:
-        if seg["source"] == "wrapper":
-            w.seek(seg["offset"])
-            remaining = seg["length"]
-            seg_h = hashlib.sha256()
-            while remaining:
-                chunk = w.read(min(1 << 20, remaining))
-                if not chunk:
-                    raise PatchError("wrapper.bin truncated (corrupt download?)")
-                seg_h.update(chunk)
-                final.update(chunk)
-                out.write(chunk)
-                remaining -= len(chunk)
-                done += len(chunk)
-                progress(done, total, "Building SD files…")
-            # Check each wrapper range as well as the complete game archive hash checked by the caller.
-            if seg_h.hexdigest() != seg["sha256"]:
-                raise PatchError("wrapper.bin failed verification (corrupt download?)")
-        elif seg["source"] == "game_data":
-            d.seek(0)
-            while True:
-                chunk = d.read(1 << 20)
-                if not chunk:
-                    break
-                final.update(chunk)
-                out.write(chunk)
-                done += len(chunk)
-                progress(done, total, "Building SD files…")
-        # Verify each original member before adding it to the temporary output.
-        elif seg["source"] == "zip":
-            chunk = read_zip_member(source_zip, seg["path"])
-            if hashlib.sha256(chunk).hexdigest() != seg["sha256"]:
-                raise PatchError(f"file from your 1.1 copy failed verification: {seg['path']}")
-            final.update(chunk)
-            out.write(chunk)
-            done += len(chunk)
-            progress(done, total, "Building SD files…")
-        else:
-            raise PatchError(f"unknown segment source {seg['source']!r}")
-
-
+        pending = work / "port"
+        # Level 1 keeps this quick on handhelds.
+        with zipfile.ZipFile(pending, "w", zipfile.ZIP_DEFLATED, compresslevel=1) as out:
+            def add(member, stream):
+                nonlocal done
+                with out.open(member, "w") as target:
+                    while chunk := stream.read(1 << 20):
+                        target.write(chunk)
+                        done += len(chunk)
+                        progress(done, total, "Building the game…")
+            for member in members:
+                with release.open(member) as stream:
+                    add(member.filename, stream)
+            # gmloader-next can only map game.droid when it's stored uncompressed.
+            with rebuilt.open("rb") as stream:
+                add(zipfile.ZipInfo("assets/game.droid"), stream)
+        digest = sha256_file(pending)
+        with pending.open("rb+") as written:
+            os.fsync(written.fileno())
+        os.replace(pending, port)
+    progress(total, total, "Done")
+    return digest

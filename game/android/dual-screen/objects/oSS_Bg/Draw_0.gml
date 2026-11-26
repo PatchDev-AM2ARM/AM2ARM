@@ -1,5 +1,5 @@
 // Start the dual-screen pause page on black; its upper frozen gameplay image is composed separately.
-if (oControl.thor_enabled) {
+if (oControl.dual_enabled) {
     draw_set_color(c_black);
     draw_set_alpha(1);
     draw_rectangle(__view_get(e__VW.XView, 0), __view_get(e__VW.YView, 0),

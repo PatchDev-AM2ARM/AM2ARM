@@ -24,4 +24,4 @@ SOFTWARE.
 This license covers the patcher code and new integration code only. Game source
 retains the notices in each game project. Original game assets, generated patch
 payloads, and third-party libraries are not relicensed by this notice. See the
-individual source and runtime license files, including xdelta3, gl4es and Xwayland.
+individual source and runtime license files, including xdelta3, gmloader-next and Xwayland.

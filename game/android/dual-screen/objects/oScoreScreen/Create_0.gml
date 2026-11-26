@@ -63,6 +63,6 @@ if (global.difficulty == 0) unlock_set(0);
 if (global.difficulty == 1) unlock_set(1);
 if (global.difficulty > 1) unlock_set(2);
 
-widespace = oControl.widescreen*53;
+widespace = oControl.widescreen_space/2;
 //transitiontime = 1000;
 

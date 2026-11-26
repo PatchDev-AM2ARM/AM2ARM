@@ -56,7 +56,7 @@ if (active) {
             if (global.curropt == num_MSRfusion) oControl.msr_fusionsuit = !oControl.msr_fusionsuit;
         }
         //if (global.curropt == num_exmonsters) oControl.mod_monstersextremecheck = !oControl.mod_monstersextremecheck;
-        if (global.curropt == num_IGT && !oControl.thor_enabled) oControl.mod_IGT = !oControl.mod_IGT;
+        if (global.curropt == num_IGT && !oControl.dual_enabled) oControl.mod_IGT = !oControl.mod_IGT;
         
         sfx_play(sndMenuMove);
         event_user(2);

@@ -108,9 +108,9 @@ if (os_type == os_android) os_powersave_enable(false);
 /*  */
 
 // Menu previews retain their original skippable clock. The ending follows its music.
-thor_music_clock = oControl.thor_enabled && global.creditsmenuopt == 0 && oControl.thor_credits_voice >= 0;
-thor_last_clock_ms = current_time;
-if (thor_music_clock) {
+dual_music_clock = oControl.dual_enabled && global.creditsmenuopt == 0 && oControl.dual_credits_voice >= 0;
+dual_last_clock_ms = current_time;
+if (dual_music_clock) {
     alarm[0] = -1;
     alarm[1] = -1;
 }

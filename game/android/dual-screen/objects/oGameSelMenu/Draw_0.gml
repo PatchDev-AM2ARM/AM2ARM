@@ -4,7 +4,7 @@ if (active && global.am2r_sync.busy) {
     exit;
 }
 
-if (oControl.thor_enabled) exit; // Keep the title artwork clear of a navigation footer.
+if (oControl.dual_enabled) exit; // Keep the title artwork clear of a navigation footer.
 
 
 // Use the menu's active state to choose between the file-selection prompt and the submenu prompts.

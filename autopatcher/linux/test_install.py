@@ -1,102 +1,132 @@
 import hashlib
+import json
 from pathlib import Path
-import stat
+import shutil
 import subprocess
 import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 import zipfile
 
-from linux_patcher import install_archive, PatchError
+import patch_core
+from patch_core import PatchError, build_port
 
-class InstallTests(unittest.TestCase):
+ORIGINAL = b'original game data' * 64
+REBUILT = b'rebuilt game data' * 96
+
+
+def sha256(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def release_at(path, version='1.6.4', rebuilt=REBUILT, delta=b'delta', manifest=True):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(path, 'w') as archive:
+        archive.writestr('assets/lang/english.ini', b'[Misc]\n', zipfile.ZIP_LZMA)
+        archive.writestr('lib/arm64-v8a/libyoyo.so', b'runner' * 4096, zipfile.ZIP_LZMA)
+        archive.writestr('game.xdelta', delta, zipfile.ZIP_LZMA)
+        archive.writestr('music.txt', '00000000 musTitle.ogg\n')
+        if manifest:
+            archive.writestr('manifest.json', json.dumps({
+                'version': version, 'datawin_sha256': sha256(ORIGINAL),
+                'game.droid': {'size': len(rebuilt), 'sha256': sha256(rebuilt)}}))
+    return path
+
+
+def original_at(path, data=ORIGINAL):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(path, 'w') as archive:
+        archive.writestr('AM2R 1.1/AM2R.exe', b'executable')
+        archive.writestr('AM2R 1.1/data.win', data)
+    return path
+
+
+class BuildPortTests(unittest.TestCase):
     def setUp(self):
-        self.work = tempfile.TemporaryDirectory()
-        self.addCleanup(self.work.cleanup)
-        self.root = Path(self.work.name)
+        work = tempfile.TemporaryDirectory()
+        self.addCleanup(work.cleanup)
+        self.root = Path(work.name)
+        self.release = release_at(self.root/'launcher/am2arm.zip')
+        self.original = original_at(self.root/'AM2R_11.zip')
+        self.port = self.root/'sd card/AM2ARM-data/am2arm.port'
 
-    def archive(self, members):
-        archive = self.root / 'game.zip'
-        with zipfile.ZipFile(archive, 'w') as z:
-            for name, body in members:
-                z.writestr(name, body)
-        return archive
+    def build(self, output=REBUILT, progress=lambda *_: None):
+        def decode(command, **kwargs):
+            # Nothing this size belongs in a handheld's /tmp.
+            for name in (command[4], command[5], command[6]):
+                self.assertTrue(Path(name).is_relative_to(self.port.parent))
+            self.assertEqual(Path(command[4]).read_bytes(), ORIGINAL)
+            Path(command[-1]).write_bytes(output)
+            return SimpleNamespace(returncode=0, stderr='')
+        with patch.object(patch_core, 'find_xdelta3', return_value='xdelta3'), \
+                patch.object(patch_core.subprocess, 'run', side_effect=decode):
+            return build_port(self.original, self.release, self.port, progress)
 
-    def test_valid_folder_and_executable(self):
-        archive = self.archive([('launch.sh', b'#!/bin/sh\n'), ('data/game.unx', b'game')])
-        destination = self.root / 'AM2R'
-        install_archive(archive, destination)
-        self.assertEqual((destination / 'data/game.unx').read_bytes(), b'game')
-        self.assertTrue((destination / 'launch.sh').stat().st_mode & stat.S_IXUSR)
+    def test_port_holds_the_release_and_the_rebuilt_game_and_nothing_else_is_left(self):
+        digest = self.build()
+        self.assertEqual(digest, sha256(self.port.read_bytes()))
+        self.assertEqual(list(self.port.parent.iterdir()), [self.port])
+        with zipfile.ZipFile(self.port) as archive:
+            self.assertEqual(sorted(archive.namelist()), [
+                'assets/game.droid', 'assets/lang/english.ini', 'lib/arm64-v8a/libyoyo.so'])
+            self.assertEqual(archive.read('assets/game.droid'), REBUILT)
+            # gmloader-next maps it from the archive.
+            self.assertEqual(archive.getinfo('assets/game.droid').compress_type, zipfile.ZIP_STORED)
+            self.assertEqual(archive.getinfo('lib/arm64-v8a/libyoyo.so').compress_type, zipfile.ZIP_DEFLATED)
 
-    def test_ports_entry_launches_after_copying_to_a_different_path(self):
-        archive = self.archive([('launch.sh', b'#!/bin/sh\nprintf "%s\\n" "$@"\n')])
-        ports = self.root / 'Ports'
-        install_archive(archive, ports / "AM2R Test's Game")
-        launcher = ports / "AM2R Test's Game.sh"
-        self.assertTrue(launcher.is_file(), 'Ports only lists top-level shell files')
-        self.assertTrue(launcher.stat().st_mode & stat.S_IXUSR)
-        moved = ports.rename(self.root / 'Another SD card')
-        result = subprocess.run([str(moved / launcher.name), 'argument with spaces'],
-                                cwd=self.root, capture_output=True, text=True, check=True)
-        self.assertEqual(result.stdout, 'argument with spaces\n')
+    def test_same_inputs_make_the_same_port(self):
+        first = self.build()
+        self.port.unlink()
+        self.assertEqual(self.build(), first)
 
-    def test_existing_menu_entry_is_preserved_before_installing(self):
-        archive = self.archive([('launch.sh', b'#!/bin/sh\n')])
-        launcher = self.root / 'AM2R.sh'
-        launcher.write_bytes(b'keep this launcher')
-        with self.assertRaises(PatchError):
-            install_archive(archive, self.root / 'AM2R')
-        self.assertEqual(launcher.read_bytes(), b'keep this launcher')
-        self.assertFalse((self.root / 'AM2R').exists())
+    def test_failed_update_keeps_the_game_that_was_there(self):
+        self.build()
+        installed = self.port.read_bytes()
+        with self.assertRaisesRegex(PatchError, 'verification'):
+            self.build(output=b'wrong result')
+        self.assertEqual(self.port.read_bytes(), installed)
+        self.assertEqual(list(self.port.parent.iterdir()), [self.port])
 
-    def test_dangling_menu_symlink_is_preserved(self):
-        archive = self.archive([('launch.sh', b'#!/bin/sh\n')])
-        launcher = self.root / 'AM2R.sh'
-        launcher.symlink_to('missing-launcher')
-        with self.assertRaises(PatchError):
-            install_archive(archive, self.root / 'AM2R')
-        self.assertTrue(launcher.is_symlink())
-        self.assertFalse((self.root / 'AM2R').exists())
+    def test_wrong_original_is_refused_before_decoding(self):
+        original_at(self.original, b'modded game')
+        with self.assertRaisesRegex(PatchError, 'not AM2R 1.1'):
+            self.build()
+        self.assertFalse(self.port.exists())
 
-    def test_existing_output_is_untouched(self):
-        destination = self.root / 'AM2R'
-        destination.mkdir()
-        (destination / 'save1').write_bytes(b'keep')
-        archive = self.archive([('launch.sh', b'new')])
-        with self.assertRaises(PatchError):
-            install_archive(archive, destination)
-        self.assertEqual(list(destination.iterdir()), [destination / 'save1'])
+    def test_damaged_download_is_reported(self):
+        release_at(self.release, manifest=False)
+        with self.assertRaisesRegex(PatchError, 'damaged'):
+            self.build()
+        self.release.write_bytes(b'not a zip')
+        with self.assertRaisesRegex(PatchError, 'damaged'):
+            self.build()
 
-    def test_unsafe_names_leave_no_folder(self):
-        for name in ['../outside', '/outside', 'data/../../outside', 'C:/outside',
-                     'data\\outside', 'data/./outside', 'data//outside']:
-            with self.subTest(name=name):
-                archive = self.archive([('launch.sh', b'ok'), (name, b'bad')])
-                destination = self.root / 'AM2R'
-                with self.assertRaises(PatchError):
-                    install_archive(archive, destination)
-                self.assertFalse(destination.exists())
+    def test_full_card_is_reported_before_writing(self):
+        usage = SimpleNamespace(total=0, used=0, free=1024)
+        with patch.object(patch_core.shutil, 'disk_usage', return_value=usage), \
+                self.assertRaisesRegex(PatchError, 'free space'):
+            self.build()
+        self.assertEqual(list(self.port.parent.iterdir()), [])
 
-    def test_duplicate_paths_rejected(self):
-        archive = self.archive([('launch.sh', b'a'), ('launch.sh', b'b')])
-        with self.assertRaises(PatchError):
-            install_archive(archive, self.root / 'AM2R')
+    def test_progress_reaches_the_end(self):
+        steps = []
+        self.build(progress=lambda done, total, text: steps.append((done, total, text)))
+        self.assertEqual(steps[-1][0], steps[-1][1])
+        written = [done for done, total, text in steps if total > 1]
+        self.assertEqual(written, sorted(written))
 
-    def test_symlink_member_rejected(self):
-        info = zipfile.ZipInfo('link')
-        info.create_system = 3
-        info.external_attr = (stat.S_IFLNK | 0o777) << 16
-        archive = self.archive([(info, b'../../outside')])
-        with self.assertRaises(PatchError):
-            install_archive(archive, self.root / 'AM2R')
+    @unittest.skipUnless(shutil.which('xdelta3'), 'needs xdelta3')
+    def test_real_delta(self):
+        source, target, delta = (self.root/name for name in ('data.win', 'game.droid', 'game.xdelta'))
+        source.write_bytes(ORIGINAL)
+        target.write_bytes(REBUILT)
+        subprocess.run(['xdelta3', '-e', '-9', '-S', 'none', '-f', '-s', str(source), str(target), str(delta)], check=True)
+        release_at(self.release, delta=delta.read_bytes())
+        build_port(self.original, self.release, self.port, lambda *_: None)
+        with zipfile.ZipFile(self.port) as archive:
+            self.assertEqual(archive.read('assets/game.droid'), REBUILT)
 
-    def test_conflicting_paths_are_atomic(self):
-        archive = self.archive([('data', b'file'), ('data/game.unx', b'child')])
-        destination = self.root / 'AM2R'
-        with self.assertRaises(PatchError):
-            install_archive(archive, destination)
-        self.assertFalse(destination.exists())
-        self.assertFalse((self.root / 'AM2R.sh').exists())
 
 if __name__ == '__main__':
     unittest.main()

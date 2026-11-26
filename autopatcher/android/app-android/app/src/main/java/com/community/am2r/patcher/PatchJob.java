@@ -16,10 +16,9 @@ import java.security.MessageDigest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-/** A patch operation owns its edition, temporary files and verified output. */
+/** A patch operation owns its temporary files and verified output. */
 final class PatchJob extends ContextWrapper implements Runnable {
     interface Listener { void onPatchUpdate(PatchJob job); }
-    final String edition;
     final Uri source;
     volatile boolean running = true;
     volatile int progress = -1;
@@ -29,10 +28,9 @@ final class PatchJob extends ContextWrapper implements Runnable {
     private final Handler main = new Handler(Looper.getMainLooper());
     private WeakReference<Listener> listener = new WeakReference<>(null);
     private long lastReport;
-    PatchJob(Context context, String edition, Uri source) {
+    PatchJob(Context context, Uri source) {
         super(context.getApplicationContext());
-        if (!edition.equals("standard") && !edition.equals("dual")) throw new IllegalArgumentException("Unknown edition");
-        this.edition = edition; this.source = source;
+        this.source = source;
     }
     // A replacement activity can observe the same operation without keeping the old activity alive.
     void attach(Listener target) { listener = new WeakReference<>(target); notifyListener(); }
@@ -75,9 +73,9 @@ final class PatchJob extends ContextWrapper implements Runnable {
     }
 
     private void runPatch(Uri zipUri) throws Exception {
-        // Read the selected edition's manifest for its source hash, rebuilt game data, and final APK checks.
+        // Read the manifest for its source hash, rebuilt game data, and final APK checks.
         JSONObject manifest;
-        try (InputStream in = getAssets().open(edition + "/assembly.json")) {
+        try (InputStream in = getAssets().open("assembly.json")) {
             byte[] all = readAll(in);
             manifest = new JSONObject(new String(all, "UTF-8"));
         }
@@ -127,7 +125,7 @@ final class PatchJob extends ContextWrapper implements Runnable {
 
             // 2. Rebuild game data with xdelta3.
             progress(0, 1, "Rebuilding game data from your copy…");
-            copyAsset(edition + "/" + droidInfo.getString("xdelta"), deltaFile);
+            copyAsset(droidInfo.getString("xdelta"), deltaFile);
             int r = Xd3.decode(dataWin.getAbsolutePath(), deltaFile.getAbsolutePath(),
                     droidFile.getAbsolutePath(), droidInfo.getLong("size"));
             if (r != 0) throw new PatchException("game data rebuild failed (code " + r + ")");
@@ -152,7 +150,7 @@ final class PatchJob extends ContextWrapper implements Runnable {
                 long done = 0;
                 JSONArray segs = manifest.getJSONArray("segments");
                 try (OutputStream out = getContentResolver().openOutputStream(item);
-                     InputStream wrapper = getAssets().open(edition + "/wrapper.bin", android.content.res.AssetManager.ACCESS_STREAMING)) {
+                     InputStream wrapper = getAssets().open("wrapper.bin", android.content.res.AssetManager.ACCESS_STREAMING)) {
                     long wrapperPos = 0;
                     byte[] buf = new byte[1 << 20];
                     for (int i = 0; i < segs.length(); i++) {
@@ -209,8 +207,7 @@ final class PatchJob extends ContextWrapper implements Runnable {
                 ok = true;
                 outputUri = item;
                 progress = 1000;
-                message = "Ready to install " + (edition.equals("dual") ? "Dual Screen" : "Standard")
-                        + ".\nVerified APK saved in Downloads.";
+                message = "Ready to install.\nVerified APK saved in Downloads.";
             } finally {
                 // Attempt to remove this operation's pending Downloads entry if assembly or verification failed.
                 if (!ok) getContentResolver().delete(item, null, null);

@@ -18,7 +18,7 @@
   "exportToGame":true,
   "extensionVersion":"1.0.0",
   "files":[
-    {"$GMExtensionFile":"v1","%Name":"AM2RHaptics.ext","constants":[],"copyToTargets":-1,"filename":"AM2RHaptics.ext","final":"","functions":[
+    {"$GMExtensionFile":"v1","%Name":"AM2RHaptics.ext","constants":[],"copyToTargets":-1,"filename":"AM2RHaptics.ext","final":"","functions":[{"$GMExtensionFunction": "", "%Name": "Android_Orientation", "argCount": 1, "args": [2], "documentation": "Select landscape, portrait, or automatic orientation.", "externalName": "Android_Orientation", "help": "Android_Orientation(mode)", "hidden": false, "kind": 11, "name": "Android_Orientation", "resourceType": "GMExtensionFunction", "resourceVersion": "2.0", "returnType": 2},
         {"$GMExtensionFunction":"","%Name":"AM2RHaptics_Play","argCount":1,"args":[2,],"documentation":"Play an Immersion UHL effect id, approximated with Vibrator waveforms","externalName":"AM2RHaptics_Play","help":"AM2RHaptics_Play(effect_id)","hidden":false,"kind":11,"name":"AM2RHaptics_Play","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"AM2RHaptics_Stop","argCount":0,"args":[],"documentation":"Cancel any active vibration","externalName":"AM2RHaptics_Stop","help":"AM2RHaptics_Stop()","hidden":false,"kind":11,"name":"AM2RHaptics_Stop","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
       ],"init":"","kind":4,"name":"AM2RHaptics.ext","origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},

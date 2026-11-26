@@ -3,21 +3,17 @@ if (instance_exists(oCharacter)) {
     oCharacter.y = -100;
 }
 
-// widescreen toggle on transition load
-if ((global.widescreen_enabled != oControl.widescreen) && (oControl.widescreen_switch == true)) {
-    with (oControl) {
-        widescreen = global.widescreen_enabled;
-        if (widescreen) {
-            widescreen_space = 106;
-        }
-        if (global.opfullscreen == 0) {
-            set_window_scale(window_get_height()/240);
-            window_set_position(window_get_x()+((53-(global.widescreen_enabled*106))*(window_get_height()/240)),window_get_y());
-        }
+// Apply a deferred ratio before destination instances cache their view width.
+if (global.opaspectratio != oControl.aspect_ratio && oControl.widescreen_switch) {
+    var _old_width = 320 + oControl.widescreen_space;
+    with (oControl) standard_aspect_apply(global.opaspectratio);
+    if (os_type != os_android && global.opfullscreen == 0) {
+        var _scale = window_get_height() / 240;
+        set_window_scale(_scale);
+        window_set_position(window_get_x() + (_old_width - standard_aspect_width(global.opaspectratio)) * _scale / 2, window_get_y());
     }
-    oControl.widescreen_switch = false;
-    //view_visible[2] = false;
 }
+oControl.widescreen_switch = false;
 
 room_goto(global.targetroom);
 

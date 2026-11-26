@@ -2,11 +2,11 @@ if (joystick_exists(global.opjoyid)) {
     global.joydetected = 1;
 } else global.joydetected = 0;
 init = 0;
-// Hold the startup room change until hardware setup has saved a valid profile.
-if (thor_setup_needed) exit;
+// Hold the startup room change until screen setup has saved a choice.
+if (dual_setup_needed) exit;
 //touch_scale = 4;
 // Create the single-screen touch overlay only when the dedicated lower-screen controls are disabled.
-if (os_type == os_android && !thor_enabled) instance_create(0, 0, oTouchControls);
+if (os_type == os_android && !dual_enabled) instance_create(0, 0, oTouchControls);
 //instance_create(0, 0, oTouchControls);
 if (1) {
     room_change(19, 0);

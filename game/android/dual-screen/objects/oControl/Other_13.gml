@@ -13,7 +13,8 @@ if(widescreen) {
 }
     
 surface_reset_target();
-if (os_is_native) {
+// Only the Android app loses its surfaces in the background.
+if (os_is_native && global.android_app) {
     // GM2026 fix: the surface_save -> PNG -> sprite_add round-trip loads garbage on this Android
     // runtime, washing the resumed pause screen bright (probe-verified: surface existed, content
     // was a uniform bright wash instead of the frozen frame). Save raw pixels instead:

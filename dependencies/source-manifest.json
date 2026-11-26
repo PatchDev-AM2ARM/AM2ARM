@@ -1215,10 +1215,6 @@
     }
   ],
   "native_integration": {
-    "gl4es_revision": "bc4314d8369f169d3fa81c5ed1b46b3dba4e74a5",
-    "gl4es_source": "native/linux/gl4es",
-    "changes": "native/linux/display/gl4es-wayland.patch",
-    "display_source": "native/linux/display/linux-display.c",
     "xwayland_version": "22.1.9",
     "xwayland_source_url": "https://www.x.org/releases/individual/xserver/xwayland-22.1.9.tar.xz"
   }

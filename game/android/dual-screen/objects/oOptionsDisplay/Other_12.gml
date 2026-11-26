@@ -38,15 +38,23 @@ if (global.sensitivitymode) {
 
 op[opNano].optext = get_text("GlobalOptions", global.nano_enabled ? "Enabled" : "Disabled");
 
-// Widescreen
-if (global.widescreen_enabled) {
-    op[opWidescreen].optext = port_caption("Widescreen");
-} else {
-    op[opWidescreen].optext = "4:3";
+// Aspect ratio
+switch (global.opaspectratio) {
+    case 0: op[opWidescreen].optext = "4:3"; break;
+    case 1: op[opWidescreen].optext = "16:9"; break;
+    case 2: op[opWidescreen].optext = "3:2"; break;
 }
 
-// Show the chosen screen without changing the map or counter settings.
-op[opShowHUD].optext = oControl.thor_hud_top ? port_caption("Top Screen") : port_caption("Lower Screen");
+if (opOrientation >= 0) {
+    var _keys = ["Orientation_Landscape", "Orientation_Portrait", "Orientation_Automatic"];
+    var _labels = ["Landscape", "Portrait", "Automatic"];
+    op[opOrientation].optext = android_orientation_text(_keys[global.oporientation], _labels[global.oporientation]);
+}
+
+// Show HUD
+if (global.opshowhud) {
+    op[opShowHUD].optext = get_text("GlobalOptions", "Enabled");
+} else op[opShowHUD].optext = get_text("GlobalOptions", "Disabled");
 
 // Show Map
 if (global.ophudshowmap) {
@@ -97,22 +105,20 @@ if (global.ophudshowlogmsg) {
 // Language
 op[opLanguage].optext = lang[global.currentlanguage];
 
+op[opDualScreen].optext = get_text("GlobalOptions", oControl.dual_enabled ? "Enabled" : "Disabled");
+op[opDualScreen].enabled = canEdit[opDualScreen];
+if (opSwapScreens >= 0) op[opSwapScreens].optext = get_text("GlobalOptions", oControl.dual_swap_screens ? "Enabled" : "Disabled");
+
 // The map and Metroid counts always stay on the lower display.
-op[opShowMap].optext = port_caption("Lower Screen");
-op[opCounterStyle].optext = port_caption("Global + Local");
-op[opShowHUD].enabled = 1;
-op[opShowMap].enabled = 0;
-op[opCounterStyle].enabled = 0;
+if (oControl.dual_enabled) {
+    // Show the chosen screen without changing the map or counter settings.
+    op[opShowHUD].optext = oControl.dual_hud_top ? port_caption("Top Screen") : port_caption("Lower Screen");
+    op[opShowMap].optext = port_caption("Lower Screen");
+    op[opCounterStyle].optext = port_caption("Global + Local");
+    op[opShowMap].enabled = 0;
+    op[opCounterStyle].enabled = 0;
+}
 
-// Show the active hardware name and reflect whether that profile permits an upper aspect change.
-op[opDeviceProfile].optext = oControl.thor_profiles[oControl.thor_profile].name;
-canEdit[opSwapScreens] = oControl.thor_enabled && thor_swap_supported(oControl.thor_profile);
-op[opSwapScreens].enabled = canEdit[opSwapScreens];
-op[opSwapScreens].label = port_caption(oControl.thor_profile == 2 ? "Dual Screen Add-on" : "Swap Screens");
-tip[opSwapScreens] = port_caption(oControl.thor_profile == 2 ? "Send gameplay to the USB screen and the map to this device." : "Swap the gameplay and map screens on RG DS.");
-op[opSwapScreens].optext = canEdit[opSwapScreens]
-    ? get_text("GlobalOptions", oControl.thor_swap_screens ? "Enabled" : "Disabled") : port_caption("RG DS / Retroid");
-
-canEdit[opWidescreen] = !oControl.thor_aspect_locked;
+canEdit[opWidescreen] = !oControl.dual_aspect_locked;
 op[opWidescreen].enabled = canEdit[opWidescreen];
 if (!canEdit[opWidescreen]) op[opWidescreen].optext = port_caption("4:3 (Fixed)");

@@ -1,9 +1,9 @@
-if (oControl.thor_enabled) {
+if (oControl.dual_enabled) {
     // One clock drives both the upper tint and the lower controls.
     // Give the stronger dimming of an already-selected palette a gentler transition.
     var _duration = oControl.palette_number > 0 ? 300 : 180;
-    var _progress = clamp((current_time - thor_fade_started) / _duration, 0, 1);
-    ealpha = lerp(thor_fade_from, fadeout ? 0 : 1, _progress);
+    var _progress = clamp((current_time - dual_fade_started) / _duration, 0, 1);
+    ealpha = lerp(dual_fade_from, fadeout ? 0 : 1, _progress);
     rectoffset = round(32 * (1 - ealpha));
     fadein = !fadeout && _progress < 1;
 } else {

@@ -102,10 +102,9 @@ def check(apk, build_tools, previous=None, metadata=None):
     if not libraries: problems.append('No ARM64 native libraries found')
     if metadata is None:
         metadata = Path(__file__).parent / 'game-metadata/game.json'
-    if package[1] in ('com.community.am2r', 'com.community.am2rdual'):
-        identities = json.loads(Path(metadata).read_text())['editions'].values()
-        expected = next((entry for entry in identities if entry['package_name'] == package[1]), None)
-        if expected is None or int(package[2]) != expected['version_code'] or package[3] != expected['version_name']:
+    if package[1] == 'com.community.am2r':
+        expected = json.loads(Path(metadata).read_text())['application']
+        if int(package[2]) != expected['version_code'] or package[3] != expected['version_name']:
             problems.append('Game version differs from the shared metadata')
     if previous:
         old_status, old_badging = run('aapt', 'dump', 'badging', previous)

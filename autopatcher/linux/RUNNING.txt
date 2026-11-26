@@ -1,14 +1,10 @@
-AM2ARM 1.6.2 Linux Autopatcher
+AM2ARM Linux Autopatcher
 
 The Linux release has one ARM64 ZIP. From the repository root, read README.md
-for installation on your particular firmware, the required card paths,
-supported editions and the published hardware verification.
+for installation on your particular firmware, the required card paths and the
+published hardware verification.
 
-The program uses the original Windows AM2R 1.1 ZIP to reconstruct the game.
-The common installer is in autopatcher/linux. The firmware entry scripts and
-display/input adapters are in native/unified. The native Wayland game launcher
-and game extensions are in native/linux. The TrimUI vibration bridge source
-is in native/trimui. See docs/README.md to restore source inputs.
-
-For an update, export your saves, preserve the existing game folder and follow
-the update instructions for that device in the main README.
+The program uses the original Windows AM2R 1.1 ZIP to build the game's archive.
+The installer is in autopatcher/linux. The firmware entry scripts and the game
+launcher are in native/unified, and gmloader-next in native/gmloader. See
+docs/README.md to restore source inputs.

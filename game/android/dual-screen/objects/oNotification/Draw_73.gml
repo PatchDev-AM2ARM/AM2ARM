@@ -7,7 +7,7 @@
 // (the widescreen canvas view 1 when widescreen is on, view 0 otherwise) so the popup
 // isn't painted twice at offset positions.
 // Hide notifications while the reactor explosion covers the screens.
-if (oControl.thor_enabled && (instance_exists(oA4EscapeExplosion) || instance_exists(oA4EscapeExplosionFail))) exit;
+if (oControl.dual_enabled && (instance_exists(oA4EscapeExplosion) || instance_exists(oA4EscapeExplosionFail))) exit;
 
 if (oControl.widescreen) {
     if (view_current != 1) exit;

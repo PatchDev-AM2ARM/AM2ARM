@@ -8,6 +8,11 @@ draw_set_alpha(0.8);
 draw_set_color(c_green);
 draw_rectangle(x + textoffset, y, x + textoffset + slwidth, y + 7, false);
 draw_set_alpha(1);
+if (show_handle) {
+    draw_set_color(c_white);
+    var _handle = x + textoffset + clamp(slwidth, 0, w);
+    draw_rectangle(_handle - 1, y - 2, _handle + 1, y + 9, false);
+}
 draw_set_color(c_black);
 
 draw_set_color(c_white);

@@ -34,8 +34,11 @@ opVSync = i++;
 opSensitivity = i++;
 opNano = i++;
 opWidescreen = i++;
-opDeviceProfile = i++;
-opSwapScreens = i++;
+opOrientation = -1;
+opSwapScreens = -1;
+if (global.android_app && !oControl.dual_enabled) opOrientation = i++;
+opDualScreen = i++;
+if (oControl.dual_enabled) opSwapScreens = i++;
 // HUD
 opShowHUD = i++;
 opShowMap = i++;
@@ -59,12 +62,14 @@ repeat (menuSize + 1) {
     canEdit[i] = 1;
     i++;
 }
-// A hardware profile with a fixed upper aspect removes that row from editable menu navigation.
-canEdit[opWidescreen] = !oControl.thor_aspect_locked;
-canEdit[opSwapScreens] = oControl.thor_enabled && thor_swap_supported(oControl.thor_profile);
-// Health and ammunition can move above; the map and counters remain below.
-canEdit[opShowMap] = 0;
-canEdit[opCounterStyle] = 0;
+// A 4:3 main screen removes the aspect row from editable menu navigation.
+canEdit[opWidescreen] = !oControl.dual_aspect_locked;
+// A second screen can be connected while the game runs.
+if (!oControl.dual_enabled) oControl.dual_available = DualScreen_Available() == 1;
+canEdit[opDualScreen] = oControl.dual_available;
+// With two screens, health and ammunition can move above; the map and counters remain below.
+canEdit[opShowMap] = !oControl.dual_enabled;
+canEdit[opCounterStyle] = !oControl.dual_enabled;
 
 // Get lang info
 langCount = array_length_1d(global.language);

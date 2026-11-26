@@ -1,5 +1,5 @@
-if(!oControl.mod_IGT) instance_destroy();
-if (surface_exists(igt_surface) && (surface_get_width(igt_surface) < (320 + oControl.widescreen_space))) { // widescreen fix
+if(!oControl.mod_IGT || oControl.dual_enabled) instance_destroy();
+if (surface_exists(igt_surface) && (surface_get_width(igt_surface) != (320 + oControl.widescreen_space))) { // widescreen fix
     surface_free(igt_surface);
 }
 if (!surface_exists(igt_surface)) igt_surface = surface_create(320 + oControl.widescreen_space, 240);

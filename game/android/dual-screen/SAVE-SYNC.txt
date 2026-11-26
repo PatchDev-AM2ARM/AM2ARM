@@ -1,13 +1,13 @@
 AM2R shared-folder save sync
 
-Available in the updated Standard and Dual Screen Android editions.
+Available on Android.
 Sync is off until you choose a folder in Options > Data > Sync Folder.
 
 Setup
 1. Choose a normal local folder that your syncing app can access.
 2. Configure Syncthing, FolderSync or another file-sync service to synchronize
    that entire folder, including subfolders, on the devices you use.
-3. In each AM2R edition, select that folder under Options > Data > Sync Folder.
+3. In AM2R, select that folder under Options > Data > Sync Folder.
 4. Let the external service finish transferring files before switching devices.
 
 AM2R exports completed progress after a game save and checks shared progress
@@ -34,7 +34,7 @@ Progress handling
 Folder contents
 Each installation maintains one am2r-sync-<random code>.zip transfer file.
 The code is randomly generated; it is not a device or account identifier.
-The ZIPs are transport files for these Android editions, not extra visible save
+The ZIPs are transport files for Android, not extra visible save
 slots. Keep them and AM2R-Sync-Recovery together in the synchronized folder.
 Do not rename or manually merge the contents of transfer ZIPs.
 

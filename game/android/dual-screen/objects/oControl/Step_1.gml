@@ -58,7 +58,7 @@ for (var i = 0; i < listSize; i++) {
 /// Widescreen space
 
 if (widescreen) {
-    widescreen_space = 106;
+    widescreen_space = standard_aspect_width(aspect_ratio) - 320;
 } else {
     widescreen_space = 0;
     //view_enabled[1] = false;

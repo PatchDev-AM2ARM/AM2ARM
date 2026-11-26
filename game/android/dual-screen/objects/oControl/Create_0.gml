@@ -1,3 +1,5 @@
+nano_render_hud_key = [];
+nano_render_map_revision = 0;
 global.nano_tile_counter = 0;
 global.nano_enabled = false;
 global.nano_serris_counter = 0;
@@ -10,12 +12,20 @@ global.bubble_view_ready = false;
 // Own bounded scratch images; active poses remain individually owned.
 effect_cache = effect_cache_create();
 
+// Keep Android frame pacing consistent.
+if (os_type == os_android) display_set_timing_method(tm_sleep);
+
 // Complete or roll back an interrupted restore before any save is loaded.
-if (os_type == os_android && SaveTransfer_Recover() != 1) {
+// gmloader-next runs this build without the app's Java code, so this returns 0 there.
+var _recovered = os_type == os_android ? SaveTransfer_Recover() : 0;
+global.android_app = is_real(_recovered) && _recovered != 0;
+if (global.android_app && _recovered != 1) {
     show_message("Save recovery could not finish. Free some storage, then reopen the game. Your recovery copies have been retained.");
     game_end();
     exit;
 }
+if (!global.android_app) save_folder_recover();
+quit_chord_since = -1;
 
 // The public CU source scrubs this to "monster"; the shipped game sets "Metroid"
 // (verified: exactly one standalone "Metroid" string in the reference binary).
@@ -23,6 +33,12 @@ if (os_type == os_android && SaveTransfer_Recover() != 1) {
 global.monsterStr = "Metroid";
 
 randomize();
+
+touch_safe_left = 0;
+touch_safe_right = 0;
+touch_safe_top = 0;
+touch_safe_bottom = 0;
+touch_layout_revision = 0;
 
 // Initialize controller-owned transition targets and the gameplay globals used before a save or new game loads.
 targetx = 48;
@@ -417,6 +433,8 @@ global.gamepadIndex = 0;
 
 // WIDESCREEN
 
+aspect_ratio = 0;
+aspect_auto = false;
 widescreen = 0;
 widescreen_surface = -1;
 widescreen_space = 0;
@@ -467,7 +485,6 @@ if (os_type == os_linux) {
     }
 }
 
-// This branch is the dedicated dual-screen variant.
-thor_init();
+dual_init();
 
 title_music_voice = -1;

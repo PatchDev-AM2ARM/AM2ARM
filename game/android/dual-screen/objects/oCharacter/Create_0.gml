@@ -1,3 +1,4 @@
+nano_render_pose = [];
 characterCreateEvent();
 
 mAnimSpd = 0;

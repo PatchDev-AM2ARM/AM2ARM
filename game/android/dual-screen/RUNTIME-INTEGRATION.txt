@@ -1,4 +1,4 @@
-Android runtime integration — 2026.100.0.1046
+Android runtime integration — LTS 2026.1.1.30
 
 Use your own licensed runtime installation. Back up its templates before
 making local changes; an engine update can replace them.
@@ -18,14 +18,16 @@ The snippet is the added port implementation; the runner source is not bundled.
 
 Android version metadata
 Apply prepare_game_metadata.py from the matching Autopatcher source to an isolated
-runtime copy. Both game packages use versionCode 1005017. The version names are
-1.6.2 for both Standard and Dual Screen. Preserve the numeric
-GameMaker version and game ID. Verify the final manifest before delivery.
+runtime copy. The game package uses versionCode 1005017 and version name 1.6.2.
+Preserve the numeric GameMaker version and game ID. Verify the final manifest
+before delivery. The script also keeps game.droid uncompressed, which the
+Autopatcher's reconstruction needs.
 
 Android extensions
 Verify the generated build includes the Java source from each extension.
 On case-sensitive filesystems the generated cache may look for a lowercase
 android directory while using Android. Check that both resolve to the same
 generated directory if extension sources are missing. Do not ship that cache.
-Exercise controller B/Back, reconnect, vibration, backup/restore, and (for the
-Dual Screen edition) secondary display creation on the compiled build.
+Exercise controller B/Back, reconnect, vibration, backup/restore and secondary
+display creation on the compiled build. Android can simulate a second display:
+Developer options > Simulate secondary displays.

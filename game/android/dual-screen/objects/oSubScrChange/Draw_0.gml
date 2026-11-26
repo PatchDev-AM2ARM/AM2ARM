@@ -1,5 +1,5 @@
 // Visible menu artwork spans native rows 51 through 190, centered at 121.
-var _menu_y = __view_get(e__VW.YView, 0) + (oControl.thor_enabled ? oControl.thor_menu_center_y - 121 : 0);
+var _menu_y = __view_get(e__VW.YView, 0) + (oControl.dual_enabled ? oControl.dual_menu_center_y - 121 : 0);
 // equips
 draw_sprite_ext(sprite_index, -1, __view_get( e__VW.XView, 0 ) + 160 + offset, _menu_y + 120, 1, 1, 0, -1, 1);
 draw_background(bg_SubScrMenuEqu, __view_get( e__VW.XView, 0 ) + 196 + offset, _menu_y + 103);

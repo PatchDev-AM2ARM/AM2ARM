@@ -23,12 +23,12 @@ if (active && oControl.kMenu2 && oControl.kMenu2PushedSteps == 0 && instance_num
     if (global.ssmode == 2) with (oLogScreenControl) active = 0;
     if (global.ssmode == 1) with (oSubscreenMenu) active = 0;
     if (global.ssmode == 0) with (oMapCursor) active = 0;
-    if (oControl.thor_enabled) sfx_play(sndMenuMove);
+    if (oControl.dual_enabled) sfx_play(sndMenuMove);
     instance_create(x, y, oSubScrChange);
 }
 // Schedule fallback map disposal during backgrounding and recreate a missing surface when needed.
 if(os_type == os_android && os_is_paused()) alarm[1] = 1;
-if (!oControl.thor_enabled && !surface_exists(s_map)) {
+if (!oControl.dual_enabled && !surface_exists(s_map)) {
     surface_free(s_map);
     s_map = surface_create(2048, 1024);
     surface_set_target(s_map);

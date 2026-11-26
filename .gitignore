@@ -27,7 +27,10 @@
 *.droid
 *.so
 *.xdelta
-/game/*/*/datafiles/
+/game/*/*/datafiles/*
+!/game/*/*/datafiles/lang/
+/game/*/*/datafiles/lang/*
+!/game/*/*/datafiles/lang/port-text.json
 /game/**/*.png
 /game/**/*.wav
 /game/**/*.ogg

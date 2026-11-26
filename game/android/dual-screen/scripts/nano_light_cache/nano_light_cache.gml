@@ -96,7 +96,7 @@ function nano_light_draw() {
     shader_set_uniform_f(nano_u_uv, _uv[0] + _tx, _uv[1] + _ty, _uv[2] - _tx, _uv[3] - _ty);
     draw_set_blend_mode(bm_subtract);
     draw_surface_part_ext(nano_surf, _vx - nano_origin_x, _vy - nano_origin_y,
-        512, 256, __view_get(e__VW.XView, 0) - 53 * _wide, __view_get(e__VW.YView, 0),
+        512, 256, __view_get(e__VW.XView, 0) - oControl.widescreen_space / 2, __view_get(e__VW.YView, 0),
         1, 1, make_color_hsv(0, 0, light_mask_opacity(image_alpha) * 255), 1);
     shader_reset();
     // Keep the warning lenses visible; their old pulse is not a dynamic mask.

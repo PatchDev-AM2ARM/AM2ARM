@@ -1,7 +1,7 @@
 # AM2ARM Android Autopatcher source
 
-Android interface and reconstruction tools for AM2ARM 1.6.2, with Standard
-and Dual Screen payloads. Installation and supported-device information are
+Android interface and reconstruction tools for AM2ARM 1.6.2. Installation
+and supported-device information are
 in the [main repository README](https://github.com/PatchDev-AM2ARM/AM2ARM).
 The [development guide](https://github.com/PatchDev-AM2ARM/AM2ARM/tree/main/docs)
 explains how to restore the game sources in this repository.
@@ -23,11 +23,11 @@ python3 restoration/restore_project.py --project autopatcher/android --zip /path
 ```
 
 The [development guide](../../docs/README.md) covers the complete restoration
-workflow. `asset-inputs.json` lists the required files and hashes. Build both
-games privately, then regenerate each edition's `patch-bundle` data using
+workflow. `asset-inputs.json` lists the required files and hashes. Build the
+game privately, then regenerate the `patch-bundle` data using
 `make_patch_data.py`.
 
-For the games, use the documented GameMaker toolchain and Android ARM64 YYC.
+For the game, use the documented GameMaker toolchain and Android ARM64 YYC.
 Apply `prepare_game_metadata.py` and `prepare_runtime_performance.py
 --runtime-copy /path/to/isolated/runtime` to an isolated runtime copy before
 compilation. The second helper preserves the shared method cache. Match
@@ -35,14 +35,28 @@ compilation. The second helper preserves the shared method cache. Match
 
 ## Reconstruction
 
-Each edition has `wrapper.bin`, `droid.xdelta` and `assembly.json`. The wrapper
+The patch data is `wrapper.bin`, `droid.xdelta` and `assembly.json`. The wrapper
 omits original-game byte ranges; the delta rebuilds the game data from the
 verified original `data.win`. The assembly plan reassembles the APK and accepts
 only the expected checksum. The result must match the exact signed game APK,
 including its signature. A complete playable APK is not distributed here.
 
+## gmloader-next
+
+Linux handhelds run the same build with gmloader-next. `make_port_data.py` packs
+it for their ports. Attach both of its files to the release.
+
+```sh
+python3 make_port_data.py /path/to/game.apk patch-bundle /path/to/output
+```
+
+`AM2ARM-gmloader-<version>.zip` is about 35 MB. `AM2ARM-music.zip` is 243 MB
+and only changes when a track does. Neither contains files from the AM2R 1.1 ZIP.
+
+## Checks
+
 Run the included tests and verify reconstruction against the matching private
-game builds. Check package identities, signing, Android compatibility and
+game build. Check package identities, signing, Android compatibility and
 permission declarations on the final APK, not just the build configuration.
 Keep original media, complete games, private paths, saves and keys out of
 public exports. LICENSE and dependency notices retain their original terms.

@@ -1,20 +1,20 @@
 // Take control of the upper composite so setup, frontend, pause, and gameplay choose their own presentation.
 application_surface_draw_enable(0);
 draw_clear(c_black);
-thor_swap_x = 0; thor_swap_y = 0;
-thor_swap_width = window_get_width(); thor_swap_height = window_get_height();
-if (room != rm_transition) thor_controller_splash = room == rm_controller;
-if (thor_draw_setup_upper()) exit;
-if (thor_enabled && (room == rm_loading || (room == rm_transition && thor_loading_transition))) {
-    thor_frontend_previous_mode = THOR_FRONTEND_GAMEPLAY;
+dual_swap_x = 0; dual_swap_y = 0;
+dual_swap_width = window_get_width(); dual_swap_height = window_get_height();
+if (room != rm_transition) dual_controller_splash = room == rm_controller;
+if (dual_draw_setup_upper()) exit;
+if (dual_enabled && (room == rm_loading || (room == rm_transition && dual_loading_transition))) {
+    dual_frontend_previous_mode = DUAL_FRONTEND_GAMEPLAY;
     exit;
 }
-if (thor_draw_frontend_upper()) exit;
-if (thor_draw_paused_upper()) exit;
+if (dual_draw_frontend_upper()) exit;
+if (dual_draw_paused_upper()) exit;
 // Use the same submission order throughout gameplay. Frontend, pause and loading
 // routes have already returned above; the per-frame guard prevents duplicate work.
-if (global.ingame && room != rm_transition) thor_draw();
-thor_swap_capture_area(displayx, displayy, (320 + widescreen_space) * display_scale, 240 * display_scale);
+if (global.ingame && room != rm_transition) dual_draw();
+dual_swap_capture_area(displayx, displayy, (320 + widescreen_space) * display_scale, 240 * display_scale);
 
 // Apply the optional palette to the gameplay composite after the special panel routes have returned.
 if (shader_on && global.shaders_compiled) set_8bit_shader();
@@ -42,9 +42,9 @@ if(widescreen) {
 shader_reset();
 
 // Keep the controller artwork sharp by drawing it after the low-resolution room surface.
-if (thor_controller_splash) {
+if (dual_controller_splash) {
     var _controller_filter = gpu_get_texfilter();
-    var _controller_alpha = thor_enabled ? 1 : clamp(fadedone, 0, 1);
+    var _controller_alpha = dual_enabled ? 1 : clamp(fadedone, 0, 1);
     if (instance_exists(oTransition)) _controller_alpha *= 1 - clamp(oTransition.fade, 0, 1);
     var _controller_scale = 128 * display_scale / sprite_get_width(sDualScreenController);
     gpu_set_texfilter(true);

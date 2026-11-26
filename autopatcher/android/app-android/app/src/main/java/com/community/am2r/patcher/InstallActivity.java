@@ -99,13 +99,12 @@ public final class InstallActivity extends Activity {
 
     private void begin() {
         if (work != null) return;
-        String edition = getIntent().getStringExtra("edition");
         Uri uri = getIntent().getData();
-        if (uri == null || !("standard".equals(edition) || "dual".equals(edition))) {
-            complete("Choose an edition and patch your original ZIP first."); return;
+        if (uri == null) {
+            complete("Patch your original ZIP first."); return;
         }
         finished = false; report = "Preparing installation…"; show();
-        work = new Work(this, uri, edition); new Thread(work, "install-game").start();
+        work = new Work(this, uri); new Thread(work, "install-game").start();
     }
 
     @Override protected void onNewIntent(Intent intent) {
@@ -137,8 +136,7 @@ public final class InstallActivity extends Activity {
 
     private void complete(String text) { finished = true; report = text; show(); }
     private String deviceDetails() {
-        return "\nEdition: " + getIntent().getStringExtra("edition")
-                + "\nPatcher: " + BuildConfig.VERSION_NAME
+        return "\nPatcher: " + BuildConfig.VERSION_NAME
                 + "\nDevice type: " + Build.MANUFACTURER + " " + Build.MODEL
                 + "\nAndroid: " + Build.VERSION.RELEASE + " (API " + Build.VERSION.SDK_INT + ")"
                 + "\nCPU support: " + String.join(", ", Build.SUPPORTED_ABIS)
@@ -172,13 +170,12 @@ public final class InstallActivity extends Activity {
     private static final class Work implements Runnable {
         final Context context;
         final Uri uri;
-        final String edition;
         volatile WeakReference<InstallActivity> owner;
         volatile boolean cancelled;
         volatile String failureMessage;
-        Work(InstallActivity activity, Uri uri, String edition) {
+        Work(InstallActivity activity, Uri uri) {
             context = activity.getApplicationContext(); owner = new WeakReference<>(activity);
-            this.uri = uri; this.edition = edition;
+            this.uri = uri;
         }
         @Override public void run() {
             PackageInstaller installer = context.getPackageManager().getPackageInstaller();
@@ -186,7 +183,7 @@ public final class InstallActivity extends Activity {
             boolean committed = false;
             try {
                 JSONObject manifest;
-                try (InputStream in = context.getAssets().open(edition + "/assembly.json")) {
+                try (InputStream in = context.getAssets().open("assembly.json")) {
                     java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
                     byte[] buffer = new byte[8192]; int count;
                     while ((count = in.read(buffer)) != -1) bytes.write(buffer, 0, count);
@@ -194,7 +191,7 @@ public final class InstallActivity extends Activity {
                 }
                 long size = manifest.getLong("final_size");
                 PackageInstaller.SessionParams params = new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
-                params.setAppPackageName(edition.equals("dual") ? BuildConfig.GAME_DUAL_PACKAGE : BuildConfig.GAME_STANDARD_PACKAGE);
+                params.setAppPackageName(BuildConfig.GAME_PACKAGE);
                 params.setSize(size);
                 if (Build.VERSION.SDK_INT >= 31) params.setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_REQUIRED);
                 sessionId = installer.createSession(params);
@@ -219,7 +216,7 @@ public final class InstallActivity extends Activity {
                         throw new java.io.IOException("The saved APK changed. Patch your original ZIP again.");
                     if (cancelled) return;
                     Intent callback = new Intent(context, InstallActivity.class).setAction(RESULT)
-                            .setData(Uri.parse("am2r-install:" + sessionId)).putExtra("edition", edition)
+                            .setData(Uri.parse("am2r-install:" + sessionId))
                             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     int flags = PendingIntent.FLAG_UPDATE_CURRENT;
                     if (Build.VERSION.SDK_INT >= 31) flags |= PendingIntent.FLAG_MUTABLE;

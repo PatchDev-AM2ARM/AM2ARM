@@ -1,5 +1,8 @@
 /// @description  draw_gui_map(x, y)
 function draw_gui_map(argument0, argument1) {
+	var _steady = !global.android_app && global.nano_enabled;
+	var _pulse = _steady ? 0.75 : oControl.malpha;
+	var _marker_frame = _steady ? 0 : oControl.markfr;
 	// Draw the fifteen nearby cells cached by the control object around the player.
 	draw_background(bgGUIMapBG, argument0, argument1 + 4);
 	if (oControl.m1 != "0") draw_mapblock(argument0 + 16, argument1 + 12, oControl.minimap_cells[0][0], oControl.minimap_cells[0][1], oControl.minimap_cells[0][2], oControl.minimap_cells[0][3], oControl.minimap_cells[0][4], oControl.minimap_cells[0][5], oControl.dm1, oControl.minimap_cells[0][6]);
@@ -19,19 +22,19 @@ function draw_gui_map(argument0, argument1) {
 	if (oControl.m15 != "0") draw_mapblock(argument0 + 32, argument1 + 20, oControl.minimap_cells[14][0], oControl.minimap_cells[14][1], oControl.minimap_cells[14][2], oControl.minimap_cells[14][3], oControl.minimap_cells[14][4], oControl.minimap_cells[14][5], oControl.dm15, oControl.minimap_cells[14][6]);
 	// Pulse the current-cell highlight without changing the drawing target's alpha channel.
 	draw_set_colour_write_enable(true, true, true, false)
-	draw_sprite_ext(sMapHilight, -1, argument0 + 16, argument1 + 12, 1, 1, 0, -1, oControl.malpha);
+	draw_sprite_ext(sMapHilight, -1, argument0 + 16, argument1 + 12, 1, 1, 0, -1, _pulse);
 	draw_set_colour_write_enable(true, true, true, true)
 	// Draw the placed marker inside the minimap, or point toward it when it lies outside.
 	if (global.mapmarker) {
-	    if (oControl.moffx >= -2 && oControl.moffx <= 2 && oControl.moffy >= -1 && oControl.moffy <= 1) draw_sprite(sMapMarker, oControl.markfr, argument0 + 16 + oControl.moffx * 8, argument1 + 12 + oControl.moffy * 8);
-	    if (oControl.moffx > 2 && oControl.moffy >= -1 && oControl.moffy <= 1) draw_sprite(sHUDMapMarkA, oControl.markfr, argument0 + 32, argument1 + 12 + oControl.moffy * 8);
-	    if (oControl.moffx < -2 && oControl.moffy >= -1 && oControl.moffy <= 1) draw_sprite_ext(sHUDMapMarkA, oControl.markfr, argument0 + 8, argument1 + 12 + oControl.moffy * 8, -1, 1, 0, -1, 1);
-	    if (oControl.moffy < -1 && oControl.moffx >= -2 && oControl.moffx <= 2) draw_sprite_ext(sHUDMapMarkA, oControl.markfr, argument0 + 24 + oControl.moffx * 8, argument1 + 12, -1, 1, -90, -1, 1);
-	    if (oControl.moffy > 1 && oControl.moffx >= -2 && oControl.moffx <= 2) draw_sprite_ext(sHUDMapMarkA, oControl.markfr, argument0 + 16 + oControl.moffx * 8, argument1 + 20, -1, 1, 90, -1, 1);
-	    if (oControl.moffy < -1 && oControl.moffx > 2) draw_sprite(sHUDMapMarkB, oControl.markfr, argument0 + 32, argument1 + 4);
-	    if (oControl.moffy < -1 && oControl.moffx < -2) draw_sprite_ext(sHUDMapMarkB, oControl.markfr, argument0 + 8, argument1 + 4, -1, 1, 0, -1, 1);
-	    if (oControl.moffy > 1 && oControl.moffx > 2) draw_sprite_ext(sHUDMapMarkB, oControl.markfr, argument0 + 32, argument1 + 28, 1, -1, 0, -1, 1);
-	    if (oControl.moffy > 1 && oControl.moffx < -2) draw_sprite_ext(sHUDMapMarkB, oControl.markfr, argument0 + 8, argument1 + 28, -1, -1, 0, -1, 1);
+	    if (oControl.moffx >= -2 && oControl.moffx <= 2 && oControl.moffy >= -1 && oControl.moffy <= 1) draw_sprite(sMapMarker, _marker_frame, argument0 + 16 + oControl.moffx * 8, argument1 + 12 + oControl.moffy * 8);
+	    if (oControl.moffx > 2 && oControl.moffy >= -1 && oControl.moffy <= 1) draw_sprite(sHUDMapMarkA, _marker_frame, argument0 + 32, argument1 + 12 + oControl.moffy * 8);
+	    if (oControl.moffx < -2 && oControl.moffy >= -1 && oControl.moffy <= 1) draw_sprite_ext(sHUDMapMarkA, _marker_frame, argument0 + 8, argument1 + 12 + oControl.moffy * 8, -1, 1, 0, -1, 1);
+	    if (oControl.moffy < -1 && oControl.moffx >= -2 && oControl.moffx <= 2) draw_sprite_ext(sHUDMapMarkA, _marker_frame, argument0 + 24 + oControl.moffx * 8, argument1 + 12, -1, 1, -90, -1, 1);
+	    if (oControl.moffy > 1 && oControl.moffx >= -2 && oControl.moffx <= 2) draw_sprite_ext(sHUDMapMarkA, _marker_frame, argument0 + 16 + oControl.moffx * 8, argument1 + 20, -1, 1, 90, -1, 1);
+	    if (oControl.moffy < -1 && oControl.moffx > 2) draw_sprite(sHUDMapMarkB, _marker_frame, argument0 + 32, argument1 + 4);
+	    if (oControl.moffy < -1 && oControl.moffx < -2) draw_sprite_ext(sHUDMapMarkB, _marker_frame, argument0 + 8, argument1 + 4, -1, 1, 0, -1, 1);
+	    if (oControl.moffy > 1 && oControl.moffx > 2) draw_sprite_ext(sHUDMapMarkB, _marker_frame, argument0 + 32, argument1 + 28, 1, -1, 0, -1, 1);
+	    if (oControl.moffy > 1 && oControl.moffx < -2) draw_sprite_ext(sHUDMapMarkB, _marker_frame, argument0 + 8, argument1 + 28, -1, -1, 0, -1, 1);
 	}
 
 

@@ -1,3 +1,0 @@
-external_squashfs_member	bytes	sha256	architecture	needed_sonames
-lib_aarch64/graphics/gl4es_glxpass/libGL.so.1	7147064	9cbb229668731a4e9504873b0e8634d5ee83c4936ef3c2ec8290db7ac2bbff7b	AArch64 ELF64 little-endian	libm.so.6,libc.so.6,ld-linux-aarch64.so.1
-lib_aarch64/graphics/crusty_glx/libcrusty.so	206240	e469163f8937004fffb98243c836cf4c896943d96a882cec6071c1650aab5c8c	AArch64 ELF64 little-endian	libGL.so.1,libX11.so.6,libGLESv2.so,libdl.so.2,libc.so.6,ld-linux-aarch64.so.1

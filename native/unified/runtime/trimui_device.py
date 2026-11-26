@@ -1,4 +1,5 @@
 """Model selection for the shared TrimUI launcher and installer."""
+from contextlib import contextmanager
 import os
 from pathlib import Path
 
@@ -46,3 +47,21 @@ def current_device():
         if not found and 'lcd=jd9168' in read('/proc/cmdline').split():
             return 'brick'
         raise
+
+
+@contextmanager
+def stay_awake(card, device, marker=Path('/tmp/stay_awake')):
+    """Keep TrimUI's firmware from sleeping while AM2ARM is open."""
+    owned = False
+    if device in ('smartpro', 'smartpros', 'brick') and (
+            os.environ.get('AM2ARM_FRONTEND') == 'stock' or (card/'spruce').is_dir()):
+        try:
+            marker.touch(exist_ok=False)
+            owned = True
+        except FileExistsError:
+            pass
+    try:
+        yield
+    finally:
+        if owned:
+            marker.unlink(missing_ok=True)

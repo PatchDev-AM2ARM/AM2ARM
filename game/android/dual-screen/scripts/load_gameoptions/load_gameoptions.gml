@@ -2,6 +2,7 @@
 function load_gameoptions() {
 
 	// Establish option defaults before reading the saved configuration.
+	global.oporientation = 0;
 	global.opfullscreen = 0; // originally 1
 	global.opscale = 0;
 	global.opvsync = 0;
@@ -30,10 +31,14 @@ function load_gameoptions() {
 	global.compatibilitymode = 0;
 	global.sensitivitymode = 0;
 	global.widescreen_enabled = 1;
-	oControl.widescreen = global.widescreen_enabled; // GM2026/Android: apply the widescreen default even before/without config.ini (was only assigned inside the ini-exists branch)
+	global.opaspectratio = 1;
+	oControl.aspect_auto = !global.android_app;
+	with (oControl) standard_aspect_apply(global.opaspectratio);
 	global.oppixelperfect = 0;
 	oControl.mod_insanitymode = 0;
 	oControl.touch_scale = 4;
+	oControl.touch_inset = 0;
+	oControl.touch_aim_balance = 0;
 	oControl.mod_collecteditemsmap = 0;
 	// Initialize bindings and create a configuration file on the first run.
 	set_default_keys();
@@ -42,12 +47,13 @@ function load_gameoptions() {
 	if (!file_exists("config.ini")) save_gameoptions();
 	if (file_exists("config.ini")) {
 	    ini_open("config.ini");
-	    oControl.thor_hud_top = ini_read_real("DualScreen", "HUDTop", 0) != 0;
+	    oControl.dual_hud_top = ini_read_real("DualScreen", "HUDTop", 0) != 0;
 	    // Load display, HUD and audio preferences.
 	    global.opfullscreen = ini_read_real("Screen", "Fullscreen", 0);
 	    global.opscale = ini_read_real("Screen", "Scale", 0);
 	    global.opvsync = ini_read_real("Screen", "VSync", 0);
 	    global.nano_enabled = ini_read_real("Screen", "Nano", 0) == 1;
+	    global.oporientation = clamp(round(ini_read_real("Screen", "Orientation", 0)), 0, 2);
 	    global.currentlanguage = ini_read_real("Screen", "Language", 0);
 	    global.opshowhud = ini_read_real("Screen", "ShowHUD", 1);
 	    global.ophudshowmap = ini_read_real("Screen", "ShowHUDMap", 1);
@@ -131,7 +137,6 @@ function load_gameoptions() {
 	    oControl.msr_fusionsuit = ini_read_real("Extras", "FusionSuitMSR", 0);
 	    oControl.mod_monstersextremecheck = ini_read_real("Extras", "ExtremeLabMonsters", 0);
 	    oControl.mod_IGT = ini_read_real("Extras", "DisplayIGT", 0);
-        if (oControl.thor_enabled) oControl.mod_IGT = 1;
     
 	    // Android
 	    global.opjoybtn_padu = ini_read_real("Control", "JoystickDPadUp", 36);
@@ -144,7 +149,9 @@ function load_gameoptions() {
     
 	    global.dpad_rebind = ini_read_real("Control", "RebindDPad", 0);
     
-	    oControl.touch_scale = ini_read_real("Control", "TouchScale", 4);
+	    oControl.touch_scale = clamp(ini_read_real("Control", "TouchScale", 4), 3, 8);
+	    oControl.touch_inset = clamp(ini_read_real("Control", "TouchInset", 0), 0, 5);
+	    oControl.touch_aim_balance = clamp(ini_read_real("Control", "TouchAimBalance", 0), 0, 1);
     
 	    // Languages
 	    // Fall back to the first language when the saved language index exceeds the available list.
@@ -157,8 +164,11 @@ function load_gameoptions() {
 	    global.sensitivitymode = ini_read_real("Screen", "SensitivityMode", 0);
     
 	    // Widescreen toggle
-	    global.widescreen_enabled = ini_read_real("Screen", "Widescreen", 1);
-	    oControl.widescreen = global.widescreen_enabled;
+	    var _legacy_wide = ini_read_real("Screen", "Widescreen", 1);
+	    if (ini_key_exists("Screen", "Widescreen")) oControl.aspect_auto = false;
+	    global.opaspectratio = standard_aspect_validate(
+	        ini_read_real("Screen", "AspectRatio", -1), _legacy_wide);
+	    with (oControl) standard_aspect_apply(global.opaspectratio);
 
 	    // Pixel Perfect (Android)
 	    global.oppixelperfect = ini_read_real("Screen", "PixelPerfect", 0);
@@ -182,10 +192,11 @@ function load_gameoptions() {
     
 	    ini_close();
 	} // if (file_exists("config.ini"))
-	with (oControl) thor_apply_hud_layout();
+	with (oControl) dual_apply_hud_layout();
 	android_gamepad_configure();
 	// Apply display settings and replace unavailable legacy joystick axes with defaults.
 	apply_screenres();
+	if (global.android_app && !oControl.dual_enabled) Android_Orientation(global.oporientation);
 	if (joystick_exists(global.opjoyid)) {
 	    if (global.opjoybtn_xax >= 4 && joystick_axes(global.opjoyid) < 4) global.opjoybtn_xax = 0;
 	    if (global.opjoybtn_xax >= 2 && joystick_axes(global.opjoyid) < 2) global.opjoybtn_xax = 0;

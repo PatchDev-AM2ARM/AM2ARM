@@ -27,7 +27,7 @@ if ((direction == 0 || direction == 180) && oCharacter.y <= y + 8 && oCharacter.
         
         // Widescreen
         if (global.widescreen_enabled) {
-            oControl.widescreen_space = 106;
+            var _target_space = standard_aspect_width(global.opaspectratio) - 320;
             var targetwidth;
             // Edge case rooms
             switch (targetroom) {
@@ -48,19 +48,19 @@ if ((direction == 0 || direction == 180) && oCharacter.y <= y + 8 && oCharacter.
             
             if (targetwidth > 320) {
                 if (targetx <= 320) 
-                    global.transitionx -= oControl.widescreen_space/2 - max(0, ((oControl.widescreen_space + 320)) - targetwidth)/2;
+                    global.transitionx -= _target_space/2 - max(0, ((_target_space + 320)) - targetwidth)/2;
                 else if (targetx >= targetwidth-320) 
-                    global.transitionx += oControl.widescreen_space/2 - max(0, ((oControl.widescreen_space + 320)) - targetwidth)/2;
+                    global.transitionx += _target_space/2 - max(0, ((_target_space + 320)) - targetwidth)/2;
                 else {
-                    if(camstartx <= floor(oControl.widescreen_space/2)+160) 
-                        global.transitionx -= max(0, floor(oControl.widescreen_space/2) - 320);
-                    if(camstartx >= abs(floor((oControl.widescreen_space/2)+160) - targetwidth))
-                        global.transitionx += max(0, floor(oControl.widescreen_space/2) - 320);
+                    if(camstartx <= floor(_target_space/2)+160)
+                        global.transitionx -= max(0, floor(_target_space/2) - 320);
+                    if(camstartx >= abs(floor((_target_space/2)+160) - targetwidth))
+                        global.transitionx += max(0, floor(_target_space/2) - 320);
                 }
             }
         }
         
-        if (global.widescreen_enabled != oControl.widescreen) oControl.widescreen_switch = true;
+        if (global.opaspectratio != oControl.aspect_ratio) oControl.widescreen_switch = true;
         
         oControl.mod_previous_room = room;
         

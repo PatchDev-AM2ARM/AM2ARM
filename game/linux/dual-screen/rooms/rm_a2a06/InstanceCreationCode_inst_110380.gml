@@ -1,5 +1,0 @@
-// Remove this block when the randomized route meets the listed equipment conditions.
-// changed 1.4.4
-if (oControl.mod_randomgamebool == 1 && global.item[0] == 0 && global.item[9] == 0) instance_destroy();
-else link_tile(tlPipes1, 48, 16);
-regentime = 60;

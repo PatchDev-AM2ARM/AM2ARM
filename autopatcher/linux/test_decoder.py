@@ -1,5 +1,4 @@
 from pathlib import Path
-import os
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -7,19 +6,6 @@ import patch_core
 
 
 class DecoderTests(unittest.TestCase):
-    def test_shared_patch_folder_and_explicit_override(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            for name in ('app/patch-bundle', 'shared bundle', 'selected bundle'):
-                edition = root / name / 'dual'
-                edition.mkdir(parents=True)
-                (edition / 'assembly.json').write_text('{}')
-            with patch.object(patch_core, 'base_dir', return_value=root / 'app'), \
-                 patch.dict(os.environ, AM2ARM_PATCH_ROOT=str(root / 'shared bundle')):
-                self.assertEqual(patch_core.load_manifest('dual')[1], root / 'shared bundle/dual')
-                self.assertEqual(patch_core.load_manifest('dual', root / 'selected bundle')[1],
-                                 root / 'selected bundle/dual')
-
     def test_arm_linux_prefers_matching_bundle_without_system_decoder(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

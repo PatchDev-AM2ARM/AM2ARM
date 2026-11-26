@@ -1,9 +1,9 @@
 // For the lower display, start closing from the current opacity and ignore repeated close requests.
-if (oControl.thor_enabled) {
+if (oControl.dual_enabled) {
     if (fadeout) exit;
     sfx_play(sndMenuMove);
-    thor_fade_started = current_time;
-    thor_fade_from = ealpha;
+    dual_fade_started = current_time;
+    dual_fade_from = ealpha;
 }
 fadeout = 1;
 active = 0;

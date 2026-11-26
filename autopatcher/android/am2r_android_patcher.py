@@ -65,14 +65,9 @@ def sha256_file(path, chunk=1 << 20):
     return h.hexdigest()
 
 
-def load_manifest(edition="standard", patch_root=None):
-    if edition not in ("standard", "dual"):
-        raise PatchError("Choose the Standard or Dual Screen edition.")
+def load_manifest(patch_root=None):
     root = Path(patch_root) if patch_root else base_dir() / "patch-bundle"
-    p = root / edition / "assembly.json"
-    # Older single-edition downloads remain usable; never substitute them for Dual Screen.
-    if patch_root is None and not root.exists() and edition == "standard":
-        p = base_dir() / "patch-data" / "assembly.json"
+    p = root / "assembly.json"
     if not p.is_file():
         raise PatchError(f"patch data missing: {p}")
     return json.loads(p.read_text()), p.parent
@@ -145,10 +140,10 @@ def read_zip_member(source, member):
     raise PatchError(f"missing file in your 1.1 zip: {member}")
 
 
-def patch(source_zip, out_dir, progress, edition="standard", patch_root=None):
+def patch(source_zip, out_dir, progress, patch_root=None):
     """Build the APK. Returns (apk_path, sha256)."""
-    # Keep the selected edition's manifest, wrapper, and delta together for the entire operation.
-    manifest, data_dir = load_manifest(edition, patch_root)
+    # Keep the manifest, wrapper, and delta together for the entire operation.
+    manifest, data_dir = load_manifest(patch_root)
     xdelta = find_xdelta3()
     wrapper = data_dir / "wrapper.bin"
     if not wrapper.is_file():
@@ -267,7 +262,7 @@ def run_cli(args):
 
     try:
         apk, digest = patch(args.zip, args.out or Path(args.zip).resolve().parent, progress,
-                            edition=args.edition, patch_root=args.patch_data)
+                            patch_root=args.patch_data)
     except PatchError as e:
         print(f"\nERROR: {e}", file=sys.stderr)
         return 1
@@ -298,9 +293,6 @@ def run_gui():
         "Select your copy of the original AM2R 1.1 release (AM2R_11.zip).\n"
         "It will be patched into the Android port — your file is not modified.")).pack(pady=(8, 14))
 
-    edition = ttk.Combobox(frame, values=("Standard — single screen", "Dual Screen — supported handhelds"), state="readonly", width=40)
-    edition.current(0)
-    edition.pack(pady=4)
     status = tk.StringVar(value="Waiting for your AM2R_11.zip…")
     bar = ttk.Progressbar(frame, length=500, mode="determinate", maximum=1000)
     bar.pack(pady=4)
@@ -315,21 +307,20 @@ def run_gui():
                                status.set(msg)))
 
     # Return failures and verified results to the GUI through callbacks that also unlock the controls.
-    def work(path, selected):
+    def work(path):
         try:
-            apk, digest = patch(path, Path(path).resolve().parent, progress, edition=selected)
+            apk, digest = patch(path, Path(path).resolve().parent, progress)
         except PatchError as e:
-            root.after(0, lambda error=str(e): (status.set("Failed."), button.configure(state="normal"), edition.configure(state="readonly"),
+            root.after(0, lambda error=str(e): (status.set("Failed."), button.configure(state="normal"),
                                    messagebox.showerror("Patching failed", error)))
             return
         except Exception as e:  # unexpected
-            root.after(0, lambda error=repr(e): (status.set("Failed."), button.configure(state="normal"), edition.configure(state="readonly"),
+            root.after(0, lambda error=repr(e): (status.set("Failed."), button.configure(state="normal"),
                                    messagebox.showerror("Unexpected error", error)))
             return
         root.after(0, lambda: (
             status.set(f"Done!  {apk.name} is next to your zip.\nChecksum verified against the official release."),
             button.configure(state="normal"),
-            edition.configure(state="readonly"),
             messagebox.showinfo("Success", f"Created:\n{apk}\n\nSHA-256:\n{digest}\n\n"
                                            "Checksum matches the official release. Copy the APK to your "
                                            "phone and install it.")))
@@ -340,10 +331,7 @@ def run_gui():
         if not path:
             return
         button.configure(state="disabled")
-        # Capture the edition before starting the worker so later UI state cannot redirect this operation.
-        selected = ("standard", "dual")[edition.current()]
-        edition.configure(state="disabled")
-        threading.Thread(target=work, args=(path, selected), daemon=True).start()
+        threading.Thread(target=work, args=(path,), daemon=True).start()
 
     button.configure(command=choose)
     root.mainloop()
@@ -356,8 +344,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--zip", help="path to AM2R_11.zip (or an extracted 1.1 folder)")
     ap.add_argument("--out", help="output directory (default: next to the zip)")
-    ap.add_argument("--edition", choices=("standard", "dual"), default="standard", help="Android edition to build")
-    ap.add_argument("--patch-data", type=Path, help="directory containing the standard and dual patch folders")
+    ap.add_argument("--patch-data", type=Path, help="directory containing the patch data")
     ap.add_argument("--no-gui", action="store_true", help="force CLI mode")
     args = ap.parse_args()
 

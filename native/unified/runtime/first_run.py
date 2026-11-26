@@ -1,26 +1,20 @@
-"""Find a player's original and start a verified handheld installation."""
+"""Find the player's original game, and keep the game built from it."""
 import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
-import stat
-import sys
-import subprocess
-import re
-import tempfile
+import shutil
+from tempfile import NamedTemporaryFile
 from zipfile import BadZipFile, ZipFile
 
-from handheld_platform import active_sway_outputs
-from linux_patcher import EDITIONS, prepare_game
-from menu_entries import write_text
-from nextui_layout import installed_game
-from patch_core import PatchError, sha256_file
+from patch_core import PatchError, build_port, read_manifest, sha256_file
 
 
-REQUIRED = {'edition.json', 'launch.sh', 'runtime/launch.py', 'data/runner', 'data/game.unx'}
-EDITABLE = {'data/game.ini', 'data/options.ini', 'data/modifiers.ini', 'data/gamecontrollerdb.txt'}
-HAPTICS = 'data/libAM2ARMHaptics.so'
+SAVES = ('save1', 'save2', 'save3', 'data.sav', 'extras.sav')
+# Folders of the native Linux editions, up to 1.6.3.
+EDITIONS = ('AM2ARM Standard', 'AM2ARM Dual Screen')
+EDITION_SAVES = ('AM2RStandardLinux', 'AM2RDualLinux')
 
 
 def find_original(app, card, ports):
@@ -52,109 +46,29 @@ def find_original(app, card, ports):
     return found.pop() if len(found) == 1 else None
 
 
-def read_object(path):
+def write_text(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
     try:
-        if not path.is_file():
-            return {}
-        value = json.loads(path.read_text())
-        return value if isinstance(value, dict) else {}
-    except (OSError, ValueError):
-        return {}
-
-
-def matches_edition(info, edition, version):
-    return (info.get('product') == 'AM2ARM' and info.get('architecture') == 'aarch64'
-            and info.get('version') == version
-            and info.get('edition') == ('dual-screen' if edition == 'dual' else 'standard'))
-
-
-def expected_files(manifest):
-    entries = manifest.get('installed_files')
-    if not isinstance(entries, dict) or not REQUIRED.issubset(entries):
-        raise PatchError('Installation checksums are missing. Extract the complete AM2ARM installer again.')
-    result = {}
-    for name, entry in entries.items():
-        path = PurePosixPath(name)
-        if (not path.parts or path.is_absolute() or str(path) != name or '..' in path.parts
-                or '\\' in name or ':' in name or not isinstance(entry, dict)
-                or not isinstance(entry.get('size'), int) or entry['size'] < 0
-                or not re.fullmatch('[a-f0-9]{64}', str(entry.get('sha256', '')))):
-            raise PatchError('The installation checksum list is invalid. Extract the complete installer again.')
-        # State, saved games and other files outside the shipped program are player-owned.
-        if name in REQUIRED or name in ('README.txt', 'SAVE-TRANSFER.txt') or path.parts[0] in ('runtime', 'data'):
-            result[name] = entry
-    return result
-
-
-def file_stamp(info):
-    return [info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns]
-
-
-def editable(name):
-    return name in EDITABLE or name.startswith('data/mods/')
-
-
-def matches_content(path, info, expected, alternate):
-    if info.st_size != expected['size'] and not alternate:
-        return False
-    return (sha256_file(path) in (expected['sha256'], alternate)
-            and file_stamp(path.lstat()) == file_stamp(info))
-
-
-def inspect_files(game, entries, cached, haptics):
-    damaged, verified = [], {}
-    for name, expected in entries.items():
-        path = game/name
-        try:
-            info = path.lstat()
-            if stat.S_ISREG(info.st_mode):
-                if editable(name):
-                    continue
-                stamp = file_stamp(info)
-                alternate = haptics if name == HAPTICS else None
-                if cached.get(name) == stamp or matches_content(path, info, expected, alternate):
-                    verified[name] = stamp
-                    continue
-        except OSError:
-            pass
-        damaged.append(name)
-    return damaged, verified
-
-
-def repair_target(game, name):
-    target = game/name
-    if target.is_symlink() or (target.exists() and not target.is_file()):
-        raise PatchError('A link or directory occupies a game file. Move it aside before repairing: ' + name)
-    for parent in target.parents:
-        if parent == game:
-            break
-        if parent.is_symlink() or (parent.exists() and not parent.is_dir()):
-            raise PatchError('A link or file occupies a game directory. Move it aside before repairing: ' + str(parent))
-    return target
+        with NamedTemporaryFile(mode='w', encoding='utf-8', dir=path.parent, delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(text)
+        temporary.replace(path)
+    finally:
+        if temporary:
+            temporary.unlink(missing_ok=True)
 
 
 class Library:
     def __init__(self, app, card, ports):
         self.app, self.card, self.ports = app, card, ports
+        self.game = app/'game'
+        self.bundle = self.game/'am2arm.zip'
+        # Outside the launcher folder, so updates keep it.
         self.data = card/'AM2ARM-data'
-        self.bundle = app/'patcher/patch-bundle'
-        self.files, self.release, self.haptics = {}, {}, {}
-        rumble = read_object(app/'runtime/rumble/library.json')
-        for edition in EDITIONS:
-            raw = (self.bundle/edition/'assembly.json').read_bytes()
-            manifest = json.loads(raw)
-            if edition == 'standard':
-                self.version = manifest['version']
-            elif manifest['version'] != self.version:
-                raise PatchError('The bundled editions have different release versions.')
-            self.files[edition] = expected_files(manifest)
-            self.release[edition] = hashlib.sha256(raw).hexdigest()
-            original = self.files[edition].get(HAPTICS, {}).get('sha256')
-            self.haptics[edition] = rumble.get('brick') if original == rumble.get('original') else None
-        if not isinstance(self.version, str) or not re.fullmatch(r'[0-9]+(?:[.][0-9]+)+', self.version):
-            raise ValueError('Invalid version in the installation manifest.')
-        self.output = self.data/'games'/self.version
-        self.choice = self.data/'edition.txt'
+        self.port = self.data/'am2arm.port'
+        self.saves = self.data/'saves'
+        self.receipt = self.data/'installed.json'
 
     @classmethod
     def from_environment(cls):
@@ -163,146 +77,90 @@ class Library:
         ports = Path(os.environ.get('AM2ARM_PORTS_DIR') or card/'ports')
         return cls(runtime.parent, card, ports)
 
-    def damaged(self, game, edition, full=False):
-        location = hashlib.sha256(os.fsencode(game.resolve())).hexdigest()
-        receipt = self.data/'verification'/self.version/f'{edition}-{location}.json'
-        record = read_object(receipt)
-        identity = [self.release[edition], self.haptics[edition]]
-        previous = record.get('files', {}) if record.get('key') == identity else {}
-        cached = previous if isinstance(previous, dict) and not full else {}
-        damaged, stamps = inspect_files(game, self.files[edition], cached, self.haptics[edition])
-        # Record successful hashes only. An explicit full check can invalidate a cached
-        # file even when a card's coarse timestamps stayed unchanged.
-        if stamps != previous or not previous:
-            try:
-                write_text(receipt, json.dumps({'key': identity, 'files': stamps}))
-            except OSError:
-                pass  # Verification still works when the cache cannot be written.
-        return damaged
+    def original(self):
+        return find_original(self.app, self.card, self.ports)
 
-    def complete(self, game, edition, full=False):
-        return (matches_edition(read_object(game/'edition.json'), edition, self.version)
-                and not self.damaged(game, edition, full))
+    @property
+    def version(self):
+        return read_manifest(self.bundle)['version']
 
-    def existing(self, edition, full=False):
-        name = EDITIONS[edition]
-        managed = self.output/name
-        if os.path.lexists(managed):
-            # A different installation can have independent saves for the same edition.
-            return managed if self.complete(managed, edition, full) else None
-        options = []
-        if edition == 'standard':
-            for root in dict.fromkeys((self.card, self.app.parent, self.ports)):
-                try:
-                    options.append(installed_game(root))
-                except (OSError, KeyError, ValueError, RuntimeError, TypeError):
-                    pass
-        options.extend((self.ports/name, self.app.parent/name, self.card/'ports'/name,
-                        self.card/'AM2ARM/games'/name))
-        return next((game for game in dict.fromkeys(options) if self.complete(game, edition, full)), None)
-
-    def selected(self, single):
-        editions = ('standard',) if single else tuple(EDITIONS)
+    def release(self):
+        """Identify the release by its ZIP index, without reading its files."""
         try:
-            choice = self.choice.read_text().strip()
-        except OSError:
-            choice = ''
-        if choice in editions:
-            previous = self.existing(choice)
-            if previous or os.path.lexists(self.output/EDITIONS[choice]):
-                return previous
-        games = [game for edition in editions if (game := self.existing(edition))]
-        return games[0] if len(games) == 1 else None
+            with ZipFile(self.bundle) as archive:
+                index = [f'{i.CRC:08x} {i.file_size} {i.filename}\n' for i in archive.infolist()]
+        except (OSError, BadZipFile) as error:
+            raise PatchError('The AM2ARM game data is missing or damaged. Extract the complete download again.') from error
+        return hashlib.sha256(''.join(index).encode()).hexdigest()
 
-    def install(self, source, output, edition, progress):
-        if edition not in EDITIONS or Path(output) != self.output:
-            raise PatchError('Choose a supported edition for this game card.')
-        if self.output.resolve() != self.card.resolve()/self.output.relative_to(self.card):
-            raise PatchError('The generated game folder uses a link. Move it aside before installing.')
+    def stamp(self):
+        info = self.port.stat()
+        return [info.st_size, info.st_mtime_ns]
+
+    def installed(self):
+        """Whether the game on the card came from this release."""
+        try:
+            record = json.loads(self.receipt.read_text())
+            if record['release'] != self.release():
+                return False
+            if record['stamp'] != self.stamp():
+                # Copying a card changes the times.
+                if record['sha256'] != sha256_file(self.port):
+                    return False
+                write_text(self.receipt, json.dumps(dict(record, stamp=self.stamp())))
+            return True
+        except (OSError, ValueError, KeyError, TypeError):
+            return False
+
+    def install(self, source, progress):
         self.data.mkdir(parents=True, exist_ok=True)
         with (self.data/'install.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
-            if (os.environ.get('AM2ARM_FETCH_DISPLAY') == '1'
-                    and os.environ.get('AM2ARM_DISPLAY_NOTICE') == 'westonpack'):
-                from weston_graphics import prepare_graphics
-                prepare_graphics(self.card, self.app/'runtime', os.environ, progress)
             progress(0, 1, 'Checking installed files…')
-            game = self.existing(edition, full=True)
-            digest = None
-            if game is None:
+            if not self.installed():
                 if source is None or not Path(source).is_file():
-                    raise PatchError('Choose your original AM2R 1.1 ZIP to install or repair this edition.')
-                game = self.output/EDITIONS[edition]
-                if os.path.lexists(game) or os.path.lexists(game.with_name(game.name+'.sh')):
-                    digest = self.repair(game, source, edition, progress)
-                else:
-                    game, digest = prepare_game(source, self.output, edition, progress, self.bundle)
-                if not self.complete(game, edition):
-                    raise PatchError('The installed files failed verification. Check the card and try again.')
-            write_text(self.choice, edition+'\n')
-            return game, digest
+                    raise PatchError('Choose your original AM2R 1.1 ZIP to install the game.')
+                digest = build_port(source, self.bundle, self.port, progress)
+                write_text(self.receipt, json.dumps(
+                    {'release': self.release(), 'sha256': digest, 'stamp': self.stamp()}))
+            self.import_saves()
 
-    def repair(self, game, source, edition, progress):
-        if game.is_symlink() or (game.exists() and not game.is_dir()):
-            raise PatchError('The generated game folder is a link or a file. Move it aside before repairing.')
-        old = read_object(game/'edition.json')
-        if old.get('version') and not matches_edition(old, edition, self.version):
-            raise PatchError('A different edition occupies this game folder. Move it aside to keep it before installing.')
-        missing_game = not game.exists()
-        if not missing_game:
-            damaged = self.damaged(game, edition)
-            for name in damaged:
-                repair_target(game, name)
-        # Build and check the entire replacement before changing the installed program.
-        # Each rename repairs one file atomically. An interrupted repair can be retried.
-        with tempfile.TemporaryDirectory(prefix='.am2arm-repair-', dir=self.output) as folder:
-            ready, digest = prepare_game(source, Path(folder), edition, progress, self.bundle)
-            invalid, _ = inspect_files(ready, self.files[edition], {}, self.haptics[edition])
-            if invalid or not matches_edition(read_object(ready/'edition.json'), edition, self.version):
-                raise PatchError('The rebuilt files failed verification. Check the installer and try again.')
-            if missing_game:
-                # An interrupted install may leave its sibling Ports shortcut behind.
-                if os.path.lexists(game):
-                    raise PatchError('A game folder appeared during installation. Open AM2ARM again.')
-                ready.rename(game)
-            else:
-                for name in damaged:
-                    target = repair_target(game, name)
-                    if editable(name) and target.exists():
-                        continue
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    (ready/name).replace(target)
-        return digest
-
-
-def single_screen(backend):
-    if backend == 'direct':
-        return True
-    try:
-        model = Path('/proc/device-tree/model').read_bytes().lower()
-    except OSError:
-        model = b''
-    if any(name in model for name in (b'rg ds', b'rg-ds', b'rgds')):
-        return False
-    if b'g350' in model:
-        return True
-    if os.environ.get('SWAYSOCK'):
+    def edition_saves(self):
+        """Every place the native Linux editions could have kept saves."""
+        homes = (self.data/'home', self.app/'state/home', self.card/'AM2ARM/state/home',
+                 self.ports/'AM2ARM/state/home', Path.home())
+        roots = (self.ports, self.card, self.card/'ports', self.app.parent, self.card/'AM2ARM/games',
+                 *self.data.glob('games/*'), *self.card.glob('AM2ARM/games/*'))
+        configs = [home/'.config' for home in homes] + [root/name/'state/config' for root in roots for name in EDITIONS]
+        # Games installed elsewhere, or sharing an older install's saves.
         try:
-            return len(active_sway_outputs(os.environ)) < 2
-        except (OSError, ValueError, subprocess.SubprocessError):
+            record = json.loads((self.card/'AM2ARM/state/installation.json').read_text())
+            configs += [self.card/record['game']/'state/config', (self.card/record['stock_saves']).parent]
+        except (OSError, ValueError, KeyError, TypeError):
             pass
-    try:
-        connected = [p for p in Path('/sys/class/drm').glob('card*-*/status')
-                     if p.read_text().strip() == 'connected']
-        return len(connected) == 1
-    except OSError:
-        return False
+        return [config/name for config in configs for name in EDITION_SAVES]
+
+    def import_saves(self):
+        """Start from the latest native Linux saves. Both games read the same files."""
+        if any((self.saves/name).exists() for name in SAVES):
+            return
+        latest, source = 0, None
+        for folder in dict.fromkeys(self.edition_saves()):
+            for name in SAVES:
+                try:
+                    changed = (folder/name).stat().st_mtime_ns
+                except OSError:
+                    continue
+                if changed > latest:
+                    latest, source = changed, folder
+        if source is None:
+            return
+        self.saves.mkdir(parents=True, exist_ok=True)
+        for name in SAVES:
+            if (source/name).is_file():
+                shutil.copy2(source/name, self.saves/name)
+        print('Saves copied from', source, flush=True)
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == 'screens':
-        print(int(single_screen(sys.argv[2])))
-    else:
-        target = Library.from_environment().selected(single=sys.argv[1] == '1')
-        if target:
-            print(target)
+    raise SystemExit(0 if Library.from_environment().installed() else 1)

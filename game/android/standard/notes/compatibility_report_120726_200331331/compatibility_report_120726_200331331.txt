@@ -1,2 +1,0 @@
-The local import report is excluded from this developer source package.
-See README.txt and SOURCE-MAP.txt for the current project.

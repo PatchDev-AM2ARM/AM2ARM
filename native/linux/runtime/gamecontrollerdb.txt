@@ -1,1 +1,0 @@
-19000000010000000100000000010000,ANBERNIC RG DS Linux,a:b0,b:b1,x:b2,y:b3,back:b6,guide:b12,start:b7,leftshoulder:b4,rightshoulder:b5,leftstick:b8,rightstick:b9,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b10,righttrigger:b11,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,

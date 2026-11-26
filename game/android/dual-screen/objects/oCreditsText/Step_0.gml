@@ -1,5 +1,5 @@
 // Let the ending music clock drive the dual-panel credits when enabled; previews retain the original step path.
-if (oControl.thor_enabled && thor_credits_step()) exit;
+if (oControl.dual_enabled && dual_credits_step()) exit;
 
 // User fadeout input
 if (canfadeout && (oControl.kMenu1 || oControl.kMenu2 || oControl.kStart)) fadeout = 1;

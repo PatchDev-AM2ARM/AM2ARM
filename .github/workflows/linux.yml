@@ -1,0 +1,55 @@
+name: Linux release
+
+# Publishing a release with the AM2ARM-gmloader and AM2ARM-music ZIPs adds the Linux download to it.
+on:
+  release:
+    types: [published]
+  pull_request:
+    paths: ['native/**', 'autopatcher/linux/**', '.github/workflows/linux.yml']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release to add the Linux download to (empty: only build gmloader-next)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test the launcher
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends python3-tk xdelta3
+          export PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=native/unified/runtime:autopatcher/linux:native/unified/tests
+          /usr/bin/python3 -m unittest discover -s native/unified/tests -t native/unified/tests
+          /usr/bin/python3 -m unittest discover -s autopatcher/linux
+
+      - name: Build gmloader-next
+        run: docker build --output gmloader native/gmloader
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gmloader-next-arm64
+          path: gmloader
+
+      - name: Package
+        if: env.TAG != ''
+        run: |
+          if ! gh release view "$TAG" --json assets --jq '.assets[].name' | grep -q '^AM2ARM-gmloader-'; then
+            echo "$TAG has no AM2ARM-gmloader ZIP to package."
+            exit 0
+          fi
+          gh release download "$TAG" -D release -p 'AM2ARM-gmloader-*.zip' -p AM2ARM-music.zip
+          url=$(python3 -c 'import sys; sys.path.insert(0, "native/unified"); import package_sd; print(package_sd.INSTALLER_ZIP)')
+          curl -fsSL -o installer.zip "$url"
+          python3 native/unified/package_sd.py --installer installer.zip --gmloader gmloader \
+            --game release/AM2ARM-gmloader-*.zip --music release/AM2ARM-music.zip --output linux
+          gh release upload "$TAG" linux/*.zip --clobber

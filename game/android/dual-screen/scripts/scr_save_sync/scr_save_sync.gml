@@ -1,8 +1,8 @@
 // Keep folder access and sync status separate from the game's saved progress.
 function save_sync_init() {
-    if (os_type == os_android) SaveSync_Cancel();
+    if (global.android_app) SaveSync_Cancel();
     global.am2r_sync = {
-        enabled: os_type == os_android && SaveSync_Configured() == 1,
+        enabled: global.android_app && SaveSync_Configured() == 1,
         busy: false, picker: false, transfer: false, review: false,
         ticket: 0, started: 0, checked: -10000,
         revision: 0, sent: 0, due: -1,
@@ -44,7 +44,7 @@ function save_sync_export() {
 
 function save_sync_request(allow_import, review) {
     var state = global.am2r_sync;
-    if (os_type != os_android || !state.enabled || save_sync_busy() || SaveSync_Busy()) return false;
+    if (!global.android_app || !state.enabled || save_sync_busy() || SaveSync_Busy()) return false;
     state.due = -1;
     state.checked = current_time;
     if (!save_sync_export()) {
@@ -62,7 +62,7 @@ function save_sync_request(allow_import, review) {
 }
 
 function save_sync_cancel() {
-    if (os_type == os_android) SaveSync_Cancel();
+    if (global.android_app) SaveSync_Cancel();
     var state = global.am2r_sync;
     state.ticket = 0;
     state.checked = current_time;
@@ -81,7 +81,7 @@ function save_sync_saved(safe_point) {
 
 function save_sync_step() {
     var state = global.am2r_sync;
-    if (!state.enabled || os_type != os_android) return;
+    if (!state.enabled || !global.android_app) return;
     if (state.busy && !state.review && current_time - state.started > 10000) save_sync_cancel();
     if (state.due >= 0 && !save_sync_busy() && !SaveSync_Busy()) {
         if (state.due > 0) state.due--;

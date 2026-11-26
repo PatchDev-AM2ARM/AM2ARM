@@ -1,2 +1,0 @@
-canattack = 1;
-

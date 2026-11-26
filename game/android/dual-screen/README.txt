@@ -1,6 +1,7 @@
-AM2ARM 1.6.2 — Android Dual Screen
+AM2ARM 1.6.2
 
-This GameMaker project contains the release code and resource definitions.
+This GameMaker project contains the release code and resource definitions. One
+build serves Android and Linux handhelds with gmloader-next, with one screen or two.
 asset-inputs.json lists the original artwork, music, fonts and included data
 needed to open and build AM2R-project.yyp.
 

@@ -1,11 +1,8 @@
 {
   "snapshot": "v1.6.3",
   "projects": {
-    "game/android/standard": "41843a7fdbaa7fa5b050e7796860e09f5d5a1636198ebcd7189671b2cc31a394",
-    "game/android/dual-screen": "0006cabcac4f3621bdfe5e54a5d56e75616d6f9750ab13f29282da784b59765e",
-    "game/linux/standard": "02d30e9eb605bc3e6b1635906ec9c14855298e69b0d849c87039b8a1b78570c0",
-    "game/linux/dual-screen": "a50317345559d682d8550b8681c2e0c171d1c18ef079375b6dcd13e1601d0483",
-    "autopatcher/android": "3259c40a243d8cccc382bac0f018995493acbed31395d58f063df16c8c4592f5",
-    "autopatcher/linux": "4fc496192700850a67f01115831d1dbd02b9d1b48827c89748b520fac3841ffa"
+    "game/android/dual-screen": "0b928b6431f96dfa843273aec43a96edddd211b9fdc834be6fd5b1472be69610",
+    "autopatcher/android": "728a19e9bf8a6f4ac2fff6963a8ef407c2ae7b447946db184e16357ea2aa4af0",
+    "autopatcher/linux": "e84ad347ca896050be29f6c4836940437e16422c938bf15e5f09078fd86fe81d"
   }
 }

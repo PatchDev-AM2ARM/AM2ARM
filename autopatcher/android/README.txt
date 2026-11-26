@@ -8,9 +8,9 @@ fonts and audio for this patcher:
   python3 restoration/restore_project.py --project autopatcher/android --check
 
 asset-inputs.json lists the editable sources, restorable files and generated
-inputs. Build both game editions and use make_patch_data.py with the same
-original ZIP to regenerate the patch payloads. Retain your signed Android games
-or Linux game archives privately for exact reconstruction checks. Independently
+inputs. Build the game and use make_patch_data.py with the same original ZIP to
+regenerate the patch payload. Retain your signed Android game privately for exact
+reconstruction checks. Independently
 built games can produce different hashes. Generated inputs in the released
 patcher can also be checked against the recorded hashes.
 

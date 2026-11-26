@@ -7,7 +7,7 @@ function set_fullscreen(argument0) {
 	} else {
 	    var scale;
 	    if (flag) {
-	        scale = floor(min(browser_width / (320 + (106*oControl.widescreen)), browser_height / 240));
+	        scale = floor(min(browser_width / (320 + oControl.widescreen_space), browser_height / 240));
 	    } else scale = global.opscale;
 	    set_window_scale(scale);
 	}

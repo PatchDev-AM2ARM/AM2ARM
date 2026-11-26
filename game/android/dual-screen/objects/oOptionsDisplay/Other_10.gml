@@ -45,23 +45,28 @@ i++;
 
 // Widescreen
 op[opWidescreen] = instance_create(x, y + SPACER * i, oOptionLR);
-op[opWidescreen].label = port_caption("Upper Screen Aspect");
+op[opWidescreen].label = android_orientation_text("AspectRatio", "Aspect Ratio");
 op[opWidescreen].optionid = opWidescreen;
 i++;
 
-// Give the hardware profile a menu row whose value is refreshed from oControl after creation.
-op[opDeviceProfile] = instance_create(x, y + SPACER * i, oOptionLR);
-op[opDeviceProfile].label = port_caption("Device Profile");
-op[opDeviceProfile].optionid = opDeviceProfile;
-op[opDeviceProfile].optext = "AYN Thor";
-op[opDeviceProfile].enabled = 1;
-i++;
+if (opOrientation >= 0) {
+    op[opOrientation] = instance_create(x, y + SPACER * i, oOptionLR);
+    op[opOrientation].label = android_orientation_text("Orientation", "Orientation");
+    op[opOrientation].optionid = opOrientation;
+    i++;
+}
 
-op[opSwapScreens] = instance_create(x, y + SPACER * i, oOptionLR);
-op[opSwapScreens].label = port_caption(oControl.thor_profile == 2 ? "Dual Screen Add-on" : "Swap Screens");
-op[opSwapScreens].optionid = opSwapScreens;
+// Second screen
+op[opDualScreen] = instance_create(x, y + SPACER * i, oOptionLR);
+op[opDualScreen].label = port_caption("Dual Screen");
+op[opDualScreen].optionid = opDualScreen;
 i++;
-
+if (opSwapScreens >= 0) {
+    op[opSwapScreens] = instance_create(x, y + SPACER * i, oOptionLR);
+    op[opSwapScreens].label = port_caption("Swap Screens");
+    op[opSwapScreens].optionid = opSwapScreens;
+    i++;
+}
 
 // HUD Header
 op[51] = instance_create(x, y + SPACER * i, oMenuLabel);
@@ -70,7 +75,7 @@ i++;
 
 // HUD Display
 op[opShowHUD] = instance_create(x, y + SPACER * i, oOptionLR);
-op[opShowHUD].label = port_caption("HUD Screen Position");
+op[opShowHUD].label = oControl.dual_enabled ? port_caption("HUD Screen Position") : get_text("OptionsDisplay", "HUDDisplay");
 op[opShowHUD].optionid = opShowHUD;
 i++;
 

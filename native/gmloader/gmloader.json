@@ -1,0 +1,11 @@
+{
+    "show_cursor" : false,
+    "disable_controller" : false,
+    "disable_depth" : false,
+    "disable_extensions" : false,
+    "disable_rumble" : false,
+    "disable_texhack" : true,
+    "rumble_scale" : 4.0,
+    "force_platform" : "os_android",
+    "plugins" : [ { "path" : "libdualscreen.so", "config" : { "title" : "Secondary screen" } } ]
+}

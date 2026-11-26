@@ -3,7 +3,7 @@
     "version": "X.Org Xwayland 22.1.9",
     "source_url": "https://www.x.org/releases/individual/xserver/xwayland-22.1.9.tar.xz",
     "source_archive_sha256": "81310efe1f29694bdf6f586e54f9321358c42c7df696108fb1da12ce212d3f78",
-    "license": "native/linux/licenses/Xwayland-COPYING.txt",
+    "license": "AM2ARM/runtime/licenses/Xwayland-COPYING.txt",
     "meson_options": {
       "buildtype": "release",
       "glamor": "false",
@@ -44,24 +44,5 @@
       "AM2ARM/runtime/lib/libgcc_s.so.1": "046856f95f4636f1fc7c3a12bf4f3cd5634c2fc5145c3fdf7395d4f349fa69c7",
       "AM2ARM/runtime/lib/libstdc++.so.6": "532f3a12d7b8fef6cc7a064ea106b6c4ab2365674b73e743e4a385d4ffb6c8ab"
     }
-  },
-  "westonpack": {
-    "version": "0.2.7.1",
-    "runtime_archive_url": "https://github.com/PortsMaster/PortMaster-New/releases/download/2025-07-24_0745/weston_pkg_0.2.squashfs",
-    "archive_size": 55398400,
-    "archive_sha256": "0bccaeebc11296bb1fe4278c9677cb82965c5a04bcd63745fa09d78228bc1a93",
-    "runtime_files": {
-      "AM2ARM/runtime/graphics/libcrusty.so": {
-        "archive_member": "lib_aarch64/graphics/crusty_glx/libcrusty.so",
-        "sha256": "e469163f8937004fffb98243c836cf4c896943d96a882cec6071c1650aab5c8c"
-      },
-      "AM2ARM/runtime/graphics/libGL.so.1": {
-        "archive_member": "lib_aarch64/graphics/gl4es_glxpass/libGL.so.1",
-        "sha256": "9cbb229668731a4e9504873b0e8634d5ee83c4936ef3c2ec8290db7ac2bbff7b"
-      }
-    },
-    "license": "dependencies/Westonpack-LICENSE.txt",
-    "upstream": "https://github.com/binarycounter/Westonpack",
-    "upstream_notes": "https://github.com/binarycounter/Westonpack/wiki"
   }
 }

@@ -30,10 +30,10 @@ if (global.shaders_compiled) {
     }
 }
 
-if (oControl.mod_IGT == 1) {
+if (oControl.dual_enabled || oControl.mod_IGT == 1) {
     op[num_IGT].optext = get_text("GlobalOptions", "Enabled");
 } else op[num_IGT].optext = get_text("GlobalOptions", "Disabled");
-if (!oControl.thor_enabled && global.mod_gamebeaten == 0) {
+if (!oControl.dual_enabled && global.mod_gamebeaten == 0) {
     op[num_IGT].optext = get_text("ExtrasMenu", "Locked");
 }
 

@@ -1,2 +1,0 @@
-sfx_stop(musItemGet);
-

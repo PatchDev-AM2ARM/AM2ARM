@@ -36,6 +36,11 @@ function port_locale_refresh() {
         variable_struct_set(_captions, _english, _text);
     }
     ini_close();
+    var _own = port_text(global.language[global.currentlanguage], "PortUI");
+    _names = variable_struct_get_names(_own);
+    for (var _i = 0; _i < array_length(_names); ++_i) {
+        variable_struct_set(_captions, _names[_i], variable_struct_get(_own, _names[_i]));
+    }
     global.port_captions = _captions;
     global.port_locale_generation = port_locale_revision() + 1;
 
@@ -51,7 +56,27 @@ function port_locale_refresh() {
         global.am2r_sync.message = port_caption(global.am2r_sync.message_source);
     // Android's system picker remains in the system language. Our confirmation
     // dialogs use the language selected in the game, including after a change.
-    if (os_type == os_android) SaveSync_SetText(json_stringify(_captions));
+    if (global.android_app) SaveSync_SetText(json_stringify(_captions));
+}
+
+// The language files come from the restore pack. Text added since is in port-text.json.
+function port_text(_file, _section) {
+    static _none = {};
+    static _text = undefined;
+    if (is_undefined(_text)) {
+        _text = {};
+        var _path = working_directory + "lang/port-text.json";
+        if (file_exists(_path)) {
+            var _buffer = buffer_load(_path);
+            var _loaded = json_parse(buffer_read(_buffer, buffer_string));
+            buffer_delete(_buffer);
+            if (is_struct(_loaded)) _text = _loaded;
+        }
+    }
+    var _language = variable_struct_get(_text, filename_change_ext(filename_name(_file), ""));
+    if (is_undefined(_language)) return _none;
+    var _rows = variable_struct_get(_language, _section);
+    return is_undefined(_rows) ? _none : _rows;
 }
 
 function port_caption(_english) {

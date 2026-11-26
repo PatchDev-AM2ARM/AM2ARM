@@ -1,9 +1,10 @@
 // Advance the simulation-step counter used to keep a shared fade from advancing once per camera draw.
-thor_steps++;
+dual_steps++;
+dual_layout_update();
 //
 // Release the captured transition frame once the normal room fade has finished.
 if (fadedone >= 1 && room != rm_transition && room != rm_subscreen && room != itemroom && room != rm_death) {
-    thor_keep_room_map = false;
+    dual_keep_room_map = false;
     global.transitiontype = 0;
     event_user(4);
 }
@@ -13,13 +14,25 @@ if (!init) {
         linux_keys();
     } else if (os_type == os_android) {
         touch_keys();
+        if (!global.android_app) {
+            // Use the controller's physical controls even if the player remaps pause.
+            var _pad = global.opjoyid;
+            var _held = gamepad_is_connected(_pad) && gamepad_button_check(_pad, gp_start) && gamepad_button_check(_pad, gp_select);
+            if (!_held) quit_chord_since = -1;
+            else if (quit_chord_since < 0) quit_chord_since = current_time;
+            else if (current_time - quit_chord_since >= 1000) {
+                game_end();
+                exit;
+            }
+        }
     } else { // windows, any other weird platforms
         check_keys();
     }
     // Merge lower-screen actions into raw input before pressed and held menu states are computed.
-    thor_input();
+    dual_input();
+    frontend_back();
     if (room != rm_transition) global_control();
-    if (thor_setup_needed) thor_setup_step();
+    if (dual_setup_needed) dual_setup_step();
     else {
         if (kExit && global.opexitkeyenable) game_end();
         if (kStart && kStartPushedSteps == 0) event_user(0);
@@ -139,12 +152,15 @@ control_gui_dimensions(_display_window_width, _display_window_height);
 if (surface_exists(gui_surface)) { // fix for widescreen HUD issues on boot
     if (surface_get_width(gui_surface) != (320 + widescreen_space)) surface_free(gui_surface);
 }
-if (!surface_exists(gui_surface)) gui_surface = surface_create(320 + widescreen_space, 240);
-if (surface_exists(gui_surface)) {
+if (!surface_exists(gui_surface)) {
+    gui_surface = surface_create(320 + widescreen_space, 240);
+    nano_render_hud_key = [];
+}
+if (surface_exists(gui_surface) && nano_render_hud_redraw()) {
     surface_set_target(gui_surface);
     draw_clear_alpha(c_black, 0);
-    if ((!thor_enabled || thor_hud_top) && global.ingame && displaygui && instance_exists(oCharacter)) {
-        draw_gui(thor_enabled);
+    if ((!dual_enabled || dual_hud_top) && global.ingame && displaygui && instance_exists(oCharacter)) {
+        draw_gui(dual_enabled);
         // debug room drawing for widescreen debug
         /*if (global.opshowhud && instance_exists(oTestKeys)) { 
             draw_set_font(fontMenuSmall);
@@ -223,7 +239,7 @@ switch translatestep
 }
 }
 */
-if(!thor_enabled && instance_exists(oCharacter) && mod_IGT && !instance_exists(oIGT)) {
+if(!dual_enabled && instance_exists(oCharacter) && mod_IGT && !instance_exists(oIGT)) {
     instance_create(0, 0, oIGT);
 }
 

@@ -39,10 +39,12 @@ if (result_pending) {
 
 // Preserve ordinary backup/restore while sharing their stages with one sync at a time.
 op[1].enabled = !ingame;
-op[3].enabled = global.am2r_sync.enabled;
-op[4].enabled = global.am2r_sync.enabled && !ingame;
-op[5].enabled = global.am2r_sync.enabled;
-tip[3] = global.am2r_sync.message;
+if (global.android_app) {
+    op[3].enabled = global.am2r_sync.enabled;
+    op[4].enabled = global.am2r_sync.enabled && !ingame;
+    op[5].enabled = global.am2r_sync.enabled;
+    tip[3] = global.am2r_sync.message;
+}
 if (active) {
     if (oControl.kDown && oControl.kDownPushedSteps == 0) {
         repeat (lastitem + 1) {
@@ -69,7 +71,7 @@ if (active) {
             exit;
         }
         if (!op[global.curropt].enabled) exit;
-        if (save_sync_busy() || SaveSync_Busy()) {
+        if (save_sync_busy() || (global.android_app && SaveSync_Busy())) {
             global.tiptext = port_caption("Please wait for the current transfer to finish.");
             exit;
         }
@@ -83,13 +85,27 @@ if (active) {
                     if (exported_file < 0) export_ok = false;
                     if (exported_file == 1) exported++;
                 }
-                if (export_ok && exported > 0) global.am2r_sync.transfer = SaveTransfer_Backup() == 1;
+                if (export_ok && exported > 0) {
+                    if (global.android_app) global.am2r_sync.transfer = SaveTransfer_Backup() == 1;
+                    else {
+                        result_action = "backup";
+                        result_ok = save_folder_backup();
+                        result_pending = 1;
+                    }
+                }
                 else {
                     for (var n = 0; n < array_length(names); n++) file_delete("backupstage_" + names[n]);
                     global.tiptext = get_text("Misc", "BackupFail");
                 }
                 break;
-            case 1: global.am2r_sync.transfer = SaveTransfer_Restore() == 1; break;
+            case 1:
+                if (global.android_app) global.am2r_sync.transfer = SaveTransfer_Restore() == 1;
+                else {
+                    result_action = "restore";
+                    result_ok = save_folder_restore();
+                    result_pending = 1;
+                }
+                break;
             case 2:
                 global.am2r_sync.picker = SaveSync_SelectFolder() == 1;
                 if (!global.am2r_sync.picker) save_sync_notice("The folder picker is unavailable.");

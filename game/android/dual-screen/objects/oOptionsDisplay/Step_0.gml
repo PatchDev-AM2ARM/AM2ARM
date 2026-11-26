@@ -79,18 +79,18 @@ if (active) {
         
         if (global.curropt == opNano) global.nano_enabled = !global.nano_enabled;
 
-        // Widescreen
-        if (global.curropt == opWidescreen && !oControl.thor_aspect_locked) {
-            global.widescreen_enabled = !global.widescreen_enabled;
+        // Aspect ratio. Active gameplay switches at the next room boundary.
+        if (global.curropt == opWidescreen) {
+            global.opaspectratio = wrap(global.opaspectratio + input, 0, 2);
+            oControl.aspect_auto = false;
             if (room == rm_options) {
-                oControl.widescreen = global.widescreen_enabled;
-                if (global.widescreen_enabled == 0) {
-                    __view_set( e__VW.Visible, 1, false );
-                }
-                
-                if (global.opfullscreen == 0) {
-                    set_window_scale(window_get_height()/240);
-                    window_set_position(window_get_x()+((53-(global.widescreen_enabled*106))*(window_get_height()/240)),window_get_y());
+                var _old_width = 320 + oControl.widescreen_space;
+                with (oControl) standard_aspect_apply(global.opaspectratio);
+                oControl.widescreen_switch = false;
+                if (os_type != os_android && global.opfullscreen == 0) {
+                    var _scale = window_get_height() / 240;
+                    set_window_scale(_scale);
+                    window_set_position(window_get_x() + (_old_width - standard_aspect_width(global.opaspectratio)) * _scale / 2, window_get_y());
                 }
                 if (global.opfullscreen == 1 || os_type == os_android) {
                     display_reset(0, global.opvsync);
@@ -98,28 +98,37 @@ if (active) {
             }
         }
 
-        // Apply hardware changes in oControl context, then save the selected profile independently of the menu instance.
-        if (global.curropt == opDeviceProfile) {
-            with (oControl) {
-                thor_profile_apply(wrap(thor_profile + input, 0, array_length(thor_profiles) - 1));
-                global.widescreen_enabled = !thor_aspect_locked;
-                if (room != rm_subscreen) widescreen = global.widescreen_enabled;
-                ini_open("config.ini");
-                ini_write_real("DualScreen", "DeviceProfile", thor_profile);
-                ini_close();
+        if (global.curropt == opOrientation) {
+            global.oporientation = wrap(global.oporientation + input, 0, 2);
+            Android_Orientation(global.oporientation);
+        }
+
+        // Reopen the menu, since its rows depend on this option.
+        if (global.curropt == opDualScreen) {
+            with (oControl) dual_set_enabled(!dual_enabled);
+            sfx_play(sndMenuMove);
+            with (instance_create(50, 92, oOptionsDisplay)) {
+                global.curropt = opDualScreen;
+                global.tiptext = tip[opDualScreen];
+                targetY = min(op[opDualScreen].y + 16, vTargetY);
             }
+            instance_destroy();
+            exit;
         }
 
-        if (global.curropt == opSwapScreens && canEdit[opSwapScreens]) {
-            with (oControl) thor_swap_set(!thor_swap_screens);
+        if (global.curropt == opSwapScreens) {
+            with (oControl) dual_swap_set(!dual_swap_screens);
         }
 
-        // Move health and ammunition between the two screens.
+        // Show HUD
         if (global.curropt == opShowHUD) {
-            with (oControl) {
-                thor_hud_top = !thor_hud_top;
-                thor_apply_hud_layout();
-            }
+            // Move health and ammunition between the two screens.
+            if (oControl.dual_enabled) {
+                with (oControl) {
+                    dual_hud_top = !dual_hud_top;
+                    dual_apply_hud_layout();
+                }
+            } else global.opshowhud = !global.opshowhud;
         }
         // Show Map
         if (global.curropt == opShowMap) global.ophudshowmap = !global.ophudshowmap;

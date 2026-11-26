@@ -10,12 +10,11 @@ import re
 from PIL import Image
 
 
-def read_metadata(directory, edition):
+def read_metadata(directory):
     directory = Path(directory)
     data = json.loads((directory / "game.json").read_text(encoding="utf-8"))
-    identity = data["editions"][edition]
-    expected = {"standard": "com.community.am2r", "dual": "com.community.am2rdual"}
-    if identity["package_name"] != expected[edition]:
+    identity = data["application"]
+    if identity["package_name"] != "com.community.am2r":
         raise ValueError("Keep the released package ID to preserve installed saves")
     if type(identity["version_code"]) is not int or identity["version_code"] <= 1005005:
         raise ValueError("The game version code must exceed the released 1005005")
@@ -39,8 +38,8 @@ def verified_image(directory, entry):
         return image.convert("RGBA")
 
 
-def prepare_project(directory, edition, project):
-    data, identity = read_metadata(directory, edition)
+def prepare_project(directory, project):
+    data, identity = read_metadata(directory)
     android = Path(project) / "options/android"
     options = android / "options_android.yy"
     text = options.read_text()
@@ -80,8 +79,8 @@ def prepare_project(directory, edition, project):
     banner.save(android / "tv_banner.png")
 
 
-def prepare_runtime(directory, edition, runtime):
-    _, identity = read_metadata(directory, edition)
+def prepare_runtime(directory, runtime):
+    _, identity = read_metadata(directory)
     gradle = Path(runtime) / "android/runner/ProjectFiles/build.gradle"
     text = gradle.read_text()
     marker = '        applicationId "${YYAndroidPackageName}"'
@@ -91,12 +90,17 @@ def prepare_runtime(directory, edition, runtime):
     text = re.sub(r"\n        version(?:Code|Name) [^\n]*", "", text)
     text = text.replace(marker, marker + "\n        versionCode " + str(identity["version_code"])
                         + "\n        versionName " + json.dumps(identity["version_name"]))
+    # Reconstruction replaces game.droid's bytes in the APK, so it can't be compressed.
+    packaging = "\n    packagingOptions {"
+    if text.count(packaging) != 1:
+        raise ValueError("Unexpected runtime template; use the pinned runtime's isolated copy")
+    if "noCompress" not in text:
+        text = text.replace(packaging, "\n    androidResources {\n        noCompress 'droid'\n    }\n" + packaging)
     gradle.write_text(text)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("edition", choices=["standard", "dual"])
     parser.add_argument("--metadata", type=Path, default=Path(__file__).parent / "game-metadata")
     parser.add_argument("--project", type=Path)
     parser.add_argument("--runtime-copy", type=Path)
@@ -104,6 +108,6 @@ if __name__ == "__main__":
     if not args.project and not args.runtime_copy:
         parser.error("Provide an isolated --project and/or --runtime-copy")
     if args.project:
-        prepare_project(args.metadata, args.edition, args.project)
+        prepare_project(args.metadata, args.project)
     if args.runtime_copy:
-        prepare_runtime(args.metadata, args.edition, args.runtime_copy)
+        prepare_runtime(args.metadata, args.runtime_copy)

@@ -25,7 +25,12 @@ function set_widescreen() {
 	    //view_yport[1] = view_yport[0];
     
 	    // Recreate its drawing surface if needed and bind that surface to the wide view.
-	    if (!surface_exists(widescreen_surface)) {
+	    if (surface_exists(widescreen_surface)) {
+            if (surface_get_width(widescreen_surface) != 320 + widescreen_space
+                || surface_get_height(widescreen_surface) != 240)
+                surface_free(widescreen_surface);
+        }
+        if (!surface_exists(widescreen_surface)) {
 	       widescreen_surface = surface_create(__view_get( e__VW.WView, 1 ), __view_get( e__VW.HView, 1 ));
 	    }
     
@@ -61,4 +66,57 @@ function world_draw_unused() {
         && surface_exists(oControl.widescreen_surface)
         && room != rm_subscreen && room != rm_transition && room != itemroom
         && room != rm_death && room != rm_loading;
+}
+
+// Saved ratio IDs retain the original 4:3 / 16:9 choices; 3:2 adds 40 pixels.
+function standard_aspect_width(_ratio) {
+    switch (_ratio) {
+        case 0: return 320;
+        case 2: return 360;
+        default: return 426;
+    }
+}
+
+function standard_aspect_validate(_ratio, _legacy_wide) {
+    if (_ratio == 0 || _ratio == 1 || _ratio == 2) return _ratio;
+    return _legacy_wide ? 1 : 0;
+}
+
+// Called in oControl only. Gameplay changes wait for the next room transition,
+// so existing room instances and frozen pause images keep one consistent width.
+function standard_aspect_apply(_ratio) {
+    aspect_ratio = _ratio;
+    if (dual_enabled && dual_aspect_locked) _ratio = 0;
+    global.widescreen_enabled = _ratio != 0;
+    widescreen = _ratio != 0;
+    widescreen_space = standard_aspect_width(_ratio) - 320;
+    if (!widescreen) __view_set(e__VW.Visible, 1, false);
+}
+
+// Use the ratio that fits the panel until the player picks one. Called in oControl only.
+// The window gets its real size after startup, so this is polled.
+function standard_aspect_auto() {
+    if (!aspect_auto || global.ingame || room == rm_subscreen) return;
+    var _width = window_get_width(), _height = window_get_height();
+    if (dual_swap_active()) {
+        _width = DualScreen_Width();
+        _height = DualScreen_Height();
+    }
+    if (_width < 1 || _height < 1) return;
+    var _ratio = standard_panel_aspect(_width, _height);
+    if (_ratio == global.opaspectratio) return;
+    global.opaspectratio = _ratio;
+    standard_aspect_apply(_ratio);
+}
+
+/// Choose the supported view that fills the most panel area without stretching.
+function standard_panel_aspect(_width, _height) {
+    var _best = 0, _largest = 0;
+    for (var _id = 0; _id < 3; ++_id) {
+        var _view = standard_aspect_width(_id);
+        var _scale = min(_width / _view, _height / 240);
+        var _area = _view * _scale * _scale;
+        if (_area > _largest) { _best = _id; _largest = _area; }
+    }
+    return _best;
 }

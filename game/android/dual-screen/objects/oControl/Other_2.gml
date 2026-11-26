@@ -3,11 +3,12 @@ global.ingame = 0;
 global.transitiontype = 0;
 global.transitionx = 0;
 global.transitiony = 0;
-// Load language and saved options first, then apply the saved hardware profile to the display state.
+// Load language, the second-screen choice and saved options first, then fit the layout to the screens.
 init_languages();
+dual_settings_load();
 load_gameoptions();
 port_locale_refresh();
-thor_profile_load();
+dual_layout_update();
 writelog("Options Loaded");
 init_stats();
 

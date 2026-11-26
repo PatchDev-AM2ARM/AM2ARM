@@ -13,6 +13,7 @@ sys.path.insert(0,str(SOURCE))
 sys.path.insert(0,str(SOURCE/'menus'))
 import package_sd
 from launch_layout import card_shortcuts
+from test_install import release_at
 
 
 class MenuEntrypoints(unittest.TestCase):
@@ -46,12 +47,14 @@ class MenuEntrypoints(unittest.TestCase):
             entries = card_shortcuts(card)
             for name, frontend in {'Tools/tg5040/AM2ARM.pak/launch.sh':'nextui','Tools/my355/AM2ARM.pak/launch.sh':'tools',
                 'Apps/AM2ARM/launch.sh':'stock','App/AM2ARM/launch.sh':'spruce','ports/AM2ARM.sh':'ports',
-                'roms/ports/AM2ARM.sh':'ports','ports/AM2ARM Editions.sh':'ports'}.items():
+                'roms/ports/AM2ARM.sh':'ports'}.items():
                 with self.subTest(name=name):
                     result=subprocess.check_output(['sh',entries[name]],text=True,env=dict(os.environ,SDCARD_PATH='/wrong'))
-                    self.assertEqual(result.splitlines(),[frontend,str(card),'auto','--setup' if 'Editions' in name else 'play'])
+                    self.assertEqual(result.splitlines(),[frontend,str(card),'auto','play'])
             for folder in ('App','Apps'):
                 config=json.loads((card/folder/'AM2ARM/config.json').read_text())
+                for device in ('TRIMUI_SMART_PRO_S', 'SPRUCE_TRIMUI_SMART_PRO_S'):
+                    self.assertIn(device, config['devices'])
                 self.assertEqual(config['label'],'AM2ARM')
                 self.assertEqual((card/folder/'AM2ARM'/config['icon']).resolve(), app/'AM2ARM/patcher/assets/app-icon.png')
             self.assertEqual(len(entries),len({name.casefold() for name in entries}))
@@ -73,53 +76,85 @@ class MenuEntrypoints(unittest.TestCase):
 
 
 class PackageTests(unittest.TestCase):
-    def test_card_output_uses_the_requested_bundle_and_current_patcher(self):
-        with tempfile.TemporaryDirectory() as folder:
-            root = Path(folder)
-            project, base, bundle = root/'project', root/'previous', root/'new patches'
-            patcher = base/'patcher'
-            scripts = root/'scripts'
-            def put(path, data):
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(data)
-                return path
-            for name in ('runtime/profile.py', 'launch.sh', 'menus/payload.sh', 'README-card.txt',
-                         'menus/README-licenses.txt', 'menus/dependencies/README.md',
-                         'menus/dependencies/inventory.tsv'):
-                put(project/name, b'source')
-            for name in ('bin/Xwayland', 'bin/Xvfb', 'kms/libGL.so.1', 'graphics/libcrusty.so', 'graphics/libGL.so.1'):
-                put(base/'runtime'/name, b'component')
-            for name in ('libGL.so.1', 'libcrusty.so'):
-                put(patcher/'runtime/graphics'/name, b'older component')
-            for name in ('assets/app-icon.png', 'vendor/xdelta3/linux-arm64/xdelta3',
-                         'vendor/xdelta3/linux-arm64/xdelta3.bin', 'handheld_gui.py', 'linux_patcher.py'):
-                put(patcher/name, b'previous')
-            for name in ('handheld_gui.py', 'linux_patcher.py', 'handheld-launch.sh', 'compatibility-check.sh'):
-                put(scripts/name, b'current')
-            for edition in ('standard', 'dual'):
-                put(bundle/edition/'assembly.json', b'{"version":"1.6.3"}')
-                for name in ('wrapper.bin', 'game_data.xdelta'):
-                    put(bundle/edition/name, b'new edition')
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.installer, self.gmloader = self.root/'previous', self.root/'gmloader'
+        for name in package_sd.REQUIRED:
+            base = self.gmloader if name.startswith('gmloader/') else self.installer
+            self.put(base/name.removeprefix('gmloader/'), b'\x7fELF component')
+        for name in ('runtime/play.py', 'runtime/kms/libGL.so.1', 'patcher/handheld_gui.py', 'patcher/patch-bundle/dual/wrapper.bin'):
+            self.put(self.installer/name, b'previous')
+        for name in package_sd.INSTALLER:
+            self.put(self.installer/name/'part', b'part')
+        self.game, self.music = self.root/'AM2ARM-gmloader-1.6.4.zip', self.root/'AM2ARM-music.zip'
+        release_at(self.game)
+        self.tracks({'musTitle.ogg': b'music'})
 
-            card = root/'card.zip'
-            cli = ['package_sd.py', str(patcher), str(base), str(card), '--patcher-source', str(scripts),
-                   '--patch-bundle', str(bundle), '--version', '1.6.3']
+    def put(self, path, data):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        return path
 
-            with patch.object(package_sd, 'SOURCE', project), patch.object(sys, 'argv', cli):
-                package_sd.main()
-            with ZipFile(card) as archive:
-                self.assertIn('am2arm-launcher/dependencies/inventory.tsv', archive.namelist())
-                self.assertIn('am2arm-launcher/licenses/README.txt', archive.namelist())
-                self.assertEqual(archive.read('am2arm-launcher/AM2ARM/patcher/linux_patcher.py'), b'current')
-                self.assertEqual(archive.read('am2arm-launcher/AM2ARM/patcher/patch-bundle/dual/wrapper.bin'),
-                                 b'new edition')
-                self.assertNotIn('am2arm/launch.sh', archive.namelist())
-                self.assertIn('am2arm-launcher/AM2ARM/runtime/kms/libGL.so.1', archive.namelist())
-                self.assertNotIn('am2arm-launcher/AM2ARM/runtime/graphics/libGL.so.1', archive.namelist())
-                self.assertNotIn('am2arm-launcher/AM2ARM/runtime/graphics/libcrusty.so', archive.namelist())
-            put(bundle/'dual/assembly.json', b'{"version":"1.6.2"}')
-            with self.assertRaisesRegex(ValueError, 'Edition versions'):
-                package_sd.collect(patcher, base, scripts, bundle, '1.6.3')
-            put(patcher/'input/my original.zip', b'private input')
-            with self.assertRaisesRegex(ValueError, 'Unexpected input'):
-                package_sd.collect(patcher, base, scripts, bundle)
+    def tracks(self, tracks):
+        with ZipFile(self.music, 'w') as archive:
+            for name, data in tracks.items():
+                archive.writestr(name, data)
+        with ZipFile(self.music) as archive:
+            rows = [f'{i.CRC:08X} {i.filename}' for i in archive.infolist()]
+        with ZipFile(self.game) as archive:
+            members = {name: archive.read(name) for name in archive.namelist() if name != 'music.txt'}
+        with ZipFile(self.game, 'w') as archive:
+            for name, data in members.items():
+                archive.writestr(name, data)
+            archive.writestr('music.txt', '\n'.join(rows) + '\n')
+
+    def package(self):
+        output = self.root/'out'
+        cli = ['package_sd.py', '--installer', self.installer, '--gmloader', self.gmloader, '--game', self.game,
+               '--music', self.music, '--output', output]
+        with patch.object(sys, 'argv', [str(value) for value in cli]):
+            package_sd.main()
+        return output/'AM2ARM-1.6.4-linux-arm64.zip'
+
+    def test_card_holds_the_installer_the_loader_and_one_game(self):
+        with ZipFile(self.package()) as archive:
+            names = set(archive.namelist())
+            app = 'am2arm-launcher/AM2ARM/'
+            for name in (*package_sd.REQUIRED, 'game/am2arm.zip', 'game/gmloader.json', 'game/assets/musTitle.ogg', 'launch.sh'):
+                self.assertIn(app+name, names)
+            # Scripts come from the sources, not from the installer ZIP.
+            self.assertNotEqual(archive.read(app+'runtime/play.py'), b'previous')
+            self.assertNotEqual(archive.read(app+'patcher/handheld_gui.py'), b'previous')
+            self.assertNotIn(app+'runtime/kms/libGL.so.1', names)
+            self.assertFalse([name for name in names if 'patch-bundle' in name])
+            self.assertIn('am2arm-launcher/dependencies/README.md', names)
+            self.assertEqual(archive.read(app+'game/am2arm.zip'), self.game.read_bytes())
+            programs = archive.read('am2arm-launcher/executables.txt').decode().splitlines()
+            for name in ('AM2ARM/gmloader/gmloadernext.aarch64', 'AM2ARM/runtime/python/usr/bin/python3.11',
+                         'AM2ARM/runtime/core/ld-linux-aarch64.so.1', 'AM2ARM/runtime/start.sh'):
+                self.assertIn(name, programs)
+                self.assertTrue(archive.getinfo('am2arm-launcher/'+name).external_attr >> 16 & 0o111)
+            self.assertNotIn('AM2ARM/gmloader/lib/libdualscreen.so', programs)
+
+    def test_music_from_another_release_stops_packaging(self):
+        self.package()
+        with ZipFile(self.music, 'w') as archive:
+            archive.writestr('musTitle.ogg', b'other music')
+        with self.assertRaisesRegex(ValueError, 'different release'):
+            package_sd.collect(self.installer, self.gmloader, self.game, self.music, self.root/'music')
+
+    def test_missing_component_or_player_files_stop_packaging(self):
+        (self.gmloader/'fallback/libSDL2-2.0.so.0').unlink()
+        with self.assertRaisesRegex(ValueError, 'fallback/libSDL2'):
+            package_sd.collect(self.installer, self.gmloader, self.game, self.music, self.root/'music')
+        self.put(self.installer/'runtime/share/data.win', b'private')
+        with self.assertRaisesRegex(ValueError, 'Unexpected input'):
+            package_sd.collect(self.installer, self.gmloader, self.game, self.music, self.root/'music2')
+
+    def test_rebuilt_game_data_is_never_packaged(self):
+        with ZipFile(self.game, 'a') as archive:
+            archive.writestr('assets/game.droid', b'private')
+        with self.assertRaisesRegex(ValueError, 'not the AM2ARM-gmloader ZIP'):
+            package_sd.collect(self.installer, self.gmloader, self.game, self.music, self.root/'music')

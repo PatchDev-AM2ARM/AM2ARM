@@ -1,74 +1,87 @@
-Dual Screen .14 source map
+Source map
 
 Paths below are relative to this complete GameMaker project. A script named X
-lives at scripts/X/X.gml; its YY file registers it with the project. The thor_
-prefix is retained for compatibility: these helpers serve all four device
-profiles, not just AYN Thor. Most display/HUD helpers execute in oControl scope.
+lives at scripts/X/X.gml; its YY file registers it with the project. One build
+serves one screen and two: dual_ helpers run when dual_enabled is set, for any
+second screen. Most display/HUD helpers execute in oControl scope.
 
 Control and event flow
-objects/oControl/Create_0.gml creates the effect cache and calls thor_init.
-objects/oControl/Step_0.gml merges normal input with thor_input, computes control
+objects/oControl/Create_0.gml creates the effect cache and calls dual_init.
+objects/oControl/Step_0.gml merges normal input with dual_input, computes control
 state and handles first-run setup. It advances the display's simulation-step
 counter; multiple draw calls must not advance shared fades multiple times.
 objects/oControl/Draw_64.gml is the Draw GUI path, including lower composition.
 objects/oControl/Draw_77.gml handles Post Draw scene presentation and routing.
-thor_draw's existing frame guard prevents duplicate lower work across these paths.
+dual_draw's existing frame guard prevents duplicate lower work across these paths.
 objects/oControl/Other_4.gml handles Room Start; Other_5.gml handles Room End and
 clears spare effect-cache images. CleanUp_0.gml releases controller-owned display
 resources and the effect cache. Preserve the event categories and execution order.
 
 Display and hardware
-thor_display: oControl display-state initialization, render scheduling, lower
-composition and cleanup. thor_init, thor_draw and thor_cleanup remain entry points.
-thor_device_setup: saved profile selection, first-run setup, geometry application and
-swap preference. Profile IDs remain Thor=0, RG DS=1, Retroid=2 and AYANEO=3.
-thor_presentation: upper pause/HUD captures and swapped output composition.
-thor_frontend: title/menu/credits/death scene routing and existing scene constants.
-The profile's logical dimensions and the physical display size are different
-inputs; preserving that distinction keeps HUD pixels aligned across handhelds.
+dual_display: oControl display-state initialization, render scheduling, lower
+composition and cleanup. dual_init, dual_draw and dual_cleanup remain entry points.
+dual_setup: the choice between one screen and two, first-run setup, swap
+preference, and the layout. The lower canvas is the second screen's size divided
+by the largest whole number that leaves at least 310x240.
+dual_presentation: upper pause/HUD captures and swapped output composition.
+dual_frontend: title/menu/credits/death scene routing and existing scene constants.
+Canvas size and screen size are different inputs; preserving that distinction
+keeps HUD pixels aligned across handhelds.
 
 Map and titles
-thor_map_input: control bounds, map actions, controller input and gestures.
-thor_map_cache: compact map surfaces, cached columns, bounds and repaint work.
-thor_area_titles: room/scan-based area selection, translated names and backdrop
+dual_map_input: control bounds, map actions, controller input and gestures.
+dual_map_cache: compact map surfaces, cached columns, bounds and repaint work.
+dual_area_titles: room/scan-based area selection, translated names and backdrop
 fades. The Tower, Waterfalls and research-site rules remain here.
 oControl owns this state. Input and drawing share control geometry; cache keys
 and invalidation remain part of the same map subsystem.
 
 Lower HUD
-thor_hud_artwork: native-pixel geometry, health/ammo artwork, stats and buttons.
-thor_hud_titles: title state, measured text fitting and title-layer drawing.
-thor_hud_cache: dirty decisions, cache keys, snapshots and cached-image lifetime.
-thor_hud_output: strip presentation, hints, flashes, transitions and fallback.
-thor_hud_status: weapon-state updates, status helpers and fallback toolbar drawing.
+dual_hud_artwork: native-pixel geometry, health/ammo artwork, stats and buttons.
+dual_hud_titles: title state, measured text fitting and title-layer drawing.
+dual_hud_cache: dirty decisions, cache keys, snapshots and cached-image lifetime.
+dual_hud_output: strip presentation, hints, flashes, transitions and fallback.
+dual_hud_status: weapon-state updates, status helpers and fallback toolbar drawing.
 The artwork strips, composed output and presentation scale have distinct roles.
 Keep the existing original-font, integer-pixel and caller draw-state contracts.
 
 Shared port systems
 port_localization: cached captions, original-font selection, glyph measurements
 and wrapping. It refreshes captions on language changes and supplies native dialog
-text. datafiles/lang contains runtime catalogues and glyph-ink metadata.
+text. datafiles/lang contains runtime catalogues and glyph-ink metadata. The
+language files come from the restore pack. Captions added since are in
+port-text.json, which port_text reads first.
 scr_save_sync: shared-save state and synchronization scheduling. Save validation
 and Android folder access remain in extensions/AM2RSaveTransfer; the bridge files
 separate file validation, transfer and shared-folder coordination.
+scr_save_folder: backup and restore under gmloader-next, in the backup folder
+beside the saves, with the same validation.
 touch_layout and touch_keys: on-screen geometry and input handling. Preserve the
-edition's controller/touch differences and saved hold/toggle behavior.
+controller/touch differences and saved hold/toggle behavior.
 effect_surface_cache: reusable scratch/trail surfaces, generations and releases.
 water_strip_batch: strip geometry and water-shader submission in oWaterFXV2 scope.
 nano_effects: cosmetic particle quotas with original gameplay RNG consumption.
 nano_light_cache: room-aligned lighting in oLightEngine scope, with shader/surface
-fallbacks. Its Dual Screen version retains the world_draw_unused guard.
+fallbacks. It retains the world_draw_unused guard.
 set_widescreen: inherited camera/display geometry plus presentation helpers.
+standard_aspect_auto follows the panel under gmloader-next until the player picks
+a ratio.
 Keep these rendering helpers' platform and unused-world guards intact.
 
-Android display boundary
-extensions/AM2RThor/AndroidSource/Java/AM2RThor.java owns display discovery,
-Presentation lifecycle, input capture and the GML extension interface.
-AM2RGpuOutput.java owns secondary-surface/EGL rendering and its state restoration.
-AM2RDisplayEntry.java handles entry/resume presentation while live output returns.
-GML owns gameplay and map visibility; Android owns windows and their lifecycles.
-The extension metadata registers public function signatures. Preserve bridge
-command values, UI/render-thread boundaries and surface-recreation behavior.
+Second-screen boundary
+extensions/AM2RDualScreen registers the DualScreen_ functions. GML owns the layout
+and drawing; the extension owns the window, its lifecycle and touch.
+  DualScreen_Available, Enable, Ready, Width, Height: the screen and its window
+  DualScreen_Begin, Draw, End: a frame made from parts of the current surfaces
+  DualScreen_Frame: the frame as pixels, when Begin isn't available
+  DualScreen_Touch: drag, pinch and tap since the last call, in screen pixels
+  DualScreen_Swap, SwapFrame: the game on the second screen, the map on the main one
+On Android, AM2RDualScreen.java owns display discovery, Presentation lifecycle and
+input capture, AM2RGpuOutput.java secondary-surface/EGL rendering and its state
+restoration, and AM2RDisplayEntry.java entry/resume presentation while live output
+returns. Preserve UI/render-thread boundaries and surface-recreation behavior.
+Under gmloader-next, the dualscreen plugin provides the same functions. Other
+extension functions return 0 there, and global.android_app is false.
 extensions/AM2RHaptics contains the independent vibration bridge.
 
 Inherited gameplay
@@ -82,8 +95,7 @@ Read CODE-STYLE.txt before changing scope, resource order or rendering lifetime.
 Public source restoration is handled by separate developer tooling. Runtime
 catalogues/assets are inputs, not private build or profiling output.
 
-Version .14 external display add-on
-The Retroid profile has an optional Dual Screen Add-on setting, default off.
-RetroidAddon is independent of RGDSSwapScreens. thor_presentation publishes the
-actual gameplay rectangle to Thor_SwapFrame; Android captures only that rectangle
-and fits it on the external panel. The primary display retains the lower map.
+External display add-ons
+With the screens swapped, dual_presentation publishes the actual gameplay rectangle
+to DualScreen_SwapFrame. Only that rectangle is captured and fitted on the second
+screen. The main one shows the map.

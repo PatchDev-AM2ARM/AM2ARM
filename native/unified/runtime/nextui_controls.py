@@ -1,7 +1,11 @@
-"""Use the built-in TrimUI controller's printed buttons and analog axes."""
+"""Use each built-in controller's printed buttons and analog axes."""
 from pathlib import Path
 import os
 import struct
+
+
+RGDS = ('19000000010000000100000000010000,ANBERNIC RG DS Linux,a:b0,b:b1,x:b2,y:b3,back:b6,guide:b12,start:b7,leftshoulder:b4,rightshoulder:b5,'
+        'leftstick:b8,rightstick:b9,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b10,righttrigger:b11,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,')
 
 
 def button_order(keys):
@@ -82,3 +86,39 @@ def evdev_mapping(device, input_root=Path('/sys/class/input'),
         except (OSError, ValueError):
             continue
     return ''
+
+
+def rgds_virtual_mapping(model, name, device_path, guid):
+    if (model not in ('Anbernic RG DS', 'Anbernic RG DS Plus')
+            or name != 'Sony Interactive Entertainment DualSense Wireless Controller'
+            or '/devices/virtual/misc/uhid/' not in device_path):
+        return None
+    return (guid + ',Anbernic RG DS virtual controller,'
+            'a:b1,b:b0,x:b2,y:b3,back:b8,guide:b10,start:b9,'
+            'leftshoulder:b4,rightshoulder:b5,leftstick:b11,rightstick:b12,'
+            'leftx:a0,lefty:a1,rightx:a3,righty:a4,lefttrigger:a2,righttrigger:a5,'
+            'dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,')
+
+
+def rgds_mappings(input_root=Path('/sys/class/input'), model=Path('/proc/device-tree/model')):
+    rows = [RGDS]
+    try:
+        name = model.read_text().rstrip('\0\n')
+    except OSError:
+        return RGDS
+    for entry in input_root.glob('event*'):
+        pad = entry/'device'
+        try:
+            ids = [int((pad/'id'/field).read_text(), 16) for field in ('bustype', 'vendor', 'product', 'version')]
+            rows.append(rgds_virtual_mapping(name, (pad/'name').read_text().strip(), str(pad.resolve()),
+                                             struct.pack('<IIII', *ids).hex()))
+        except (OSError, ValueError):
+            continue
+    return '\n'.join(dict.fromkeys(filter(None, rows)))
+
+
+def controller_mappings(device=None):
+    """SDL mappings for the built-in controller. Other Wayland boards get theirs from the firmware."""
+    if device is None:
+        return rgds_mappings()
+    return brick_mappings(device) if device in ('smartpro', 'brick') else evdev_mapping(device)

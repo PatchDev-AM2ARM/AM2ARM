@@ -1,7 +1,7 @@
 offset = 160;
 state = 0;
 with (oSS_Fg) hidetext = 1;
-if (oControl.thor_enabled) {
+if (oControl.dual_enabled) {
     // Retire the outgoing page before exposing the selector. Its rows remain
     // visible when merely deactivated, especially after Display settings scroll.
     with (oSS_Control) event_user(0);

@@ -3,6 +3,7 @@ from pathlib import Path
 import tkinter as tk
 import time
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -12,9 +13,16 @@ from handheld_gui import HandheldWindow
 @unittest.skipUnless(os.environ.get('DISPLAY'), 'requires an isolated X display')
 class HandheldGuiTests(unittest.TestCase):
     def setUp(self):
+        card = tempfile.TemporaryDirectory()
+        self.addCleanup(card.cleanup)
+        self.library = SimpleNamespace(card=Path(card.name), version='1.6.4', original=lambda: None)
         self.root = tk.Tk()
-        self.window = HandheldWindow(self.root)
+        self.window = HandheldWindow(self.root, self.library)
         self.root.update()
+
+    def skip_intro(self):
+        self.window.finish_intro()
+        self.window.picker.back()
 
     def tearDown(self):
         self.window.busy = False
@@ -22,8 +30,9 @@ class HandheldGuiTests(unittest.TestCase):
             self.window.close()
 
     def test_confirm_skips_intro_without_opening_picker(self):
-        self.window.focus_index = 2
-        self.window.action('accept')
+        with patch.object(self.window, 'begin') as begin:
+            self.window.action('accept')
+        begin.assert_called_once_with()
         self.assertIsNone(self.window.picker, 'Skipping the intro must consume confirm')
         self.window.action('accept')
         self.assertIsNotNone(self.window.picker)
@@ -45,8 +54,7 @@ class HandheldGuiTests(unittest.TestCase):
                                    width/2, delta=1)
 
     def test_vertical_menu_keeps_every_action_visible_without_overlap(self):
-        self.window.finish_intro()
-        self.window.picked(Path('AM2R_11.zip'), False)
+        self.skip_intro()
         for width, height in ((640, 480), (1280, 720), (720, 720)):
             self.root.geometry(f'{width}x{height}')
             self.root.update()
@@ -62,60 +70,27 @@ class HandheldGuiTests(unittest.TestCase):
     def test_wide_picker_fills_window_and_keeps_controls_inside(self):
         self.root.geometry('1280x720')
         self.root.update()
-        self.window.browse(False)
+        self.window.browse()
         self.root.update()
         picker = self.window.picker
         self.assertEqual(picker.frame.winfo_width(), 1280)
         self.assertEqual(picker.frame.winfo_height(), 720)
         self.assertLessEqual(picker.items.winfo_y() + picker.items.winfo_height(), 720)
 
-    def test_original_zip_picker_starts_in_shared_input_folder(self):
-        with tempfile.TemporaryDirectory(prefix='Shared input ') as directory, \
-             patch.dict(os.environ, AM2ARM_INPUT_DIR=directory):
-            self.window.browse(False)
-            self.assertEqual(self.window.picker.path, Path(directory))
-
-    def test_selecting_zip_after_fade_keeps_menu_usable(self):
-        self.root.after_cancel(self.window.intro_id)
-        self.window.intro_start = time.monotonic() - 1.75
-        self.window.animate_intro()
-        self.window.finish_intro()
-        self.window.picked(Path('AM2R_11.zip'), False)
-        self.root.update()
-        self.assertTrue(self.window.install.visible)
-        self.assertFalse(self.window.intro_active)
-
-    def test_install_folder_is_reachable_with_only_dpad_and_confirm(self):
-        self.window.finish_intro()
-        for _ in range(3):
-            self.window.action('down')
-        self.window.action('accept')
-        self.assertIsNotNone(self.window.picker)
-        self.assertTrue(self.window.picker.folders)
-
-    def test_empty_destination_can_be_selected_without_start_or_touch(self):
-        with tempfile.TemporaryDirectory() as empty:
-            self.window.finish_intro()
-            self.window.output = Path(empty)
-            self.window.browse(True)
-            self.window.action('accept')
-            self.assertIsNone(self.window.picker)
-            self.assertEqual(self.window.output, Path(empty))
-
     def test_picker_can_go_up_without_a_shoulder_button(self):
         with tempfile.TemporaryDirectory() as folder:
             child = Path(folder) / 'original game'
             child.mkdir()
             (child / 'AM2R_11.zip').write_bytes(b'not installed by this test')
-            self.window.finish_intro()
+            self.skip_intro()
             self.window.source = child / 'AM2R_11.zip'
-            self.window.browse(False)
+            self.window.browse()
             self.window.action('accept')
             self.assertIsNotNone(self.window.picker)
             self.assertEqual(self.window.picker.path, Path(folder))
 
     def test_error_back_returns_to_installer_without_exiting(self):
-        self.window.finish_intro()
+        self.skip_intro()
         self.window.messages.put(('error', 'Wrong original game.\nPlease choose AM2R 1.1.'))
         self.root.after_cancel(self.window.poll_id)
         self.window.poll()
@@ -123,40 +98,12 @@ class HandheldGuiTests(unittest.TestCase):
         self.assertFalse(self.window.closed)
         self.assertFalse(self.window.busy)
 
-    def test_custom_installer_opens_its_game_from_the_firmware_menu(self):
-        self.window.close()
-        self.root = tk.Tk()
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory)
-            source_file = output / 'original.zip'
-            source_file.write_bytes(b'original')
-
-            def install(source, destination, edition, progress):
-                game = destination / 'AM2ARM'
-                game.mkdir()
-                (game / edition).write_bytes(source.read_bytes())
-                return game, 'checked'
-
-            self.window = HandheldWindow(self.root, output, install_func=install, menu_name='Tools')
-            self.window.finish_intro()
-            self.window.picked(source_file, False)
-            self.window.begin()
-            deadline = time.monotonic() + 3
-            while self.window.busy and time.monotonic() < deadline:
-                self.root.update()
-                time.sleep(.01)
-            self.assertEqual((output / 'AM2ARM/standard').read_bytes(), b'original')
-            self.assertIn('Tools', self.window.status.get())
-            self.assertNotIn('Ports', self.window.status.get())
-
     def test_square_screen_keeps_button_text_inside_each_button(self):
         self.root.geometry('720x720')
         self.root.update()
-        self.window.finish_intro()
+        self.skip_intro()
         self.root.update()
         for button in self.window.buttons:
-            if not button.visible:
-                continue
             left, top, width, height = button.bounds
             x1, y1, x2, y2 = self.window.canvas.bbox(button.text_item)
             self.assertGreaterEqual(x1, left)
@@ -165,7 +112,7 @@ class HandheldGuiTests(unittest.TestCase):
             self.assertLessEqual(y2, top + height)
 
     def test_back_from_main_menu_does_not_accidentally_exit(self):
-        self.window.finish_intro()
+        self.skip_intro()
         self.window.action('back')
         self.assertFalse(self.window.closed)
         self.window.action('back')

@@ -20,13 +20,13 @@
     },
     {
       "path": "README.md",
-      "size": 2498,
-      "sha256": "ca3c99f71253402f96263f79a166ca20b0e51e666a06906d2305611623a93197"
+      "size": 2860,
+      "sha256": "fd89922bbe7cbd896e049dbb7e7362bdbe892c8ecca173d69ac54e9cbfca2752"
     },
     {
       "path": "README.txt",
-      "size": 1149,
-      "sha256": "cd8e71afd48244b2719f3ec7cdd31b7cf442bd0bdd35f1ddfa898caf78abf3e5"
+      "size": 1114,
+      "sha256": "ae180c75d0adde4710adbfd42a6c2afa0f2cd7d6c4fada46aaae475e56ebb96d"
     },
     {
       "path": "RELEASE-NOTES.txt",
@@ -40,13 +40,13 @@
     },
     {
       "path": "am2r_android_patcher.py",
-      "size": 16113,
-      "sha256": "ffc854b5782511ce81c4615734a20b646b561c80e0537d2f0d235aa802ca6bbc"
+      "size": 14980,
+      "sha256": "e028c1c469319b7e87eeea67384ad5f84d4659ec72ce53e0151f2000a21a2c8a"
     },
     {
       "path": "app-android/app/build.gradle",
-      "size": 2696,
-      "sha256": "f7a0ebf475ee06d0c01c438fe546cc5106578b15d9ec19c3aabb4b14900bebc7"
+      "size": 2436,
+      "sha256": "ae8b0cedf01587d1be5b93d7316d0156c61d1dc48ded253806d91bcf5c7d7b7b"
     },
     {
       "path": "app-android/app/src/main/AndroidManifest.xml",
@@ -55,8 +55,8 @@
     },
     {
       "path": "app-android/app/src/main/java/com/community/am2r/patcher/InstallActivity.java",
-      "size": 14172,
-      "sha256": "ce213f12a7cb21d82aa521f244f26686a504bac61b908ca2a4cba26451f44740"
+      "size": 13770,
+      "sha256": "1ec342323f59d792638db5255f6371a6d5218201bb3ff2fc0bbad56cf25722dd"
     },
     {
       "path": "app-android/app/src/main/java/com/community/am2r/patcher/InstallReport.java",
@@ -70,13 +70,13 @@
     },
     {
       "path": "app-android/app/src/main/java/com/community/am2r/patcher/PatchJob.java",
-      "size": 14284,
-      "sha256": "3a2707c33a6c62b7bc95d317f258501f5b8f0e83f47820d8a03d18caf2e38bb3"
+      "size": 13943,
+      "sha256": "7cbb12381e185ae3575352ef27a63828a74437e0498bcfc5add67c4ca43eced0"
     },
     {
       "path": "app-android/app/src/main/java/com/community/am2r/patcher/PatcherActivity.java",
-      "size": 19534,
-      "sha256": "d244129457294543b45211fb11f2928c3318925493f43b7023899c8a585493c5"
+      "size": 17587,
+      "sha256": "fb326e9b4bfc916e542b98c3aef3f4895750159d31c027dac9a5303c4886d86c"
     },
     {
       "path": "app-android/app/src/main/java/com/community/am2r/patcher/TitleBackdrop.java",
@@ -220,18 +220,18 @@
     },
     {
       "path": "export_game_metadata.py",
-      "size": 2390,
-      "sha256": "287272de2ac946a7d72e7cfc6aff05b5e2dc4fd79a7161fe63d632c5731ef83f"
+      "size": 2347,
+      "sha256": "a1f3944502cb58776d874cd0c9983c5a77fcc59c33d5a486b0f6dc69c505b3d1"
     },
     {
       "path": "game-metadata/README.txt",
-      "size": 3843,
-      "sha256": "474c9b9c5e3068909444e8e375f1494ef486a0ce303e0813c29165997b267744"
+      "size": 3618,
+      "sha256": "fe50dbd08021f02bcb9693f0b991a3ba4d3d93bdf26226df0323d077cb704396"
     },
     {
       "path": "game-metadata/game.json",
-      "size": 3050,
-      "sha256": "014bbf6d8e9f50503a5a6d252c5653acf13275a42402e36a35a1143a1822de7b"
+      "size": 2790,
+      "sha256": "43e1187e37e9fd1de4b59c5b18d79582af0f4bb63c714617964be036887c4830"
     },
     {
       "path": "make_patch_data.py",
@@ -239,19 +239,24 @@
       "sha256": "3069681a5a86afdc91c7c5911dd33fafebf4389d21cb2571c16301ec18b08b46"
     },
     {
+      "path": "make_port_data.py",
+      "size": 2741,
+      "sha256": "642944d7fd627adb01aca3072e2a80b89fe288c90fffed8e88d81d00c45272ff"
+    },
+    {
       "path": "prepare_game_metadata.py",
-      "size": 5557,
-      "sha256": "0f8750c67e407611d48c3794b897f6dd3b80850f4584b651071118f240547e3e"
+      "size": 5743,
+      "sha256": "c76ca5f140266111d0652f8ca20bf1b4965cf0157477341d5d087bfc20aa9b6c"
     },
     {
       "path": "prepare_runtime_performance.py",
-      "size": 2483,
-      "sha256": "b54d87fd4794fb4e07514d691549e73478ece6b19caaa8620fecc732f259fc1f"
+      "size": 2479,
+      "sha256": "861bd03a7d81960cd32c15326799b8740cf13e272f2e2ab00d89fe957c1451e1"
     },
     {
-      "path": "test_patch_editions.py",
-      "size": 5088,
-      "sha256": "3e4f3e9a339ec6690a72e14dd786f1c1a488b025ce6e8b5cf3124afe97f260c8"
+      "path": "test_patch.py",
+      "size": 4346,
+      "sha256": "9d2bd85922d58b87795208c5c0d5e6ae18c953e122aa3cbb27d3cff1612ecea9"
     },
     {
       "path": "tests/InstallReportTest.java",
@@ -265,8 +270,8 @@
     },
     {
       "path": "verify_apk_compatibility.py",
-      "size": 7914,
-      "sha256": "ec919bb66aae986289a2fe060356555b5852268885259667a740e735355973b8"
+      "size": 7756,
+      "sha256": "1ec74be6e07865320b6c63d16872aa1e9331df8adc357e20a908d832314e7e4b"
     }
   ],
   "files": [

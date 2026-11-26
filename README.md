@@ -276,8 +276,8 @@ The desktop game does not read these sync ZIPs; use portable backups with it.
 
 ## Development
 
-The repository contains the Standard and Dual Screen GameMaker projects for
-Android and Linux, the Autopatcher source, and the native Linux integration.
+The repository contains the GameMaker project for Android and Linux, the
+Autopatcher source, and the Linux launcher with its gmloader-next build.
 Original media and signing material are omitted. Use your own original AM2R
 1.1 ZIP to restore the missing inputs locally. The development guide lists
 the matching restore files, toolchain and build steps. [Development guide](docs/README.md)

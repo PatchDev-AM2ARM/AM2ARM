@@ -9,5 +9,7 @@ with (op[7]) instance_destroy();
 with (op[8]) instance_destroy();
 with (op[9]) instance_destroy();
 with (op[10]) instance_destroy();
+with (op[11]) instance_destroy();
+with (op[12]) instance_destroy();
 with (op[50]) instance_destroy();
 

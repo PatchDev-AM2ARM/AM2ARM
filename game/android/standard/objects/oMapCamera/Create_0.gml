@@ -1,3 +1,0 @@
-targetx = x;
-targety = y;
-

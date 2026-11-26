@@ -1,5 +1,7 @@
 /// @description  Input3D with heavy Lojical mods - Controller Connected
 
+touch_layout_receive(async_load);
+
 if (os_type == os_linux) {
     var event = ds_map_find_value(async_load, "event_type");
     

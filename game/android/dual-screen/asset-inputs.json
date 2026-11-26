@@ -23,18 +23,18 @@
     },
     {
       "path": "AM2R-project.yyp",
-      "size": 695548,
-      "sha256": "df0c7f175f5d7cdbeee3784c54eec5ec5630bc747ecea1b36d36b3c6bdfe2bd2"
+      "size": 696173,
+      "sha256": "5d8d411e15a67de4a2d62e552528612e70b4569272485266f580526f5e98b36d"
     },
     {
       "path": "BUILDING.txt",
-      "size": 1393,
-      "sha256": "e3e7e25eac1212fdfc527ff8b39d9a9d76041ab44675e84561fffe209d042011"
+      "size": 1234,
+      "sha256": "488e54866f59bcc6ae609e4ea70e08ceb56d7b106b36d25852bedbd0d280c63d"
     },
     {
       "path": "CODE-STYLE.txt",
-      "size": 4457,
-      "sha256": "e46f5c441f110062467cde14e134e1571f56999f6ae6e23a48f8d32b8ddb32fd"
+      "size": 4334,
+      "sha256": "ed463a5371170a6667a6504f4550219ee642645085da8a327451d4bf9cc3e7b8"
     },
     {
       "path": "LICENSE.txt",
@@ -53,28 +53,68 @@
     },
     {
       "path": "README.txt",
-      "size": 850,
-      "sha256": "3fa5f650bfe58144d8af86bf96e81e6cc57dd5b55a80c72f42b3359bf55fa872"
+      "size": 915,
+      "sha256": "52f50b07422ddc88e9bc016bb2afc3f0261d0d5a6decbfa08682d4efbbcd7cab"
     },
     {
       "path": "RUNTIME-INTEGRATION.txt",
-      "size": 1705,
-      "sha256": "73b32c1000ed832a8b4757751e6b402d1b6761b330ce58f6d7a5f7b8d2fcc10a"
+      "size": 1814,
+      "sha256": "e640be3aa74f5cc606d503247e5135d898e4992007ddf5ca887148e3e2881ea7"
     },
     {
       "path": "SAVE-SYNC.txt",
-      "size": 3408,
-      "sha256": "bce7ea1d191fd08f4139ea327b5826550bbc9287e413b877739d2353cb78f968"
+      "size": 3334,
+      "sha256": "85f8b5fbe6d73104dd1b9c5cd2436e3fb367f76920ce4607601d2bf6de3e1b92"
     },
     {
       "path": "SOURCE-MAP.txt",
-      "size": 5614,
-      "sha256": "009dcf893ed8345fadd0893222a530da6908dc2f79d91568439b92386eb47646"
+      "size": 6242,
+      "sha256": "8367444cf64e85d37104187687b98174bc0b32066c8af9f6ee60cfccaa8d5763"
     },
     {
       "path": "THIRD-PARTY.txt",
       "size": 1622,
       "sha256": "1892e099c2b6de0dbeaba83df5b2e0383124d92158efb5265438692288e3a109"
+    },
+    {
+      "path": "datafiles/lang/port-text.json",
+      "size": 16694,
+      "sha256": "1ba43a467d4d0b68bdd6d834fd9ef71b60222cedbd29cb6be047cc960bf3c304"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AM2RDualScreen.ext",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AM2RDualScreen.yy",
+      "size": 8527,
+      "sha256": "d1c65e43f9854581c0b1b3f243ee78ed689ca6623a734179aa5c8a1257e42266"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AndroidSource/Java/AM2RDisplayEntry.java",
+      "size": 3636,
+      "sha256": "c1d380cd83009ea239fa877658942f387130b07692a891e335c2dd77135ce6a9"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AndroidSource/Java/AM2RDualScreen.java",
+      "size": 31572,
+      "sha256": "4a084a42acabee4a6cbf05f8beec292615836a77918aafdf387494ccb034411b"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AndroidSource/Java/AM2RGpuOutput.java",
+      "size": 25365,
+      "sha256": "f9fe8ae8dbbaecbad28eb34cb467b81b6dcac1d43c9e737d021e0b90fd937d44"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AndroidSource/ProjectFiles/src/debug/AndroidManifest.xml",
+      "size": 1029,
+      "sha256": "c7c8f47acafd01fc386b0fc8ed98b05137ad9784910c3c454bfafea083f90b57"
+    },
+    {
+      "path": "extensions/AM2RDualScreen/AndroidSource/ProjectFiles/src/release/AndroidManifest.xml",
+      "size": 1029,
+      "sha256": "c7c8f47acafd01fc386b0fc8ed98b05137ad9784910c3c454bfafea083f90b57"
     },
     {
       "path": "extensions/AM2RHaptics/AM2RHaptics.ext",
@@ -83,13 +123,13 @@
     },
     {
       "path": "extensions/AM2RHaptics/AM2RHaptics.yy",
-      "size": 2667,
-      "sha256": "fbb2c9be4d19d706e4babc7054056bc6fad488b15de0fa372190b3fab735cf1d"
+      "size": 3048,
+      "sha256": "9ca45ec60898effd9c5d6612276e59bff83fb2637f7991198712f0257359408e"
     },
     {
       "path": "extensions/AM2RHaptics/AndroidSource/Java/AM2RHaptics.java",
-      "size": 8147,
-      "sha256": "cca1748ed454325fb7b29eedba9803540bcdac7fc8a8711766b96c3606ae7b03"
+      "size": 9598,
+      "sha256": "8d3f1a510c8350ee25330c1f66b16752bf2721f65f52545de95c6fd09a5ab7b2"
     },
     {
       "path": "extensions/AM2RSaveTransfer/AM2RSaveTransfer.ext",
@@ -103,8 +143,8 @@
     },
     {
       "path": "extensions/AM2RSaveTransfer/AndroidSource/Java/AM2RSaveTransfer.java",
-      "size": 12652,
-      "sha256": "4d7758fd5cc55f2395a8e8f301c4fb88a0aa489c447625f180fc6fdcaa013e63"
+      "size": 12653,
+      "sha256": "96761aebeee0fb5f53fbc8d360832f0fada585d6418a5d0e363980c1fe3bef3b"
     },
     {
       "path": "extensions/AM2RSaveTransfer/AndroidSource/Java/SaveSyncAndroid.java",
@@ -120,41 +160,6 @@
       "path": "extensions/AM2RSaveTransfer/AndroidSource/Java/SaveTransferFiles.java",
       "size": 9524,
       "sha256": "a5a0b22129ceb518825a66f8a26ef24a195767fd3001e97af2a11bbd4ebd7a57"
-    },
-    {
-      "path": "extensions/AM2RThor/AM2RThor.ext",
-      "size": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "extensions/AM2RThor/AM2RThor.yy",
-      "size": 6957,
-      "sha256": "88e3e9941bb3dc60478c6309b2819974a7afd4fce9d9608eab8757f2c444c5c6"
-    },
-    {
-      "path": "extensions/AM2RThor/AndroidSource/Java/AM2RDisplayEntry.java",
-      "size": 3612,
-      "sha256": "9e82c09653b59c4e386f3bfa03ad199d0bfb706b91a9e4c77c2fa69ccb37aa58"
-    },
-    {
-      "path": "extensions/AM2RThor/AndroidSource/Java/AM2RGpuOutput.java",
-      "size": 28529,
-      "sha256": "663a820639d981616653e5908d8c865c0fd5f1072924db984d9fa97612258887"
-    },
-    {
-      "path": "extensions/AM2RThor/AndroidSource/Java/AM2RThor.java",
-      "size": 32169,
-      "sha256": "2593572bc6a5d1c8409bd1fc3b721384d08e3195e49083c47e940734c8d7e26c"
-    },
-    {
-      "path": "extensions/AM2RThor/AndroidSource/ProjectFiles/src/debug/AndroidManifest.xml",
-      "size": 1029,
-      "sha256": "c7c8f47acafd01fc386b0fc8ed98b05137ad9784910c3c454bfafea083f90b57"
-    },
-    {
-      "path": "extensions/AM2RThor/AndroidSource/ProjectFiles/src/release/AndroidManifest.xml",
-      "size": 1029,
-      "sha256": "c7c8f47acafd01fc386b0fc8ed98b05137ad9784910c3c454bfafea083f90b57"
     },
     {
       "path": "fonts/font0/font0.yy",
@@ -4373,8 +4378,8 @@
     },
     {
       "path": "objects/oCharacter/Create_0.gml",
-      "size": 116,
-      "sha256": "7e89b55d72f4aa42b37c9adad37b19709f3016b475595024e7853b398dbbe335"
+      "size": 139,
+      "sha256": "b7cb4d9779c2ae4d022ebed271939218203745a8203b724786621e27b2a137fb"
     },
     {
       "path": "objects/oCharacter/Destroy_0.gml",
@@ -4713,8 +4718,8 @@
     },
     {
       "path": "objects/oControl/Alarm_0.gml",
-      "size": 862,
-      "sha256": "9fbceb58bafeb598a0de6976b13d7413a21f7b23ba8f3409f99695344d408bbe"
+      "size": 853,
+      "sha256": "fd8d3a1a82e6e82f7b5969c3adb70a1005fed29a58a6e725538045fa11a4e6a9"
     },
     {
       "path": "objects/oControl/Alarm_1.gml",
@@ -4739,22 +4744,22 @@
     {
       "path": "objects/oControl/CleanUp_0.gml",
       "size": 184,
-      "sha256": "0331501a3aef30bbf14fcc6e5f35e11b99d7b4ab0b752e823f7183d58e671574"
+      "sha256": "8835e80cacac3b30afd7ccf2e7164b983b4cec573a94a49aaa31004ad76bb7b8"
     },
     {
       "path": "objects/oControl/Create_0.gml",
-      "size": 161188,
-      "sha256": "2b5cbbee0c675d2911de946e1f7eb794e51a03434cf5ab92ff3dd77dab649c70"
+      "size": 161723,
+      "sha256": "059852636b65ca44023c8a23c4809a89c0383acdf070ba43335a1b586dcc9111"
     },
     {
       "path": "objects/oControl/Draw_0.gml",
       "size": 2551,
-      "sha256": "0f5c5ebf1c1610be4cf595fa2b4f68a212313c64b252bfb71fdb1004ed87b555"
+      "sha256": "f179b1a425bb6750adbcce4f6b73c3940d05ee51d218b023cd49515935909af0"
     },
     {
       "path": "objects/oControl/Draw_64.gml",
       "size": 1934,
-      "sha256": "97f7d7f35ea0fd317e3e785f5fd158f3b47f51fd7680bb11fc5621cc4c5eb085"
+      "sha256": "a8d59b55f176520b66968a3030153db3aaede2d1e3c19ea8bb73ae3a048bc594"
     },
     {
       "path": "objects/oControl/Draw_72.gml",
@@ -4768,13 +4773,13 @@
     },
     {
       "path": "objects/oControl/Draw_75.gml",
-      "size": 174,
-      "sha256": "97001ce8e437ae9793b688bddda5ec56c475f0ab7ff8f7ed52bc3965bd866c44"
+      "size": 162,
+      "sha256": "95fa5dff043710e43ae5a89666411333c1dbc235ebb0b145e66674a62550e65e"
     },
     {
       "path": "objects/oControl/Draw_77.gml",
       "size": 2835,
-      "sha256": "ee7fa3065baec0668f21592948c5eec42ab10ee13682e1539f093099e260641c"
+      "sha256": "390d3f2c834c2338fe2a71ce8873ac36994e8960889212c6fad6e745a6981f42"
     },
     {
       "path": "objects/oControl/KeyPress_115.gml",
@@ -4809,7 +4814,7 @@
     {
       "path": "objects/oControl/Other_10.gml",
       "size": 1152,
-      "sha256": "7b0083d80ca2541c6b18c059d72a52608c170a82dd51c252760592622828b073"
+      "sha256": "74937245ddb0950752ca144c9896e8f3c289d7cc9a8bbea0e4f3e232c49e03b0"
     },
     {
       "path": "objects/oControl/Other_11.gml",
@@ -4818,13 +4823,13 @@
     },
     {
       "path": "objects/oControl/Other_12.gml",
-      "size": 2458,
-      "sha256": "94c6670e6909f808a7274f13c5a262ee3dbc4f08eccfcb1eb397b487109ebd08"
+      "size": 2487,
+      "sha256": "1b1bfb65f47cbcd85d628587f3181dc9ca375079e7fc6a90c02f8b8d6bc7a244"
     },
     {
       "path": "objects/oControl/Other_13.gml",
-      "size": 2216,
-      "sha256": "3602a7bfefbf806068d82ebc48c5fdd8166758446d9a056edbc4b4c20eb9f02c"
+      "size": 2300,
+      "sha256": "a0de7c604b4917eb29e37ffc8344268586fa14f3376601dfe5b7a18735afc072"
     },
     {
       "path": "objects/oControl/Other_14.gml",
@@ -4833,8 +4838,8 @@
     },
     {
       "path": "objects/oControl/Other_2.gml",
-      "size": 1696,
-      "sha256": "5f27f4a26398e281de77b1b2a0ac78165328a8ded12708baf4665f4cd7b00586"
+      "size": 1721,
+      "sha256": "72e8a9269e0eaadde7fc99e4dd43ec6ed750bf3900e89c3a42dc2eccd6dee3c2"
     },
     {
       "path": "objects/oControl/Other_3.gml",
@@ -4858,18 +4863,18 @@
     },
     {
       "path": "objects/oControl/Other_75.gml",
-      "size": 612,
-      "sha256": "92d0900ea71b4ae9b67f31a618ba035785f2897231389ff23ef6a7142e8ca38b"
+      "size": 647,
+      "sha256": "56a2ac7a4cdf923b309bc7a49480fc3a519873f5688ef8421f0139a2c069161c"
     },
     {
       "path": "objects/oControl/Step_0.gml",
-      "size": 8502,
-      "sha256": "6b27fa62f41f0be91a7312f7bcb089588fc535ae358a4fdfa6b670f1d89b288c"
+      "size": 9166,
+      "sha256": "ac63d9c665fee23c73e6a9b96deb31f953e1d5bd8f1d1c17218f6c669935b9df"
     },
     {
       "path": "objects/oControl/Step_1.gml",
-      "size": 2197,
-      "sha256": "f0d87371f5cd2a19ad6958684bbadc46fd45f91d96bc7299d9b4fea224c36dcf"
+      "size": 2235,
+      "sha256": "bb815538c0413779fc3f1208e911720398c0fcecd1d64b70c5a4de04898ea36b"
     },
     {
       "path": "objects/oControl/oControl.yy",
@@ -5019,12 +5024,12 @@
     {
       "path": "objects/oCreditsText/Create_0.gml",
       "size": 5243,
-      "sha256": "4265b34fea9293753250923ad3b678ae8eaa44a6dc28dee30d89fb40d7b04427"
+      "sha256": "aa944eb985f342ef7ae9c7c54b48c1534dca68f839095133259693f3a3ce350d"
     },
     {
       "path": "objects/oCreditsText/Draw_64.gml",
       "size": 1789,
-      "sha256": "b4be2f178b46e8b4dee8bdcbbdf213608181d5e4220faa6860639251b6d784bb"
+      "sha256": "48998af188a5e5ff72293780dfc2aee3c8fb78518798fc98c778f43076cf887b"
     },
     {
       "path": "objects/oCreditsText/Other_10.gml",
@@ -5034,7 +5039,7 @@
     {
       "path": "objects/oCreditsText/Step_0.gml",
       "size": 776,
-      "sha256": "cdbed4a42977e9723d7d2f9911a8632d83ffdaaa87a8e214b895ec528f69282c"
+      "sha256": "c63ba34892d91fc0468cdcdbe209c525a03a9707011dc0716bed9ace28e3ca35"
     },
     {
       "path": "objects/oCreditsText/oCreditsText.yy",
@@ -5083,8 +5088,8 @@
     },
     {
       "path": "objects/oDataRestorePicker/Step_0.gml",
-      "size": 3254,
-      "sha256": "2d02a3cb05822a69b1968368c7dd0fcfdb4e6db6b923466507b777f332a4f3bc"
+      "size": 3255,
+      "sha256": "3df55e8c2d27bec05b6c0c61ac1abb260ecd8338189789ba8feffdd764724356"
     },
     {
       "path": "objects/oDataRestorePicker/oDataRestorePicker.yy",
@@ -5479,7 +5484,7 @@
     {
       "path": "objects/oDrawMap2/Draw_0.gml",
       "size": 880,
-      "sha256": "10902e6f40607154c06746c136efc3cf33bab15ab22a178c44a6a36e882bcf54"
+      "sha256": "5ca5c36fe046cbaafa46b68dc4c3ae5c4af36528b8a912d345ba4d15fbda37db"
     },
     {
       "path": "objects/oDrawMap2/oDrawMap2.yy",
@@ -7208,8 +7213,8 @@
     },
     {
       "path": "objects/oFinalFadeout/Draw_0.gml",
-      "size": 334,
-      "sha256": "42613e7877a8a588ce47c0785ace530740e7be223e2fbf6209fa416110fd1a9c"
+      "size": 344,
+      "sha256": "7d5791718e2ccded42142f1907746dd05a40592aad32ea76e61b9bacc983a234"
     },
     {
       "path": "objects/oFinalFadeout/Step_0.gml",
@@ -7759,7 +7764,7 @@
     {
       "path": "objects/oGameSelMenu/Draw_0.gml",
       "size": 806,
-      "sha256": "66be569df7f8c8a9747f1fbbe8571faf0a555a5dc9bb050289f2cc1fc551bdb5"
+      "sha256": "b80390b1bc8ab5f299f53d178d13cd2e47007012f3cff062a255cd920fd741dd"
     },
     {
       "path": "objects/oGameSelMenu/Other_10.gml",
@@ -8048,8 +8053,8 @@
     },
     {
       "path": "objects/oGotoRoom/Step_2.gml",
-      "size": 5369,
-      "sha256": "d2c5f8a1c4e93394a940ffa31bd93da48baed7092e1e0981248c7c47b9aee6a3"
+      "size": 5307,
+      "sha256": "eb29c95189beec89a2c1699dc44dc9cbd3da98b6766b050e28823284846c63a1"
     },
     {
       "path": "objects/oGotoRoom/oGotoRoom.yy",
@@ -8778,8 +8783,8 @@
     },
     {
       "path": "objects/oIGT/Step_0.gml",
-      "size": 2089,
-      "sha256": "2dea0b63347c9cd1ce018a8424ba1dee51f5005f23cf875184510751a5e57e82"
+      "size": 2115,
+      "sha256": "c59e63c224cb2a07641bae08db3fbec09ebeffcd1d855bb383bae4b93410e2d5"
     },
     {
       "path": "objects/oIGT/oIGT.yy",
@@ -9088,8 +9093,8 @@
     },
     {
       "path": "objects/oItemCutscene/Create_0.gml",
-      "size": 1162,
-      "sha256": "4e51f9c8cc8a7fb112e5739632f282897eaf3e73ac462a2b399a73effa07e92c"
+      "size": 1189,
+      "sha256": "e7e151f0bd19371c955f23ea543de4bffc704e27019c8b9fd080b092b6ebcb64"
     },
     {
       "path": "objects/oItemCutscene/Draw_0.gml",
@@ -10758,8 +10763,8 @@
     },
     {
       "path": "objects/oLightEngine/Draw_0.gml",
-      "size": 656,
-      "sha256": "a1676e96c5de0b49984bb590ec1b890b1d04967ee41ddf7bcb5642431c6a5c75"
+      "size": 661,
+      "sha256": "e00e53c69e2b780a9c56f5e01ed9e5177f090b2d205f594e4240935f1c534450"
     },
     {
       "path": "objects/oLightEngine/Other_10.gml",
@@ -13634,7 +13639,7 @@
     {
       "path": "objects/oNotification/Draw_73.gml",
       "size": 2426,
-      "sha256": "e45f516fefa99f1f58fdf320e6a086a25620197dc2ccd46433b53fc1a37caa00"
+      "sha256": "1a87af4400df4007ca5ebca06079d28444d6244bf4228fb1f07e505c88db386e"
     },
     {
       "path": "objects/oNotification/Step_0.gml",
@@ -13743,13 +13748,13 @@
     },
     {
       "path": "objects/oOptionSlider/Create_0.gml",
-      "size": 41,
-      "sha256": "fae4496b28d6263acd6646ddab2f14175850942e317e2c043675a9f95dd8cd7c"
+      "size": 62,
+      "sha256": "16ac8c9bee860201c0038ea3262fffd39721eec34e1d4fba583445304cf7b737"
     },
     {
       "path": "objects/oOptionSlider/Draw_0.gml",
-      "size": 552,
-      "sha256": "ad8df915bbae9d9d03c64b17cc076ff4d8ff839dcc68c1509b3bd152ccaf7a00"
+      "size": 726,
+      "sha256": "c4b272ab3ebc4855c27c2faafd63c9f791d75f18069224b5d2cb4b7725a05323"
     },
     {
       "path": "objects/oOptionSlider/oOptionSlider.yy",
@@ -13778,8 +13783,8 @@
     },
     {
       "path": "objects/oOptionsControl/Create_0.gml",
-      "size": 1235,
-      "sha256": "e434e5c81c946a608811da8d8b07b7aece137984f355ff7f678202a76157c60a"
+      "size": 1604,
+      "sha256": "6aab426d55d556dc5833466614e6cf5ac0c3c0572962edab2f1b2374a7a75363"
     },
     {
       "path": "objects/oOptionsControl/Destroy_0.gml",
@@ -13788,23 +13793,23 @@
     },
     {
       "path": "objects/oOptionsControl/Other_10.gml",
-      "size": 2648,
-      "sha256": "4896e3c8bc8ae455b45708c779e8100484e504c2c70e8b7ae0d8afbef1c66765"
+      "size": 3291,
+      "sha256": "b27254242bb58ad401907073b8e8c315aa2328ebec66c53e9768b45cae9a1b23"
     },
     {
       "path": "objects/oOptionsControl/Other_11.gml",
-      "size": 399,
-      "sha256": "36d31e8b72c7f5da67cbe3a6deec470f420824da90e15d278b1de6a5b1e121fa"
+      "size": 467,
+      "sha256": "bff6cd79dc1e5484cd84e323406f08e73dbccfec7189a9506e446974b8669d8c"
     },
     {
       "path": "objects/oOptionsControl/Other_12.gml",
-      "size": 2688,
-      "sha256": "5ed9e039d9a855ba37d67b9cbe2803001a294630ce6dddd5cd3de66b11a667c0"
+      "size": 2868,
+      "sha256": "e40f33f59ca4f27341434620ad0fd7ebb32f640567e8114c98636293132a9170"
     },
     {
       "path": "objects/oOptionsControl/Step_0.gml",
-      "size": 4907,
-      "sha256": "ea2ded5b710b034066a5a20797f6e8f32dda41a4a614dd3af4fbefdcd6b4e60a"
+      "size": 4357,
+      "sha256": "2f24871ca7c3dedd2224c25fe34a354c57dc57dde30d961a27f9458f38d27c90"
     },
     {
       "path": "objects/oOptionsControl/oOptionsControl.yy",
@@ -13823,8 +13828,8 @@
     },
     {
       "path": "objects/oOptionsData/Create_0.gml",
-      "size": 804,
-      "sha256": "22280b8a528d19fb16f4613b147731b6f33937d0440b5de2bb3d12cfdbc44e2b"
+      "size": 1071,
+      "sha256": "5997779486f52010f1f1e822a24f7cea2c7adf29107872839de94b284dd1858d"
     },
     {
       "path": "objects/oOptionsData/Destroy_0.gml",
@@ -13833,8 +13838,8 @@
     },
     {
       "path": "objects/oOptionsData/Other_10.gml",
-      "size": 645,
-      "sha256": "d7af113048afbf96bbdce717317931293eac3ae011be841ed84601568f4a22b2"
+      "size": 769,
+      "sha256": "446e40148388846a6563351c70c34b495628c7a4f7f2dec9f61849dc8c867ff5"
     },
     {
       "path": "objects/oOptionsData/Other_11.gml",
@@ -13843,8 +13848,8 @@
     },
     {
       "path": "objects/oOptionsData/Step_0.gml",
-      "size": 4772,
-      "sha256": "59f48de8622bd2da0c54091e7c0d10577a9ca04eab5d6a1b9eac89ba4b10490b"
+      "size": 5344,
+      "sha256": "038a37478b438dd860816dd72a35ef055e779f249f63645a772616a079f2d09f"
     },
     {
       "path": "objects/oOptionsData/oOptionsData.yy",
@@ -13863,8 +13868,8 @@
     },
     {
       "path": "objects/oOptionsDisplay/Create_0.gml",
-      "size": 2177,
-      "sha256": "780acefb1740aa3c81ae01432fe53c19217875168e0ee5ed28dbf5b565042863"
+      "size": 2446,
+      "sha256": "4854a1f5431caa562ef2c55c73b0661fc4b367424930834a908b1a40ab7aae4e"
     },
     {
       "path": "objects/oOptionsDisplay/Destroy_0.gml",
@@ -13873,8 +13878,8 @@
     },
     {
       "path": "objects/oOptionsDisplay/Other_10.gml",
-      "size": 4659,
-      "sha256": "9fcb20840ae9e245f6357ad299d6cca99ebd65b321b2df3c3be9d9d5bbb9d9b2"
+      "size": 4812,
+      "sha256": "d6a0152c0762278630afe397b87c7c5e942a1806549b5338e18718fb75af4dad"
     },
     {
       "path": "objects/oOptionsDisplay/Other_11.gml",
@@ -13883,23 +13888,23 @@
     },
     {
       "path": "objects/oOptionsDisplay/Other_12.gml",
-      "size": 4997,
-      "sha256": "feaf4eccf7112e1cf4b1e847bedaf2279c9727cdfe640275448da705018c9985"
+      "size": 5049,
+      "sha256": "fbf7e7b994d54a3ca499aea949f8f3a5f1f52225b29fa9803f74869eb5caa3be"
     },
     {
       "path": "objects/oOptionsDisplay/Other_13.gml",
-      "size": 1375,
-      "sha256": "141bca744c8f82041b36928407e829faaa9d9e40e71e96a0ca9dd659a17f7cd9"
+      "size": 1600,
+      "sha256": "eaf79bf16bf0da32c09341fa25968ae1da0f684ecf088180f0bad44815139828"
     },
     {
       "path": "objects/oOptionsDisplay/Other_14.gml",
-      "size": 1798,
-      "sha256": "87408d8ef03577f630664f0aceb3b8c0d1bd749b5f3306ea69959da06518a45e"
+      "size": 1955,
+      "sha256": "37fe3620e66cefd786dffbdd7729c545ecf6c667cd0424558153a3c72c44924e"
     },
     {
       "path": "objects/oOptionsDisplay/Step_0.gml",
-      "size": 6850,
-      "sha256": "8a23e416324aca059911eeca359872d785e3a86243ddbde177081363b9eff02c"
+      "size": 7177,
+      "sha256": "663d59fd28aaae3ab2e10a7956a8f092e0909707b1ad312ff48ca7ef8b353eec"
     },
     {
       "path": "objects/oOptionsDisplay/oOptionsDisplay.yy",
@@ -13938,8 +13943,8 @@
     },
     {
       "path": "objects/oOptionsExtras/Other_10.gml",
-      "size": 1866,
-      "sha256": "05d98c4e39c87cd92b6a274490606db5be2e6f73dd6c2af4dc50623cc6b41390"
+      "size": 1839,
+      "sha256": "fce901784914451865fa23725d861edba4011f8eb61e0ef23dbc06618a0e4450"
     },
     {
       "path": "objects/oOptionsExtras/Other_11.gml",
@@ -13948,13 +13953,13 @@
     },
     {
       "path": "objects/oOptionsExtras/Other_12.gml",
-      "size": 1908,
-      "sha256": "58d2faa4818dd80b18cc22737257cb9305fd9c408e27e8798276c819a0cb742e"
+      "size": 1933,
+      "sha256": "af73944542874dbff4e4c63933e5679087a78dd3ef3e6e5b88dacb5def94d2c1"
     },
     {
       "path": "objects/oOptionsExtras/Step_0.gml",
       "size": 3070,
-      "sha256": "73ed25741b7942e029bcc7402674861af1e218319ef3da5b33375c3d4ac8264a"
+      "sha256": "1e5b91474c08b2426967dd354d54848bfbdf7875a7c80d8dd0886aa4fc6b095e"
     },
     {
       "path": "objects/oOptionsExtras/oOptionsExtras.yy",
@@ -14668,8 +14673,8 @@
     },
     {
       "path": "objects/oPopupText/Draw_0.gml",
-      "size": 240,
-      "sha256": "15ec5b8e470b5a8b581e722cfb44ea362a8967be1e3b59fed2abbf05da486e32"
+      "size": 245,
+      "sha256": "3f1a626bd43047d6efaaded3ac0eaa913b2c67fb1ef7263848d318010ac93338"
     },
     {
       "path": "objects/oPopupText/Step_0.gml",
@@ -14783,8 +14788,8 @@
     },
     {
       "path": "objects/oPulsatingBG/Draw_0.gml",
-      "size": 283,
-      "sha256": "ac08af4baa75271f218513e2ec176d11780769accce091da900300f368b24d6c"
+      "size": 293,
+      "sha256": "e08826299ede928897fc9f376e4ab4590f8e7d151d2bdf7ec6a4c6cb3dcd275d"
     },
     {
       "path": "objects/oPulsatingBG/oPulsatingBG.yy",
@@ -15664,7 +15669,7 @@
     {
       "path": "objects/oSS_Bg/Draw_0.gml",
       "size": 2499,
-      "sha256": "0e8f4e4a00e0fb9b40f65bc8f22af9ca81eef146e382f98a0b410c684c6323b5"
+      "sha256": "4d7efc9b06a1e18beac85c694119e74b4fd6dd175c8026607670ad44389d4c7a"
     },
     {
       "path": "objects/oSS_Bg/Step_0.gml",
@@ -15688,8 +15693,8 @@
     },
     {
       "path": "objects/oSS_Control/Create_0.gml",
-      "size": 1419,
-      "sha256": "8fef2a738339214180dbbb68ee3eeb7e4b61418591b6e743541fc4d1d9e2101d"
+      "size": 1257,
+      "sha256": "0f04b8aec5b0ff8d51c6c575f52d9901d6c81f12c4442b7887df7b06e66c706a"
     },
     {
       "path": "objects/oSS_Control/Draw_0.gml",
@@ -15708,13 +15713,13 @@
     },
     {
       "path": "objects/oSS_Control/Other_5.gml",
-      "size": 311,
-      "sha256": "6dd53cca941d28724691bf6347eaa85fe276cc5c79bddbb6b17d4b3416ce2dc4"
+      "size": 205,
+      "sha256": "d4f4ee889b5426fbbf90a6402998576b53bc83ecd94e1d3eeacc08b736f36620"
     },
     {
       "path": "objects/oSS_Control/Step_0.gml",
       "size": 1531,
-      "sha256": "cc635030862cf111bcab448965c340cdfe376069eec17631cccaa9457bf75dda"
+      "sha256": "f371cc732d1c859fcbc6178bffddea7ca45fd7676d917ba0b2c140db635a3c6d"
     },
     {
       "path": "objects/oSS_Control/oSS_Control.yy",
@@ -15729,22 +15734,22 @@
     {
       "path": "objects/oSS_Fg/Create_0.gml",
       "size": 894,
-      "sha256": "a1efe45ba223cd09c54bcf194573d119f70f75846eca527129dc4ea3067d7103"
+      "sha256": "56a8dcdc710c141fb39a05e10115ed261ccda1c64e01150bc3960719e041ddd2"
     },
     {
       "path": "objects/oSS_Fg/Draw_0.gml",
       "size": 14720,
-      "sha256": "f380d1f26ce5851f32d6cb9470756b7d3beecff685e09fe5138c9a186652a7d4"
+      "sha256": "1e6eb730e5a1162603aca4ca653488b1c9934335adbe7549ee72bb0dbf7c17f4"
     },
     {
       "path": "objects/oSS_Fg/Other_10.gml",
       "size": 1174,
-      "sha256": "9c809fc3fd74bab129ff913183d64f84cc2ff6c53e33961eec6a000e9fa5386b"
+      "sha256": "5b18ea1c2d55476e1bc4a54479b2430b815bf2d9b4bb4e2c74b19e84c5d5b432"
     },
     {
       "path": "objects/oSS_Fg/Step_0.gml",
       "size": 1537,
-      "sha256": "c1b7aabb393e1bf5fc53b54a8f3fcd2e5a74b6e4355567be1b25bb13265a845f"
+      "sha256": "7bbf32dcda82545749e4417e6c2d45ab2009fd7375761aa92455f9fb1237091b"
     },
     {
       "path": "objects/oSS_Fg/oSS_Fg.yy",
@@ -15878,8 +15883,8 @@
     },
     {
       "path": "objects/oScanMonster/Draw_0.gml",
-      "size": 631,
-      "sha256": "db855ec8fe6e0daac68da15e7802aedaa9d713e85803e7ef8e1d8860cdf1a15c"
+      "size": 646,
+      "sha256": "043fbed00bf6019b4dcd4e04eff8ccb9262ec1b4955fc308a1dd7575a611d7b3"
     },
     {
       "path": "objects/oScanMonster/Other_10.gml",
@@ -15908,8 +15913,8 @@
     },
     {
       "path": "objects/oScanning/Draw_0.gml",
-      "size": 680,
-      "sha256": "228b66dda69e41f293b4a2aae50942916c0ff719b19cefb023dcaf9ab10fcbc4"
+      "size": 695,
+      "sha256": "62ae525e519fc246e8953944a18de3b1811aa0309411d2097fd230fce9ee9cc5"
     },
     {
       "path": "objects/oScanning/Other_10.gml",
@@ -15928,8 +15933,8 @@
     },
     {
       "path": "objects/oScoreScreen/Create_0.gml",
-      "size": 1684,
-      "sha256": "4eef0906ef4319f3a348c2e6e2ba65afcb279f7db44af13a4df4f3f61f8a6023"
+      "size": 1689,
+      "sha256": "cc7afd22db6ba65ddc0a65250e5b7199438c3424815dca46b631deb60e671e45"
     },
     {
       "path": "objects/oScoreScreen/Draw_0.gml",
@@ -17984,17 +17989,17 @@
     {
       "path": "objects/oSubScrChange/Create_0.gml",
       "size": 469,
-      "sha256": "cf497f9ca2e6c20fdfa620966b1829f1afdf91eef885f9bd31aacfece54cb618"
+      "sha256": "caeb5aecdeedec257978f303cb443a3a5f26ebbaa81930327ea5b4cc3a034c25"
     },
     {
       "path": "objects/oSubScrChange/Draw_0.gml",
       "size": 1623,
-      "sha256": "0ce7566ab08f6532554ab032bdfedffbf589f4e312578ef7fd5fb480e3fd3bad"
+      "sha256": "57e950b9d734d663b563dc2cb0be4ae2a7c011f0d43c6afafb2f8a49d409758e"
     },
     {
       "path": "objects/oSubScrChange/Other_10.gml",
       "size": 355,
-      "sha256": "9d008d1da64500f2a5bc50cf3a0fae00650c25c44c3c27e5af8b9f66e0a39459"
+      "sha256": "50a9f65ad5be3bbe79bc0f59380c1c3b432667a32913636ebb333fcf45561885"
     },
     {
       "path": "objects/oSubScrChange/Other_11.gml",
@@ -19474,7 +19479,7 @@
     {
       "path": "objects/oTitleAnimation/Draw_0.gml",
       "size": 612,
-      "sha256": "15776a2254456f0f33071c4fd71f1621587fc3f413b409cb21450520f5369aa1"
+      "sha256": "7ebb5991f083ae0dde979e1b7e3cd8c1f8c97e2e1b0939911cb3e1ad162b32c7"
     },
     {
       "path": "objects/oTitleAnimation/Step_0.gml",
@@ -20258,8 +20263,8 @@
     },
     {
       "path": "objects/oTouchControls/Create_0.gml",
-      "size": 8781,
-      "sha256": "fc9b10b6373ca08c8987ffb3c8367a63a514f6ac15a073506629eb8b79e0525f"
+      "size": 1546,
+      "sha256": "f2ae388298e1a8d19aba63618eed4d1b2a7debdd9a0fbb0e0e61dcf90bac3753"
     },
     {
       "path": "objects/oTouchControls/Destroy_0.gml",
@@ -20268,8 +20273,8 @@
     },
     {
       "path": "objects/oTouchControls/Draw_77.gml",
-      "size": 3668,
-      "sha256": "44e7d8635a0e272270d490d0ebc30a5516c29faeeaac3c3dd62dfdfca0708738"
+      "size": 5450,
+      "sha256": "b577f9c2c90b45a8acb5e4e7fcd75d5b8c4446549ab555451c019ae7277e467f"
     },
     {
       "path": "objects/oTouchControls/KeyPress_8.gml",
@@ -20278,18 +20283,18 @@
     },
     {
       "path": "objects/oTouchControls/Other_10.gml",
-      "size": 8924,
-      "sha256": "beaec6c1d39f452a1ae1907328a3fd9e6e62c3ec5e618ddced346dc86213e79c"
+      "size": 129,
+      "sha256": "56b5f4ffade230aeb322f824cf5e79b32cf297b36bcd4c9894b3d8975d1ce93d"
     },
     {
-      "path": "objects/oTouchControls/Step_0.gml",
-      "size": 14891,
-      "sha256": "9dfe2f202758a197677014b8e37f763e058efb17194b6553c09988d92dc11547"
+      "path": "objects/oTouchControls/Step_1.gml",
+      "size": 16583,
+      "sha256": "7302693b9f68aaf81dd900e5954ba23fb512b409ee6136ad3e75cf988e6e10ef"
     },
     {
       "path": "objects/oTouchControls/oTouchControls.yy",
       "size": 1860,
-      "sha256": "a6f6ab47b3fab5c6c2da541a3d2e65afedf75cb21fac6eab8e8a09d08dda3911"
+      "sha256": "b923605878a7583a1923250d236ce318f79eaa280664c5977e739ef2ff9f8e6f"
     },
     {
       "path": "objects/oTransition/Create_0.gml",
@@ -20303,8 +20308,8 @@
     },
     {
       "path": "objects/oTransition/Other_10.gml",
-      "size": 713,
-      "sha256": "e40359f6d7e630537fd025c063edfcaf97f3db8c923fb59d118e3587e14c32f6"
+      "size": 723,
+      "sha256": "d087c5c90cbfe65fe82bb4a398e54c0e82953e2735ff96d969d2c56c846d660a"
     },
     {
       "path": "objects/oTransition/Step_0.gml",
@@ -20593,8 +20598,8 @@
     },
     {
       "path": "objects/oWater2/Draw_0.gml",
-      "size": 316,
-      "sha256": "7e0dc7060a997986a8f96cdfc45661598b641598d546b5941cd3c2009a109ebe"
+      "size": 326,
+      "sha256": "aee8294f1266ff25c78453671eefc310d7e1342ab2fa26e0b8962c308cadf691"
     },
     {
       "path": "objects/oWater2/oWater2.yy",
@@ -20913,8 +20918,8 @@
     },
     {
       "path": "options/android/options_android.yy",
-      "size": 4062,
-      "sha256": "18e04678988fa3293e49da4599333f1d4534733b54c354e2eaacc02052fdec3a"
+      "size": 4055,
+      "sha256": "c8b48048c237dc9568da02f8cf3f9c472cbc1c5bced28829d9ed7f98259a785b"
     },
     {
       "path": "options/html5/options_html5.yy",
@@ -53269,7 +53274,7 @@
     {
       "path": "scripts/create_log_entry/create_log_entry.gml",
       "size": 536,
-      "sha256": "01c91166e81fdd7b138499bf5e0771e0f7a3f29a22e622484cd71211e03efa16"
+      "sha256": "dbd4b29ae41649dc95cf2d0cbe94cd3241391c859045373da519615095224be7"
     },
     {
       "path": "scripts/create_log_entry/create_log_entry.yy",
@@ -53279,7 +53284,7 @@
     {
       "path": "scripts/create_log_label/create_log_label.gml",
       "size": 372,
-      "sha256": "35ebd13e1d785fcc82b9334a848729bc07ebbb2ca354723909568e58bbab9a95"
+      "sha256": "c29003722df940fac38046169bf9cf24f1177d85fc4820e672ee5b324a3731e2"
     },
     {
       "path": "scripts/create_log_label/create_log_label.yy",
@@ -53328,8 +53333,8 @@
     },
     {
       "path": "scripts/ctrl_vibrate/ctrl_vibrate.gml",
-      "size": 962,
-      "sha256": "2a09b6827660e321525a9d87e1b126ee9c238c1935ef61d1afc5c3659e508cec"
+      "size": 979,
+      "sha256": "275fc59dd98dc65b9022daff0ec7040f0ab5ece265fa2e2d4e2b787d40484c51"
     },
     {
       "path": "scripts/ctrl_vibrate/ctrl_vibrate.yy",
@@ -53538,8 +53543,8 @@
     },
     {
       "path": "scripts/draw_character_from_surface/draw_character_from_surface.gml",
-      "size": 557,
-      "sha256": "1123049752de089b27f9a2ccdcd8d105d268d61c2ec303ca9ecc6355bb47661f"
+      "size": 596,
+      "sha256": "31f3f27364064f0a1365f001268fc832d691da1625fc46f56c70ab8279a023c6"
     },
     {
       "path": "scripts/draw_character_from_surface/draw_character_from_surface.yy",
@@ -53548,8 +53553,8 @@
     },
     {
       "path": "scripts/draw_character_to_surface/draw_character_to_surface.gml",
-      "size": 606,
-      "sha256": "6bba3fcc20c307317c69ddd1d335b50f05ffef1dc7b63742afe533a9d05706dd"
+      "size": 653,
+      "sha256": "d7a55a2e8dd5e1b1871a7fefcd0573d5bb78f004e0fd759925d3a301c76da552"
     },
     {
       "path": "scripts/draw_character_to_surface/draw_character_to_surface.yy",
@@ -53608,8 +53613,8 @@
     },
     {
       "path": "scripts/draw_gui_map/draw_gui_map.gml",
-      "size": 6650,
-      "sha256": "3f613cad42b59990524d18090a12ff1213afa00853c6bd67e8bb0900539bd938"
+      "size": 6782,
+      "sha256": "dc0d9624de582562fcf0c6b212fed09e88ad3af5214fa1c4e2c5ed4cc6900541"
     },
     {
       "path": "scripts/draw_gui_map/draw_gui_map.yy",
@@ -53755,6 +53760,126 @@
       "path": "scripts/draw_txt_2buttons_log/draw_txt_2buttons_log.yy",
       "size": 273,
       "sha256": "91983d78cf20c783e145e35b4af2951a6703f3376d3dcc71582313d7bc9db231"
+    },
+    {
+      "path": "scripts/dual_area_titles/dual_area_titles.gml",
+      "size": 10402,
+      "sha256": "7a72b3f0e081897dfdd23af65a9302e36153c7b7cdfda0f1af449601a8965a4c"
+    },
+    {
+      "path": "scripts/dual_area_titles/dual_area_titles.yy",
+      "size": 277,
+      "sha256": "d6043eb0dc9693bc0f145c47f907e90ce85b6455b9aa733b62c5e1769f852030"
+    },
+    {
+      "path": "scripts/dual_display/dual_display.gml",
+      "size": 28558,
+      "sha256": "19c68f6eae05422d4789251c62525f77d380c1597679529fabba68f7fd46407c"
+    },
+    {
+      "path": "scripts/dual_display/dual_display.yy",
+      "size": 277,
+      "sha256": "5701b8ef43d4f9465287f01a732087e3135a9ad6709e4aad011945067ca788ee"
+    },
+    {
+      "path": "scripts/dual_frontend/dual_frontend.gml",
+      "size": 14863,
+      "sha256": "666e720b4aa5041e8d770784aa1e56520149c4ec28d25f09597a42b2c7fc4609"
+    },
+    {
+      "path": "scripts/dual_frontend/dual_frontend.yy",
+      "size": 279,
+      "sha256": "cbb76c1d49c3f411a4b2e6a9fb04f9a56a40e5b7527e8d446dd5c460e2c0feca"
+    },
+    {
+      "path": "scripts/dual_hud_artwork/dual_hud_artwork.gml",
+      "size": 13735,
+      "sha256": "a7d1a3c83ffdab5531da86f42693c66a58ce4e194ba3c2382982e9344e33fa23"
+    },
+    {
+      "path": "scripts/dual_hud_artwork/dual_hud_artwork.yy",
+      "size": 277,
+      "sha256": "e810f866a40f3fb25b09c18b4c973db600c3fd3a9901e0bcb6063246975d4491"
+    },
+    {
+      "path": "scripts/dual_hud_cache/dual_hud_cache.gml",
+      "size": 9253,
+      "sha256": "1091ad179a68ac21292e6a1df00529ef47e996b1295ca19c1608de5b88e1cbc0"
+    },
+    {
+      "path": "scripts/dual_hud_cache/dual_hud_cache.yy",
+      "size": 273,
+      "sha256": "3bdb78609ec2c36b81d72b98b1d8f0d09b0bbd36d9c7b06690080dc446977bc1"
+    },
+    {
+      "path": "scripts/dual_hud_output/dual_hud_output.gml",
+      "size": 13065,
+      "sha256": "f22d371450ad501d7b1c476ff0fa5feae709b9cf293da6afd47b4ff2cf631d7e"
+    },
+    {
+      "path": "scripts/dual_hud_output/dual_hud_output.yy",
+      "size": 275,
+      "sha256": "be47878454ac78ea749982ae82ec78f8cd79478c3e17a9c451de021cf27c6dbb"
+    },
+    {
+      "path": "scripts/dual_hud_status/dual_hud_status.gml",
+      "size": 11356,
+      "sha256": "2ec9a5537236b2d23bb0cd92f5f9c7fcffc63a71a42ed2a91ffbb5b712d06533"
+    },
+    {
+      "path": "scripts/dual_hud_status/dual_hud_status.yy",
+      "size": 275,
+      "sha256": "fa6f62985cb8a3114cb50bca82c4a4155508eec925cc70c19f9c1edb085c0607"
+    },
+    {
+      "path": "scripts/dual_hud_titles/dual_hud_titles.gml",
+      "size": 7534,
+      "sha256": "8fbd54033809a58a099b18496578a26795bed9acf56c1155fe6f34ec20be93af"
+    },
+    {
+      "path": "scripts/dual_hud_titles/dual_hud_titles.yy",
+      "size": 275,
+      "sha256": "c36e18633a3e7a2cda07da2074be3db91b20407577fb1f41a6b2d2aee18c93ef"
+    },
+    {
+      "path": "scripts/dual_map_cache/dual_map_cache.gml",
+      "size": 19531,
+      "sha256": "3f3b4ec98b439fb6ce9dc8fbc6268e5f8986cd92024a6025c1c28931f133f304"
+    },
+    {
+      "path": "scripts/dual_map_cache/dual_map_cache.yy",
+      "size": 273,
+      "sha256": "91f86858a88ee0b2a24ef53a20ece6e0163a0939ae1f346026993683ac119b9a"
+    },
+    {
+      "path": "scripts/dual_map_input/dual_map_input.gml",
+      "size": 11767,
+      "sha256": "0454d0a4225d897b907e68ecede833a2398169420ab3241d87edb504210000b8"
+    },
+    {
+      "path": "scripts/dual_map_input/dual_map_input.yy",
+      "size": 273,
+      "sha256": "f607f4267fab8a403b313025be1cbfcd381bcabef4b35aab559762d17077621c"
+    },
+    {
+      "path": "scripts/dual_presentation/dual_presentation.gml",
+      "size": 6891,
+      "sha256": "446137ba704ce15c5ce936a2f02592c45ef24cc6ee2a82ef2aab6573b2943a31"
+    },
+    {
+      "path": "scripts/dual_presentation/dual_presentation.yy",
+      "size": 287,
+      "sha256": "6d2a4d40a7e06a5d3b2a7ffe1b9eea44ff77deb872ac8ea8f1564c9aa44c8312"
+    },
+    {
+      "path": "scripts/dual_setup/dual_setup.gml",
+      "size": 11555,
+      "sha256": "786acc2d60dea0db376d6902df57915cf3469b43f589d3e9a21e9e152febdad0"
+    },
+    {
+      "path": "scripts/dual_setup/dual_setup.yy",
+      "size": 273,
+      "sha256": "82272973c6bb5e2298accf477ca4df50b2f7f3384e3bb4dec454932983b01e99"
     },
     {
       "path": "scripts/effect_surface_cache/effect_surface_cache.gml",
@@ -53988,8 +54113,8 @@
     },
     {
       "path": "scripts/get_text/get_text.gml",
-      "size": 456,
-      "sha256": "7e23c038c20bcb5073ec8b32fe3a6eeda0323de5779c5321187587992fbdd0b6"
+      "size": 655,
+      "sha256": "3fed5a75c5fbe936bda3c8a66173d1e63f36e54d308ca49a400ab81d08829180"
     },
     {
       "path": "scripts/get_text/get_text.yy",
@@ -54109,7 +54234,7 @@
     {
       "path": "scripts/init_languages/init_languages.gml",
       "size": 599,
-      "sha256": "6d20e8fb93f2098e3451a15fab6cec562098ddbd67df39b07f2e8d0c9aee9c7f"
+      "sha256": "465176e261a6b80e9cbf953de2146d107ea38fafdf7d8f4515f0448f83c4f0fa"
     },
     {
       "path": "scripts/init_languages/init_languages.yy",
@@ -54618,8 +54743,8 @@
     },
     {
       "path": "scripts/load_gameoptions/load_gameoptions.gml",
-      "size": 10891,
-      "sha256": "376644b5d2841cd8dd9b252e57410250c730894dd741f6c012eb458c7dfacfef"
+      "size": 11458,
+      "sha256": "9c72ddb080a169642a1b5e3e6c10667ff728b5df75ddf12dfdca41f5e240cadb"
     },
     {
       "path": "scripts/load_gameoptions/load_gameoptions.yy",
@@ -55419,7 +55544,7 @@
     {
       "path": "scripts/mus_play_once/mus_play_once.gml",
       "size": 447,
-      "sha256": "33bf6b6a22d91b4dfce0fb87b4d2485ad13c8e4eb089fcf4cb5f5451b3216c88"
+      "sha256": "fb2336148b18585a90fa5e6ff3fff65c0d1f516069d110bb088375fc7b9e7446"
     },
     {
       "path": "scripts/mus_play_once/mus_play_once.yy",
@@ -55508,13 +55633,23 @@
     },
     {
       "path": "scripts/nano_light_cache/nano_light_cache.gml",
-      "size": 5415,
-      "sha256": "ddd3d0f124359c9a09145248312acfbc1c08f3806463895048b0fd2b3aabcc96"
+      "size": 5434,
+      "sha256": "bc2fa74767be20a74e3bef9f2d21f95ed2daa273961c205e11f767bf4b620180"
     },
     {
       "path": "scripts/nano_light_cache/nano_light_cache.yy",
       "size": 279,
       "sha256": "25f37711737071ab92b1a025e1053b19a12aaf7fdd252caa59b1f5159b11ed1f"
+    },
+    {
+      "path": "scripts/nano_render_cache/nano_render_cache.gml",
+      "size": 2896,
+      "sha256": "96ff9de9fb4f82b237e6a44fc4674b491f0e63edcf9aa0c0fec7c16ba28ca125"
+    },
+    {
+      "path": "scripts/nano_render_cache/nano_render_cache.yy",
+      "size": 281,
+      "sha256": "9250c640b533da552b5b574a92502f50230121041ceb64ca452b5ca4e6437f0c"
     },
     {
       "path": "scripts/negative_color/negative_color.gml",
@@ -55588,8 +55723,8 @@
     },
     {
       "path": "scripts/port_localization/port_localization.gml",
-      "size": 11066,
-      "sha256": "9c09e080cf86de5d23e29ef3e43c3c7a90eed0cd646c050cf0c696b40d25955f"
+      "size": 12144,
+      "sha256": "967f3fcf1b63009aaa158e4c55745cf63131a6f8a82fdebebb5188183e25a864"
     },
     {
       "path": "scripts/port_localization/port_localization.yy",
@@ -55769,7 +55904,7 @@
     {
       "path": "scripts/room_change/room_change.gml",
       "size": 880,
-      "sha256": "7f7536ce188c6740a5002ed7e5795f3d01071367662904301ba467b2900578f6"
+      "sha256": "f3c71f10acdca749448ff9e0d4af7470c128f07001547679d9aff1c090f53e7f"
     },
     {
       "path": "scripts/room_change/room_change.yy",
@@ -55788,8 +55923,8 @@
     },
     {
       "path": "scripts/save_gameoptions/save_gameoptions.gml",
-      "size": 6745,
-      "sha256": "e8ffffa30769d157a130430de54e0a115c9b92dc70d3407100926f38c9257b30"
+      "size": 7053,
+      "sha256": "1afca998092fbd720fc0e1bd3317a792c7359951a48caa06ce2d8c2c13afecc3"
     },
     {
       "path": "scripts/save_gameoptions/save_gameoptions.yy",
@@ -56517,9 +56652,19 @@
       "sha256": "2e84feae924a276981bf9c4a92d0c997fdc7908a84633d08e5f03faee5092810"
     },
     {
+      "path": "scripts/scr_save_folder/scr_save_folder.gml",
+      "size": 2763,
+      "sha256": "1db4f21fe978fc7f4bc09fabdf3c65ffd7973933ec6166aaa66de2e88bf73a65"
+    },
+    {
+      "path": "scripts/scr_save_folder/scr_save_folder.yy",
+      "size": 279,
+      "sha256": "61afa521a735cde85fb436df8f70c7db7f6c67e7dcfc4c77fe783ed7d128d096"
+    },
+    {
       "path": "scripts/scr_save_sync/scr_save_sync.gml",
-      "size": 6661,
-      "sha256": "4e5d18e4a3b9830450df4f1428d037ad53979762128409305ee82dc9f056d358"
+      "size": 6648,
+      "sha256": "57d7b8709d711ae5956b4f6654ff23aa6bc215dc0e94f5eb3013629d4b3262d6"
     },
     {
       "path": "scripts/scr_save_sync/scr_save_sync.yy",
@@ -56809,7 +56954,7 @@
     {
       "path": "scripts/set_fullscreen/set_fullscreen.gml",
       "size": 486,
-      "sha256": "4e5477630ae7206a321712c333df5be53979a76ff5f936318de3cff6d0e721a4"
+      "sha256": "81232cac419553362c77d1fc1483b53afcad04d97f288469dbb7a2b136afc0cd"
     },
     {
       "path": "scripts/set_fullscreen/set_fullscreen.yy",
@@ -56868,8 +57013,8 @@
     },
     {
       "path": "scripts/set_widescreen/set_widescreen.gml",
-      "size": 2883,
-      "sha256": "7446e15d80ecae6b926352deca56aa82bd1fc7b427798813e3c6ecf5ad2f4e7e"
+      "size": 5125,
+      "sha256": "dce54caa3793d4deedc461dec741c8d253bb7962e050dff10c1bb482deafdbeb"
     },
     {
       "path": "scripts/set_widescreen/set_widescreen.yy",
@@ -56878,8 +57023,8 @@
     },
     {
       "path": "scripts/set_window_scale/set_window_scale.gml",
-      "size": 403,
-      "sha256": "9bcca01bd73757a0fcebc3ca5dfd15f6357138b15e59d63cf734f59be6515332"
+      "size": 405,
+      "sha256": "f7c60d70ae701ad831ab7da5b30f70a1b9bb7c3731911e878b94d7334e6da811"
     },
     {
       "path": "scripts/set_window_scale/set_window_scale.yy",
@@ -57807,126 +57952,6 @@
       "sha256": "3ad7fac58048fe27eda1d10e19045d0945ba31d03baea0414b176f2fb83bc6e6"
     },
     {
-      "path": "scripts/thor_area_titles/thor_area_titles.gml",
-      "size": 10402,
-      "sha256": "da698363dc0c706a8a4451fb36822f9de30b334e9c2daf96ae4e67f1b4babbc2"
-    },
-    {
-      "path": "scripts/thor_area_titles/thor_area_titles.yy",
-      "size": 277,
-      "sha256": "91c146c0c62ff48ea828e83910b763bcda895d30e8de71ce0b9d6badf286264f"
-    },
-    {
-      "path": "scripts/thor_device_setup/thor_device_setup.gml",
-      "size": 10501,
-      "sha256": "c284327c6649de8eda94136b1115696e8db1568fb34352e9c17fbbb0e7610f87"
-    },
-    {
-      "path": "scripts/thor_device_setup/thor_device_setup.yy",
-      "size": 287,
-      "sha256": "12b44437535f12930b1d64de3902267f28c1b54b12bdcdbbe4da45e7d0e48b46"
-    },
-    {
-      "path": "scripts/thor_display/thor_display.gml",
-      "size": 30136,
-      "sha256": "d0a5a33458fb9d081dec44fddff4329effa4a70cfa0d3cb2242a2b18413fd2e6"
-    },
-    {
-      "path": "scripts/thor_display/thor_display.yy",
-      "size": 277,
-      "sha256": "4b98330fb8a9d62166b041d10ec01fd34e627d53e10c2991b7a35db4c0e0b05a"
-    },
-    {
-      "path": "scripts/thor_frontend/thor_frontend.gml",
-      "size": 14653,
-      "sha256": "8d6c9cdb37dc3260a8e98b98c97979fc277b4439bd9dce6736ff887bac6a074d"
-    },
-    {
-      "path": "scripts/thor_frontend/thor_frontend.yy",
-      "size": 279,
-      "sha256": "d8a826b0af27eb76445328c83322e6cae1a91f969a88895e21483beaad0bb09c"
-    },
-    {
-      "path": "scripts/thor_hud_artwork/thor_hud_artwork.gml",
-      "size": 14197,
-      "sha256": "a19748cc306b334e4ef3c2f9e196152d6fe4f0ba76b1d26ed25409cb0edee467"
-    },
-    {
-      "path": "scripts/thor_hud_artwork/thor_hud_artwork.yy",
-      "size": 277,
-      "sha256": "f15c25ccad5b463248a0f8fba33ffb4243dec4119706a15aac419ffdfbb1618e"
-    },
-    {
-      "path": "scripts/thor_hud_cache/thor_hud_cache.gml",
-      "size": 9253,
-      "sha256": "e194e0139bc26bad37eddff3256e6eeb7b76a14848539d729fe1cdd2c4f60e99"
-    },
-    {
-      "path": "scripts/thor_hud_cache/thor_hud_cache.yy",
-      "size": 273,
-      "sha256": "60ded769cb80b42a3bf110b5e4757bc8663bfc53215a4dea69bcdfc73a40ce0b"
-    },
-    {
-      "path": "scripts/thor_hud_output/thor_hud_output.gml",
-      "size": 14125,
-      "sha256": "d5615dbccc0bbff68b8682a171c3d1d158cca97b8dd6f50e0370f6329a76f891"
-    },
-    {
-      "path": "scripts/thor_hud_output/thor_hud_output.yy",
-      "size": 275,
-      "sha256": "f100a1508e35d621002a808a4322b94058f211671d069f8b3e3d013dc30cb7b6"
-    },
-    {
-      "path": "scripts/thor_hud_status/thor_hud_status.gml",
-      "size": 11356,
-      "sha256": "dc80c8814f1b430b6c2d9175feffc82cfda7f7b83b87cdeb2f2992bd9e679d0d"
-    },
-    {
-      "path": "scripts/thor_hud_status/thor_hud_status.yy",
-      "size": 275,
-      "sha256": "42c3cebba1b385d4372dd2594416878fbabf7cbb702f928ffd3e7e8a06511e2c"
-    },
-    {
-      "path": "scripts/thor_hud_titles/thor_hud_titles.gml",
-      "size": 7534,
-      "sha256": "ed54c23477acad856d07019050bf8070e0b75d49381a702619274ff632b65fff"
-    },
-    {
-      "path": "scripts/thor_hud_titles/thor_hud_titles.yy",
-      "size": 275,
-      "sha256": "00b98b3aa28bd19005e038dadeb923d4446dad2c7dd3df773e0a3926783e75db"
-    },
-    {
-      "path": "scripts/thor_map_cache/thor_map_cache.gml",
-      "size": 19531,
-      "sha256": "89b32ed45e7f6f1b1392eafd218bb1685ba32355843ac16854760e9b245e267c"
-    },
-    {
-      "path": "scripts/thor_map_cache/thor_map_cache.yy",
-      "size": 273,
-      "sha256": "ecdbe35a8c60cb24f70b926c1c98469b105bbc00b20446f0f676129b74b1c2b2"
-    },
-    {
-      "path": "scripts/thor_map_input/thor_map_input.gml",
-      "size": 11427,
-      "sha256": "cab3d53267dfa411bc8963a2e2aae57aae8a156088b99e232015bc8eaee75301"
-    },
-    {
-      "path": "scripts/thor_map_input/thor_map_input.yy",
-      "size": 273,
-      "sha256": "97b76ca4cdf04f6df3dcc16f4290011380e0fa21ab913bd4dcfef9c685238899"
-    },
-    {
-      "path": "scripts/thor_presentation/thor_presentation.gml",
-      "size": 7166,
-      "sha256": "4e61d5efb4bb242a4c5ccf5c6bfaa2f5e3f778ed31f413c109a9df78d2fefc3a"
-    },
-    {
-      "path": "scripts/thor_presentation/thor_presentation.yy",
-      "size": 287,
-      "sha256": "b269f66825ff0af9e0615ea2762a5a3ebe545ff18745019b76e6af4bc7374f3a"
-    },
-    {
       "path": "scripts/tile_add/tile_add.gml",
       "size": 1741,
       "sha256": "f21ec94ce2a22ee42a567b1b9192be2c68cd782a1564e541d749aceaa4b7f927"
@@ -58078,13 +58103,23 @@
     },
     {
       "path": "scripts/touch_keys/touch_keys.gml",
-      "size": 17164,
-      "sha256": "117f63d0750f9b4d9f240c5d4d2d61712570b414c2f0136c675b7287dfa8191b"
+      "size": 17995,
+      "sha256": "d0e0fa3b3e16ad9b3a80bfb7cc9a0897e84fe1ec9588df50f566fdfa3e37da44"
     },
     {
       "path": "scripts/touch_keys/touch_keys.yy",
       "size": 287,
       "sha256": "ddd8f18fa5e96ab9556bd7363b1a8881ad2d630bb315249c26e75f4899560d4c"
+    },
+    {
+      "path": "scripts/touch_layout/touch_layout.gml",
+      "size": 12269,
+      "sha256": "0d3a382a619b76e9c8c78b8c87c4938f4f0b39156ed449bb92f870c622e164eb"
+    },
+    {
+      "path": "scripts/touch_layout/touch_layout.yy",
+      "size": 291,
+      "sha256": "a69feebcec8a88e2f67feeff3ebe4f773a84d7d882507ee2163575646f93e953"
     },
     {
       "path": "scripts/turn_towards_direction/turn_towards_direction.gml",
@@ -63220,6 +63255,26 @@
       "path": "sprites/sDrivel_proj/sDrivel_proj.yy",
       "size": 3153,
       "sha256": "3d9396a5b4df211d3b5170018a5f0fa690090769219fc4b9a72aff18073a3309"
+    },
+    {
+      "path": "sprites/sDualHudFooter/sDualHudFooter.yy",
+      "size": 3897,
+      "sha256": "5421d1f9b5d946566281607f7e43c9c52f16ccc617c488afde93bdd9c5620b6f"
+    },
+    {
+      "path": "sprites/sDualHudHeader/sDualHudHeader.yy",
+      "size": 3897,
+      "sha256": "bd8c19e34ea71f71e0d78f6f0e42e0f2efeaf5c2fcc8ef2551f15a91069112ee"
+    },
+    {
+      "path": "sprites/sDualHudIcons/sDualHudIcons.yy",
+      "size": 3891,
+      "sha256": "c625df057575554efb95d52c7c7cd04765580d2df47540f8a849f814994b3bfb"
+    },
+    {
+      "path": "sprites/sDualHudMenuFooter/sDualHudMenuFooter.yy",
+      "size": 3913,
+      "sha256": "9e66770b5b06b54fb8a99757e18ce56bd561b7b0fdd54407941cb238654545b3"
     },
     {
       "path": "sprites/sDualScreenController/sDualScreenController.yy",
@@ -68860,26 +68915,6 @@
       "path": "sprites/sTesterSpazerBeam/sTesterSpazerBeam.yy",
       "size": 3843,
       "sha256": "ff738f24daf991d5f6a23022635aa882e444f8cd061341fec1363aa5d20db6a5"
-    },
-    {
-      "path": "sprites/sThorHudFooter/sThorHudFooter.yy",
-      "size": 3897,
-      "sha256": "b6e93335090124158546a5d6462ddaed139a4adebb43a6be48b836b329af9925"
-    },
-    {
-      "path": "sprites/sThorHudHeader/sThorHudHeader.yy",
-      "size": 3897,
-      "sha256": "dbf47538805ca7a0055adb3dc5a7e21e0b23c78f335310425ab570ff25f383d0"
-    },
-    {
-      "path": "sprites/sThorHudIcons/sThorHudIcons.yy",
-      "size": 3891,
-      "sha256": "4aa3594fc719467860569f3f4ff223f7f2c447ed4178ae48d80da2f7826cf243"
-    },
-    {
-      "path": "sprites/sThorHudMenuFooter/sThorHudMenuFooter.yy",
-      "size": 3913,
-      "sha256": "485fd4c023e8874e6b0935937c13a78c86aa2ee5b2da66e65d068ff69877d72b"
     },
     {
       "path": "sprites/sTitleAnimated/sTitleAnimated.yy",
@@ -90502,6 +90537,46 @@
       "path": "sprites/sDrivel_proj/layers/8467a92b-5998-40db-86a5-d662bb47352b/71de2ace-4654-43fe-be5f-ca1d1cb9c7ab.png",
       "size": 747,
       "sha256": "fae381efc9b319cf28fbdb27beb82a4ced2501b6734613829718f1e5060fae29"
+    },
+    {
+      "path": "sprites/sDualHudFooter/00628dfe-58f9-4958-8572-30c081438e25.png",
+      "size": 859,
+      "sha256": "30d6adbe5bc53c5b97757b1f79d7473d75bd4b97068036a1d91682295a1894b2"
+    },
+    {
+      "path": "sprites/sDualHudFooter/layers/00628dfe-58f9-4958-8572-30c081438e25/7095a93c-45ec-4642-8c97-c71d7fca507c.png",
+      "size": 859,
+      "sha256": "30d6adbe5bc53c5b97757b1f79d7473d75bd4b97068036a1d91682295a1894b2"
+    },
+    {
+      "path": "sprites/sDualHudHeader/c98bbd56-aca5-4b89-90bf-657d1f80c9e0.png",
+      "size": 628,
+      "sha256": "8b7b0bafd8c2343cf8d87b5fc8b37e6597e1ac54efa7447fdba849aa440b89b8"
+    },
+    {
+      "path": "sprites/sDualHudHeader/layers/c98bbd56-aca5-4b89-90bf-657d1f80c9e0/8e2c71f0-e7e4-46b0-b329-6e3d6dbbd4a8.png",
+      "size": 628,
+      "sha256": "8b7b0bafd8c2343cf8d87b5fc8b37e6597e1ac54efa7447fdba849aa440b89b8"
+    },
+    {
+      "path": "sprites/sDualHudIcons/cb3e29b9-99c6-4c98-8eaa-a90cddaf7bff.png",
+      "size": 1717,
+      "sha256": "c889eeffbd16e1e71c543d04317752be984ce6138b4ce78fc832159f7faaa142"
+    },
+    {
+      "path": "sprites/sDualHudIcons/layers/cb3e29b9-99c6-4c98-8eaa-a90cddaf7bff/9c4867cb-c5f5-47ef-b6bc-628cf44d586b.png",
+      "size": 1717,
+      "sha256": "c889eeffbd16e1e71c543d04317752be984ce6138b4ce78fc832159f7faaa142"
+    },
+    {
+      "path": "sprites/sDualHudMenuFooter/f3380f13-17e7-4b3f-81e3-a1459dd6cc75.png",
+      "size": 839,
+      "sha256": "a57e61adefae4e7c372879747df3e7b72a8aa1cb103a26382aedd3325bd0d453"
+    },
+    {
+      "path": "sprites/sDualHudMenuFooter/layers/f3380f13-17e7-4b3f-81e3-a1459dd6cc75/4696aa5d-1829-4099-8800-7704de75339d.png",
+      "size": 839,
+      "sha256": "a57e61adefae4e7c372879747df3e7b72a8aa1cb103a26382aedd3325bd0d453"
     },
     {
       "path": "sprites/sDualScreenController/8df7f20c-4cb4-5fd6-85c1-c88b8a7966bb.png",
@@ -136712,46 +136787,6 @@
       "path": "sprites/sTesterSpazerBeam/layers/be2a8cc0-3aae-44af-81fa-53462cbb1a6d/3cd9a2b7-6676-4ef2-b1e5-7f6f132e2484.png",
       "size": 229,
       "sha256": "cc999d6cda63725c905884d62177cea5780a1a5687eb85c983866a809d14a5e7"
-    },
-    {
-      "path": "sprites/sThorHudFooter/00628dfe-58f9-4958-8572-30c081438e25.png",
-      "size": 859,
-      "sha256": "30d6adbe5bc53c5b97757b1f79d7473d75bd4b97068036a1d91682295a1894b2"
-    },
-    {
-      "path": "sprites/sThorHudFooter/layers/00628dfe-58f9-4958-8572-30c081438e25/7095a93c-45ec-4642-8c97-c71d7fca507c.png",
-      "size": 859,
-      "sha256": "30d6adbe5bc53c5b97757b1f79d7473d75bd4b97068036a1d91682295a1894b2"
-    },
-    {
-      "path": "sprites/sThorHudHeader/c98bbd56-aca5-4b89-90bf-657d1f80c9e0.png",
-      "size": 628,
-      "sha256": "8b7b0bafd8c2343cf8d87b5fc8b37e6597e1ac54efa7447fdba849aa440b89b8"
-    },
-    {
-      "path": "sprites/sThorHudHeader/layers/c98bbd56-aca5-4b89-90bf-657d1f80c9e0/8e2c71f0-e7e4-46b0-b329-6e3d6dbbd4a8.png",
-      "size": 628,
-      "sha256": "8b7b0bafd8c2343cf8d87b5fc8b37e6597e1ac54efa7447fdba849aa440b89b8"
-    },
-    {
-      "path": "sprites/sThorHudIcons/cb3e29b9-99c6-4c98-8eaa-a90cddaf7bff.png",
-      "size": 1717,
-      "sha256": "c889eeffbd16e1e71c543d04317752be984ce6138b4ce78fc832159f7faaa142"
-    },
-    {
-      "path": "sprites/sThorHudIcons/layers/cb3e29b9-99c6-4c98-8eaa-a90cddaf7bff/9c4867cb-c5f5-47ef-b6bc-628cf44d586b.png",
-      "size": 1717,
-      "sha256": "c889eeffbd16e1e71c543d04317752be984ce6138b4ce78fc832159f7faaa142"
-    },
-    {
-      "path": "sprites/sThorHudMenuFooter/f3380f13-17e7-4b3f-81e3-a1459dd6cc75.png",
-      "size": 839,
-      "sha256": "a57e61adefae4e7c372879747df3e7b72a8aa1cb103a26382aedd3325bd0d453"
-    },
-    {
-      "path": "sprites/sThorHudMenuFooter/layers/f3380f13-17e7-4b3f-81e3-a1459dd6cc75/4696aa5d-1829-4099-8800-7704de75339d.png",
-      "size": 839,
-      "sha256": "a57e61adefae4e7c372879747df3e7b72a8aa1cb103a26382aedd3325bd0d453"
     },
     {
       "path": "sprites/sTitleAnimated/0bfc7cf6-30e4-4928-a44a-d22accc55c01.png",

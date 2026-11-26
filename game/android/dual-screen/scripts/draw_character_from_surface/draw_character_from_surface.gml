@@ -7,6 +7,7 @@ function draw_character_from_surface(argument0, argument1, argument2, argument3)
 	    // Rebuild a lost player surface for subsequent drawing.
 	    surface_free(oCharacter.surf);
 	    oCharacter.surf = surface_create(64, 64);
+	    oCharacter.nano_render_pose = [];
 	    draw_character_to_surface();
 	}
 

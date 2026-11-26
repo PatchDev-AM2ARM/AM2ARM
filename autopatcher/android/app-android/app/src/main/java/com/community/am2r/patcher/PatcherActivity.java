@@ -36,10 +36,9 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
     private ImageView banner;
     private View menuColumns;
     private ValueAnimator intro;
-    private TextView status, editionHelp;
+    private TextView status;
     private ProgressBar bar;
-    private Button standard, dual, pick, install;
-    private String edition = "standard";
+    private Button pick, install;
     private PatchJob job;
     private Uri outputUri;
     private String outputName;
@@ -58,11 +57,8 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
                 .setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()).build();
         menuSounds.setOnLoadCompleteListener((pool, sound, result) -> menuSoundReady = result == 0);
         menuSound = menuSounds.load(this, R.raw.menu_move, 1);
-        // Restore the edition choice and any saved output information when the activity is recreated.
-        edition = getPreferences(MODE_PRIVATE).getString("edition", "standard");
-        if (!edition.equals("dual")) edition = "standard";
+        // Restore any saved output information when the activity is recreated.
         if (saved != null) {
-            edition = saved.getString("edition", edition);
             outputName = saved.getString("outputName");
             String uri = saved.getString("outputUri");
             if (uri != null) outputUri = Uri.parse(uri);
@@ -70,8 +66,8 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
         // Reconnect to a retained patch operation so a configuration change can keep showing its progress.
         job = (PatchJob) getLastNonConfigurationInstance();
         buildLayout();
-        if (job != null) { edition = job.edition; job.attach(this); }
-        refreshEdition(); immersive();
+        if (job != null) job.attach(this);
+        refreshButtons(); immersive();
         if (saved == null && job == null) playIntro();
     }
     private int dp(float n) { return Math.round(n * getResources().getDisplayMetrics().density); }
@@ -154,15 +150,6 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
         version.setGravity(Gravity.CENTER);
         version.setPadding(0, 0, 0, dp(8));
         menu.addView(version);
-        standard = button("STANDARD");
-        dual = button("DUAL SCREEN");
-        menu.addView(standard, new LinearLayout.LayoutParams(-1, dp(48)));
-        menu.addView(dual, new LinearLayout.LayoutParams(-1, dp(48)));
-        standard.setOnClickListener(v -> selectEdition("standard"));
-        dual.setOnClickListener(v -> selectEdition("dual"));
-        editionHelp = label("", 12, 0xffcccccc);
-        editionHelp.setPadding(dp(10), dp(3), dp(10), dp(5));
-        menu.addView(editionHelp);
         pick = button("CHOOSE AM2R 1.1 ZIP");
         pick.setOnClickListener(v -> pickZip());
         menu.addView(pick, new LinearLayout.LayoutParams(-1, dp(48)));
@@ -201,28 +188,13 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
             }
         });
         setContentView(frame);
-        (edition.equals("dual") ? dual : standard).requestFocus();
-        refreshEdition();
+        pick.requestFocus();
+        refreshButtons();
     }
-    private void selectEdition(String next) {
-        if (job != null && job.running) return;
-        // Changing editions clears the prior result and remembers the new preference for the next launch.
-        if (!edition.equals(next)) {
-            edition = next; outputUri = null; outputName = null; job = null;
-            install.setVisibility(View.GONE); bar.setProgress(0);
-            status.setText("Select your original Windows 1.1 ZIP.\nYour source file stays unchanged.");
-            getPreferences(MODE_PRIVATE).edit().putString("edition", edition).apply();
-        }
-        refreshEdition();
-    }
-    private void refreshEdition() {
-        standard.setSelected(edition.equals("standard")); dual.setSelected(edition.equals("dual"));
-        editionHelp.setText(edition.equals("dual") ? "Gameplay above. Map below."
-                : "Gameplay on a single screen");
-        // Disable edition and source changes while the current operation is running.
+    // Disable source changes while the current operation is running.
+    private void refreshButtons() {
         boolean busy = job != null && job.running;
-        for (Button b : new Button[]{standard, dual, pick}) { b.setEnabled(!busy); b.setAlpha(busy ? .5f : 1); }
-        install.setText(edition.equals("dual") ? "INSTALL DUAL SCREEN" : "INSTALL STANDARD");
+        pick.setEnabled(!busy); pick.setAlpha(busy ? .5f : 1);
     }
     // Ask the system document picker for the player's original ZIP; patching starts in its result callback.
     private void pickZip() {
@@ -235,8 +207,8 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
         if (request != PICK_ZIP || result != RESULT_OK || data == null || data.getData() == null) return;
         if (job != null && job.running) return;
         outputUri = null; outputName = null; install.setVisibility(View.GONE);
-        // Capture this source and edition in a new operation, attach the UI, then start its background thread.
-        job = new PatchJob(getApplicationContext(), edition, data.getData()); job.attach(this); refreshEdition(); job.start();
+        // Capture this source in a new operation, attach the UI, then start its background thread.
+        job = new PatchJob(getApplicationContext(), data.getData()); job.attach(this); refreshButtons(); job.start();
     }
     @Override public void onPatchUpdate(PatchJob updated) {
         // Ignore updates from a replaced operation or an activity that is already closing.
@@ -244,12 +216,12 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
         bar.setIndeterminate(updated.running && updated.progress < 0);
         if (updated.progress >= 0) bar.setProgress(updated.progress);
         status.setText(updated.message); outputUri = updated.outputUri; outputName = updated.outputName;
-        install.setVisibility(outputUri == null ? View.GONE : View.VISIBLE); refreshEdition();
+        install.setVisibility(outputUri == null ? View.GONE : View.VISIBLE); refreshButtons();
     }
     // Keep Android's installation result available for reporting compatibility problems.
     private void installApk() {
         if (outputUri == null) return;
-        startActivity(new Intent(this, InstallActivity.class).setData(outputUri).putExtra("edition", edition));
+        startActivity(new Intent(this, InstallActivity.class).setData(outputUri));
     }
     // Retain the operation across configuration changes while detaching each destroyed activity's listener.
     @Override public Object onRetainNonConfigurationInstance() { return job; }
@@ -261,7 +233,7 @@ public final class PatcherActivity extends Activity implements PatchJob.Listener
         super.onDestroy();
     }
     @Override protected void onSaveInstanceState(Bundle out) {
-        out.putString("edition", edition); out.putString("outputName", outputName);
+        out.putString("outputName", outputName);
         if (outputUri != null) out.putString("outputUri", outputUri.toString()); super.onSaveInstanceState(out);
     }
     private void immersive() {

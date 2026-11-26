@@ -9,9 +9,6 @@ import nextui_controls
 from trimui_device import current_device, display_size
 
 
-from menu_entries import config
-
-
 class SmartProS(unittest.TestCase):
     def test_spruce_hardware_tag_and_wide_panel(self):
         firmware = {'/proc/cpuinfo': 'Hardware\t: sun55iw3\nRevision\t: TG5050',
@@ -32,11 +29,6 @@ class SmartProS(unittest.TestCase):
         self.assertIn(Path('/card/spruce/flip/lib'), folders)
         self.assertNotIn(Path('/card/.system/tg5040/lib'), folders)
         self.assertEqual(compat_display.video_drivers('smartpros', ['evdev', 'offscreen', 'KMSDRM', 'dummy']), ['KMSDRM'])
-
-    def test_spruce_apps_offer_install_and_play(self):
-        for mode in ('patcher','game'):
-            for device in ('TRIMUI_SMART_PRO_S', 'SPRUCE_TRIMUI_SMART_PRO_S'):
-                self.assertIn(device, config(mode)['devices'])
 
     def test_firmware_face_labels_and_matching_gamepad_only(self):
         keys = [288,304,305,307,308,310,311,314,315,316,317,318]

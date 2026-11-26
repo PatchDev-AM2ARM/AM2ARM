@@ -1,16 +1,28 @@
-import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
 import unittest
-from test_first_run import game_at, write_manifests
+
+from first_run import __file__ as first_run
+import patch_core
+from test_install import release_at
 
 SOURCE = Path(__file__).resolve().parents[1]
+INSTALL = '''echo setup >> "$TRACE"
+python3 - <<'END'
+import hashlib, json, os
+from first_run import Library
+library = Library.from_environment()
+library.data.mkdir(parents=True, exist_ok=True)
+library.port.write_bytes(b'game')
+library.receipt.write_text(json.dumps({'release': library.release(), 'stamp': library.stamp(),
+                                       'sha256': hashlib.sha256(b'game').hexdigest()}))
+END'''
 
 
-class PortsSession(unittest.TestCase):
+class Session(unittest.TestCase):
     """Run the shipped shell logic with only the firmware and display processes substituted."""
 
     def setUp(self):
@@ -21,27 +33,25 @@ class PortsSession(unittest.TestCase):
         self.app = self.card/'am2arm-launcher/AM2ARM'
         self.rt = self.app/'runtime'
         (self.rt/'core').mkdir(parents=True)
-        from first_run import __file__ as first_run
-        import linux_patcher
-        patcher = Path(linux_patcher.__file__).parent
         (self.app/'patcher').mkdir()
-        for filename in ('linux_patcher.py','patch_core.py','handheld_platform.py'):
-            (self.app/'patcher'/filename).symlink_to(patcher/filename)
-        for filename in ('first_run.py','nextui_layout.py','menu_entries.py','start.sh','session.sh'):
-            shutil.copy(Path(first_run).parent/filename,self.rt)
-        shutil.copy(SOURCE/'launch.sh',self.app)
-        write_manifests(self.app)
+        shutil.copy(patch_core.__file__, self.app/'patcher')
+        for filename in ('first_run.py', 'start.sh', 'session.sh'):
+            shutil.copy(Path(first_run).parent/filename, self.rt)
+        shutil.copy(SOURCE/'launch.sh', self.app)
+        release_at(self.app/'game/am2arm.zip')
         self.bin = self.card/'bin'
         self.bin.mkdir()
-        self.program(self.bin/'uname','echo aarch64')
-        self.program(self.bin/'swaymsg',"""echo '[{"name":"top"},{"name":"bottom"}]'""")
-        self.program(self.rt/'core/ld-linux-aarch64.so.1','shift 3\nunset PYTHONHOME\nexec python3 -B "$@"')
+        self.program(self.bin/'uname', 'echo aarch64')
+        self.program(self.rt/'core/ld-linux-aarch64.so.1', 'shift 3\nunset PYTHONHOME\nexec python3 -B "$@"')
         self.simulate_backend('ports')
-        self.env = dict(os.environ,PATH=str(self.bin)+':'+os.environ['PATH'],
-            AM2ARM_GAME_CARD=str(self.card),AM2ARM_FRONTEND='ports',AM2ARM_PORTS_DIR=str(self.ports),
-            SWAYSOCK='display', TRACE=str(self.card/'actions'))
+        (self.rt/'play.py').write_text('import os\nprint("play", os.environ["AM2ARM_DISPLAY_PATH"],'
+                                       ' file=open(os.environ["TRACE"], "a"))\n'
+                                       'raise SystemExit(int(os.environ.get("GAME_STATUS", "0")))\n')
+        self.trace = self.card/'actions'
+        self.env = dict(os.environ, PATH=str(self.bin)+':'+os.environ['PATH'], TRACE=str(self.trace),
+                        AM2ARM_GAME_CARD=str(self.card), AM2ARM_FRONTEND='ports', AM2ARM_PORTS_DIR=str(self.ports))
         self.setup = self.app/'patcher/launch.sh'
-        self.game = self.ports/'AM2ARM Dual Screen'
+        self.program(self.setup, INSTALL)
 
     def simulate_backend(self, backend):
         (self.rt/'route.py').write_text(
@@ -53,117 +63,67 @@ class PortsSession(unittest.TestCase):
         path.write_text('#!/bin/sh\n'+commands+'\n')
         path.chmod(0o755)
 
-    def launch(self, *args):
-        return subprocess.run(['sh',self.app/'launch.sh','auto',*args],env=self.env,capture_output=True,text=True)
+    def launch(self):
+        return subprocess.run(['sh', self.app/'launch.sh', 'auto'], env=self.env, capture_output=True, text=True)
 
-    def test_a_completed_dual_game_opens_directly_with_system_python(self):
-        game_at(self.game,'dual-screen')
-        self.program(self.game/'launch.sh','test -z "${PYTHONHOME:-}${PYTHONPATH:-}" && echo play >> "$TRACE"')
-        write_manifests(self.app, dual_launcher=(self.game/'launch.sh').read_bytes())
-        self.program(self.setup,'exit 36')
-        self.assertEqual(self.launch().returncode,0)
-        self.assertEqual((self.card/'actions').read_text(),'play\n')
+    def actions(self):
+        return self.trace.read_text().splitlines()
 
-    def test_canceling_explicit_setup_does_not_start_a_previous_game(self):
-        game_at(self.game,'dual-screen')
-        self.program(self.setup,'echo setup >> "$TRACE"\nexit 2')
-        self.program(self.game/'launch.sh','echo play >> "$TRACE"')
-        write_manifests(self.app, dual_launcher=(self.game/'launch.sh').read_bytes())
-        self.assertEqual(self.launch('--setup').returncode,2)
-        self.assertEqual((self.card/'actions').read_text(),'setup\n')
+    def test_first_launch_installs_once_and_the_next_one_plays(self):
+        self.assertEqual(self.launch().returncode, 0)
+        self.assertEqual(self.launch().returncode, 0)
+        self.assertEqual(self.actions(), ['setup', 'play ports', 'play ports'])
 
-    def test_first_install_hands_off_once_and_repeat_launch_skips_the_installer(self):
-        prepared = game_at(self.card/'fixture','dual-screen')
-        self.program(prepared/'launch.sh','echo play >> "$TRACE"')
-        write_manifests(self.app, dual_launcher=(prepared/'launch.sh').read_bytes())
-        self.ports.mkdir()
-        self.program(self.setup,'''echo setup >> "$TRACE"
-mv "$AM2ARM_GAME_CARD/fixture" "$AM2ARM_PORTS_DIR/AM2ARM Dual Screen"''')
-        self.assertEqual(self.launch().returncode,0)
-        self.assertEqual(self.launch().returncode,0)
-        self.assertEqual((self.card/'actions').read_text().splitlines(),['setup','play','play'])
+    def test_updated_launcher_installs_again(self):
+        self.launch()
+        release_at(self.app/'game/am2arm.zip', version='1.6.5')
+        self.assertEqual(self.launch().returncode, 0)
+        self.assertEqual(self.actions(), ['setup', 'play ports', 'setup', 'play ports'])
+
+    def test_closing_the_installer_does_not_start_a_game(self):
+        self.program(self.setup, 'echo setup >> "$TRACE"\nexit 2')
+        self.assertEqual(self.launch().returncode, 2)
+        self.assertEqual(self.actions(), ['setup'])
+
+    def test_installer_that_installs_nothing_does_not_start_a_game(self):
+        self.program(self.setup, 'echo setup >> "$TRACE"')
+        self.assertEqual(self.launch().returncode, 1)
+        self.assertEqual(self.actions(), ['setup'])
+        self.assertIn('not installed', (self.app/'logs/compatibility.txt').read_text())
+
+    def test_direct_displays_use_their_own_installer(self):
+        self.simulate_backend('direct')
+        self.program(self.setup, 'exit 9')
+        (self.rt/'nextui_session.py').write_text(
+            'import os, subprocess\nsubprocess.run(["sh", os.environ["INSTALL"]], check=True)\n')
+        self.program(self.bin/'install', INSTALL)
+        self.env['INSTALL'] = str(self.bin/'install')
+        self.assertEqual(self.launch().returncode, 0)
+        self.assertEqual(self.actions(), ['setup', 'play direct'])
+
+    def test_games_exit_status_reaches_the_menu(self):
+        self.env['GAME_STATUS'] = '42'
+        self.assertEqual(self.launch().returncode, 42)
 
     def test_real_router_passes_the_same_endpoint_to_setup_and_play(self):
         from test_standalone_routes import WaylandServer
         for name in ('route.py', 'compat_display.py', 'trimui_device.py'):
             shutil.copy(SOURCE/'runtime'/name, self.rt/name)
+        import handheld_platform
+        shutil.copy(handheld_platform.__file__, self.app/'patcher')
         display_dir = self.card/'display sockets'
         display_dir.mkdir()
         self.env.update(XDG_RUNTIME_DIR=str(display_dir))
         self.env.pop('WAYLAND_DISPLAY', None)
-        prepared = game_at(self.card/'fixture','dual-screen')
-        self.program(prepared/'launch.sh', 'echo "game $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" >> "$TRACE"')
-        write_manifests(self.app, dual_launcher=(prepared/'launch.sh').read_bytes())
-        self.ports.mkdir()
-        self.program(self.setup, '''echo "setup $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" >> "$TRACE"
-mv "$AM2ARM_GAME_CARD/fixture" "$AM2ARM_PORTS_DIR/AM2ARM Dual Screen"''')
+        self.program(self.setup, 'echo "setup $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" >> "$TRACE"\n' + INSTALL)
+        (self.rt/'play.py').write_text('import os\nprint("game", os.environ["XDG_RUNTIME_DIR"] + "/" + os.environ["WAYLAND_DISPLAY"],'
+                                       ' file=open(os.environ["TRACE"], "a"))\n')
         endpoint = display_dir/'wayland-3'
         with WaylandServer(endpoint):
             result = self.launch()
             self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.card/'actions').read_text().splitlines(), [f'setup {endpoint}', f'game {endpoint}'])
+        self.assertEqual(self.actions(), [f'setup {endpoint}', 'setup', f'game {endpoint}'])
 
-    def direct_audio_session(self, profile, **overrides):
-        self.simulate_backend('direct')
-        game_at(self.ports/'AM2ARM Standard', 'standard')
-        firmware_home = self.card/'firmware home'
-        config = firmware_home/'custom config'
-        cookie = config/'pulse/cookie'
-        cookie.parent.mkdir(parents=True, exist_ok=True)
-        cookie.touch()
-        for key in ('PULSE_SERVER', 'PULSE_COOKIE'):
-            self.env.pop(key, None)
-        self.env.update(HOME=str(firmware_home), XDG_CONFIG_HOME=str(config),
-                        AM2ARM_DEVICE_PROFILE=profile, **overrides)
-        self.program(self.bin/'pactl', r'''[ "$1" = info ] || exit 1
-printf '%s\n' "$HOME" "$XDG_CONFIG_HOME" >> "$TRACE.probe"
-echo 'Server String: /run/firmware/pulse/native'
-''')
-        (self.rt/'nextui_session.py').write_text(
-            'import json, os\nfrom pathlib import Path\n'
-            'keys = ("HOME", "XDG_CONFIG_HOME", "PULSE_SERVER", "PULSE_COOKIE")\n'
-            'Path(os.environ["TRACE"]).write_text(json.dumps([os.getenv(k) for k in keys]))\n'
-            'raise SystemExit(int(os.getenv("GAME_STATUS", "0")))\n')
-        result = self.launch()
-        self.assertEqual(result.returncode, int(overrides.get('GAME_STATUS', 0)), result.stderr)
-        return json.loads((self.card/'actions').read_text())
 
-    def test_amber_preserves_authenticated_audio_before_moving_save_home(self):
-        home, config, server, cookie = self.direct_audio_session('g350', GAME_STATUS='42')
-        firmware = self.card/'firmware home'
-        self.assertEqual(home, str(self.card/'AM2ARM-data/home'))
-        self.assertEqual(config, str(Path(home)/'.config'))
-        self.assertEqual(server, '/run/firmware/pulse/native')
-        self.assertEqual(cookie, str(firmware/'custom config/pulse/cookie'))
-        self.assertEqual((self.card/'actions.probe').read_text().splitlines(),
-                         [str(firmware), str(firmware/'custom config')])
-
-    def test_amber_keeps_an_explicit_audio_session(self):
-        _, _, server, cookie = self.direct_audio_session(
-            'rg351p', PULSE_SERVER='unix:/other/native', PULSE_COOKIE='/other/auth')
-        self.assertEqual((server, cookie), ('unix:/other/native', '/other/auth'))
-        self.assertFalse((self.card/'actions.probe').exists())
-
-    def test_other_direct_devices_keep_their_audio_environment(self):
-        _, _, server, cookie = self.direct_audio_session('brick')
-        self.assertEqual((server, cookie), (None, None))
-        self.assertFalse((self.card/'actions.probe').exists())
-
-    def test_standalone_retries_an_installed_game_once_after_display_setup(self):
-        game_at(self.ports/'AM2ARM Standard', 'standard')
-        self.simulate_backend('direct')
-        (self.rt/'nextui_session.py').write_text(
-            "import os, sys\nfrom pathlib import Path\n"
-            "trace = Path(os.environ['TRACE'])\nmode = sys.argv[1]\n"
-            "with trace.open('a') as out: print(mode, file=out)\n"
-            "if mode == 'game': raise SystemExit(78)\n"
-            "assert os.environ['AM2ARM_DISPLAY_NOTICE'] == 'westonpack'\n"
-            "raise SystemExit(int(os.environ.get('SETUP_EXIT', '0')))\n")
-        self.env['AM2ARM_FETCH_DISPLAY'] = '1'
-        trace = self.card/'actions'
-        self.assertEqual(self.launch().returncode, 78)
-        self.assertEqual(trace.read_text().splitlines(), ['game', 'patcher', 'game'])
-        trace.unlink()
-        self.env['SETUP_EXIT'] = '2'
-        self.assertEqual(self.launch().returncode, 2)
-        self.assertEqual(trace.read_text().splitlines(), ['game', 'patcher'])
+if __name__ == '__main__':
+    unittest.main()

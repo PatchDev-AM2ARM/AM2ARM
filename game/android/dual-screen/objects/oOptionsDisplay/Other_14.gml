@@ -16,8 +16,11 @@ op[opVSync].label = get_text("OptionsDisplay", "VSync");
 op[51].text = get_text("OptionsDisplay", "Title_HUD");
 op[opSensitivity].label = get_text("Misc", "SensitivityMode");
 op[opNano].label = nano_option_text("Nano", "Nano");
-op[opWidescreen].label = port_caption("Upper Screen Aspect");
-op[opShowHUD].label = port_caption("HUD Screen Position");
+op[opWidescreen].label = android_orientation_text("AspectRatio", "Aspect Ratio");
+if (opOrientation >= 0) op[opOrientation].label = android_orientation_text("Orientation", "Orientation");
+op[opDualScreen].label = port_caption("Dual Screen");
+if (opSwapScreens >= 0) op[opSwapScreens].label = port_caption("Swap Screens");
+op[opShowHUD].label = oControl.dual_enabled ? port_caption("HUD Screen Position") : get_text("OptionsDisplay", "HUDDisplay");
 op[opShowMap].label = get_text("OptionsDisplay", "HUDMap");
 op[opCounterStyle].label = get_text("OptionsDisplay", "MonsterCounter");
 op[52].text = get_text("OptionsDisplay", "Title_Notifications");
@@ -38,7 +41,3 @@ op[menuSize].label = get_text("GlobalOptions", "Exit");
 with (oSS_Fg) {
     port_refresh_subscreen_text();
 }
-
-
-op[opDeviceProfile].label = port_caption("Device Profile");
-op[opSwapScreens].label = port_caption(oControl.thor_profile == 2 ? "Dual Screen Add-on" : "Swap Screens");

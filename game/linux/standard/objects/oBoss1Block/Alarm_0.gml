@@ -1,2 +1,0 @@
-enablespikes = 1;
-

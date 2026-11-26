@@ -45,17 +45,16 @@ and release paths discoverable. Surfaces can be lost on resume. Restore render
 targets and GPU/draw state according to the caller's existing contract. Do not
 add per-frame allocation, file reads or extra synchronization to a formatting pass.
 
-Localization and editions
+Localization and platforms
 New user-facing captions use the shared localization helpers. Preserve stable
-selector indices and original font behavior. Common helpers stay equivalent in
-both self-contained editions unless a documented rendering/input difference is
-required. A shared filesystem path or generated build dependency is not needed
-merely to remove a duplicate source file from the two developer projects.
+selector indices and original font behavior. Check dual_enabled where one screen
+and two differ, and global.android_app where Android and gmloader-next do:
+os_type is os_android in both.
 
 Verification
 Separate organizational edits from gameplay or performance changes. For declaration
 moves, check original function contents, calling scope, resource registration and
-event callers. Build both editions and exercise affected flows. For rendering,
+event callers. Exercise affected flows with one screen and two. For rendering,
 compare actual output; a successful compile alone does not prove visual parity.
 
 External references

@@ -1,4 +1,4 @@
-if (oControl.thor_enabled) exit; // The shared two-panel scene draws the credits.
+if (oControl.dual_enabled) exit; // The shared two-panel scene draws the credits.
 // Rasterize Android credit lettering on the same native grid as the game.
 // Direct window-space font drawing can land centered glyphs on half game pixels.
 var _native_gui = os_type == os_android && surface_exists(oControl.gui_surface);

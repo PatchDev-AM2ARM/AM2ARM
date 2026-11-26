@@ -1,11 +1,11 @@
-if (thor_enabled) {
+if (dual_enabled) {
     // Draw runs once per camera. Keep a single fade clock for both panels,
     // then cover their complete composites, including the lower toolbar.
-    if (thor_fade_step != thor_steps) {
-        thor_fade_step = thor_steps;
-        thor_room_alpha = 1;
+    if (dual_fade_step != dual_steps) {
+        dual_fade_step = dual_steps;
+        dual_room_alpha = 1;
         if (room != initroom && global.transitiontype < 2) {
-            thor_room_alpha = clamp(fadedone, 0, 1);
+            dual_room_alpha = clamp(fadedone, 0, 1);
             fadedone = min(1, fadedone + 0.1);
         }
     }

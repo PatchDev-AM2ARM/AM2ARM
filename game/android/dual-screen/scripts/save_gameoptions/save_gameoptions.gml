@@ -2,11 +2,12 @@
 function save_gameoptions() {
 	// Persist the current display, HUD and sound preferences in config.ini.
 	ini_open("config.ini");
-	ini_write_real("DualScreen", "HUDTop", oControl.thor_hud_top);
+	ini_write_real("DualScreen", "HUDTop", oControl.dual_hud_top);
 	ini_write_real("Screen", "Fullscreen", global.opfullscreen);
 	ini_write_real("Screen", "Scale", global.opscale);
 	ini_write_real("Screen", "VSync", global.opvsync);
 	ini_write_real("Screen", "Nano", global.nano_enabled);
+	ini_write_real("Screen", "Orientation", global.oporientation);
 	ini_write_real("Screen", "Language", global.currentlanguage);
 	ini_write_real("Screen", "ShowHUD", global.opshowhud);
 	ini_write_real("Screen", "ShowHUDMap", global.ophudshowmap);
@@ -97,12 +98,17 @@ function save_gameoptions() {
 	ini_write_real("Control", "RebindDPad", global.dpad_rebind);
 
 	ini_write_real("Control", "TouchScale", oControl.touch_scale);
+	ini_write_real("Control", "TouchInset", oControl.touch_inset);
+	ini_write_real("Control", "TouchAimBalance", oControl.touch_aim_balance);
 
 	// 1.5.1 sensitivity mode
 	ini_write_real("Screen", "SensitivityMode", global.sensitivitymode);
 
 	// Widescreen toggle
-	ini_write_real("Screen", "Widescreen", global.widescreen_enabled);
+	if (!oControl.aspect_auto) {
+	    ini_write_real("Screen", "Widescreen", global.widescreen_enabled);
+	    ini_write_real("Screen", "AspectRatio", global.opaspectratio);
+	}
 
 	// Pixel Perfect (Android)
 	ini_write_real("Screen", "PixelPerfect", global.oppixelperfect);

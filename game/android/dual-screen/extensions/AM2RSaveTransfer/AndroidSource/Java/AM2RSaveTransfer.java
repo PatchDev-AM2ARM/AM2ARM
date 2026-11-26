@@ -87,7 +87,7 @@ public class AM2RSaveTransfer extends ExtensionBase
     // Startup calls this before reading saves so an interrupted replacement can be recovered.
     public double SaveTransfer_Recover() {
         try { new SaveTransferFiles(filesDir()).recover(); return 1; }
-        catch (Exception e) { Log.e(TAG, "AM2RSaveTransfer :: recovery pending", e); return 0; }
+        catch (Exception e) { Log.e(TAG, "AM2RSaveTransfer :: recovery pending", e); return -1; }
     }
 
     // GML validates the chosen stage before asking this bridge to replace the selected live save.

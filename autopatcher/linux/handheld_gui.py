@@ -1,4 +1,4 @@
-"""Touch and controller interface for preparing AM2ARM on the handheld."""
+"""Touch and controller interface for installing AM2ARM on the handheld."""
 import argparse
 import os
 from pathlib import Path
@@ -9,22 +9,17 @@ import tkinter as tk
 
 from handheld_input import Controller
 from handheld_sound import MenuSound
-from handheld_visuals import Backdrop, CanvasButton, pixel_font
-from linux_patcher import prepare_game
+from handheld_visuals import Backdrop, CanvasButton, load_fonts, pixel_font
 from patch_core import base_dir
-from patcher_gui import load_fonts
 
 BG, PANEL, FG, ACCENT = '#000000', '#151515', '#ffffff', '#ffffff'
 
 
 class HandheldWindow:
-    def __init__(self, root, output=None, size=None, *, install_func=prepare_game, menu_name='Ports'):
-        self.root, self.output = root, Path(output) if output else base_dir().parent
-        self.install_func = install_func
-        self.menu_name = menu_name
-        self.source = None
-        self.edition = 'standard'
-        self.busy = self.closed = False
+    def __init__(self, root, library, size=None):
+        self.root, self.library = root, library
+        self.source = library.original()
+        self.busy = self.closed = self.play = False
         self.messages = queue.Queue()
         self.controller = Controller()
         self.sound = MenuSound(base_dir() / 'assets/menu_move.wav')
@@ -51,26 +46,22 @@ class HandheldWindow:
         self.canvas.pack(fill='both', expand=True)
         self.background = Backdrop(self.canvas, assets)
         self.labels = []
-        self.subtitle = self.text('AUTOPATCHER  1.6.3', 162, self.font)
-        self.standard = self.button('STANDARD', lambda: self.select_edition('standard'), 194)
-        self.dual = self.button('DUAL SCREEN', lambda: self.select_edition('dual'), 228)
-        self.help = self.text('', 266, self.font, '#bfbfbf')
-        self.choose = self.button('CHOOSE AM2R 1.1 ZIP', lambda: self.browse(False), 298)
+        self.subtitle = self.text('AUTOPATCHER  ' + library.version, 162, self.font)
+        self.help = self.text('Needs your original AM2R 1.1 for Windows', 266, self.font, '#bfbfbf')
+        self.choose = self.button('CHOOSE AM2R 1.1 ZIP', self.browse, 298)
         self.meter = self.canvas.create_rectangle(16, 0, 360, 8, fill='#333333', width=0, tags='menu')
         self.fill = self.canvas.create_rectangle(16, 0, 16, 8, fill=ACCENT, width=0, tags='menu')
         self.status = tk.StringVar(value='Select your original Windows 1.1 ZIP.\nYour source file stays unchanged.')
         self.status_item = self.text(self.status.get().partition('\n')[0], 416, self.font, tags='status')
         self.status.trace_add('write', lambda *_: self.canvas.itemconfigure(self.status_item, text=self.status.get().partition('\n')[0]))
-        self.folder = self.button('INSTALL FOLDER', lambda: self.browse(True), 332)
-        self.install = self.button('INSTALL', self.begin, 366)
         self.canvas.create_text(16, 464, text='A: Select   B: Exit', font=self.font, fill='#bfbfbf', anchor='sw', tags=('menu', 'controls'))
         self.canvas.create_text(624, 464, text='github.com/PatchDev-AM2ARM/AM2ARM', font=('uni 05_53', -8), fill=FG, anchor='se', tags=('menu', 'project-url'))
         self.canvas.bind('<Configure>', self.resize)
         self.canvas.bind('<ButtonPress-1>', self.pointer_down)
         self.canvas.bind('<ButtonRelease-1>', self.pointer_up)
-        self.select_edition('standard')
+        self.layout()
         for key, action in [('Up', 'up'), ('Down', 'down'), ('Left', 'left'), ('Right', 'right'),
-                            ('Return', 'accept'), ('Escape', 'back'), ('F5', 'finish'), ('F6', 'folder')]:
+                            ('Return', 'accept'), ('Escape', 'back'), ('F5', 'finish')]:
             root.bind('<' + key + '>', lambda event, value=action: self.action(value))
         root.after_idle(root.focus_force)
         self.intro_id = root.after_idle(self.start_intro)
@@ -104,9 +95,9 @@ class HandheldWindow:
         for item, y, font in self.labels:
             self.canvas.coords(item, self.left, round(self.origin + y*self.scale))
             self.canvas.itemconfigure(item, width=self.content_width, font=pixel_font(font, self.scale))
-        for index, (button, _, y, _) in enumerate(self.button_windows):
+        for button, _, y, _ in self.button_windows:
             button.position(self.left, round(self.origin+y*self.scale), self.content_width, round(30*self.scale),
-                pixel_font(self.menu_font, self.scale), visible=index != 4 or self.source is not None)
+                pixel_font(self.menu_font, self.scale), visible=True)
         self.canvas.coords(self.meter, self.left, round(self.origin + 404*self.scale),
                             self.right, round(self.origin + 409*self.scale))
         self.canvas.coords('controls', round(16*self.scale), self.height-round(12*self.scale))
@@ -122,30 +113,16 @@ class HandheldWindow:
     def highlight(self):
         for index, button in enumerate(self.buttons):
             state = 'normal'
-            if (index == 0 and self.edition == 'standard') or (index == 1 and self.edition == 'dual'):
-                state = 'selected'
             if index == self.focus_index:
                 state = 'focused'
             if index == self.pressed:
                 state = 'pressed'
             button.configure(style=state)
 
-    def select_edition(self, edition):
-        self.edition = edition
-        self.canvas.itemconfigure(self.help, text='Gameplay on a single screen' if edition == 'standard'
-                                  else 'Gameplay above. Map below.')
-        self.layout()
-
-    def browse(self, folders):
-        if self.busy:
-            return
-        start = self.output
-        if not folders:
-            start = self.source.parent if self.source else Path(
-                os.environ.get('AM2ARM_INPUT_DIR') or base_dir() / 'input')
-        if not start.is_dir():
-            start = self.output
-        self.picker = FilePicker(self.root, start, folders, self.picked, self.beep)
+    def browse(self):
+        if not self.busy:
+            start = self.source.parent if self.source else self.library.card
+            self.picker = FilePicker(self.root, start, self.picked, self.beep)
 
     def beep(self):
         if not self.intro_active and not self.busy and self.root.focus_displayof() is not None:
@@ -198,46 +175,43 @@ class HandheldWindow:
     def render_intro(self):
         self.background.slide(self.slide_progress, self.background_alpha, self.logo_alpha)
         self.canvas.itemconfigure('menu', state='normal' if self.menu_progress > 0 else 'hidden')
-        self.install.set_visible(self.source is not None and self.menu_progress > 0)
         self.background.fade_menu(self.menu_progress)
 
     def finish_intro(self):
         if self.intro_id is not None:
             self.root.after_cancel(self.intro_id)
             self.intro_id = None
-        self.intro_active = False
+        first, self.intro_active = self.intro_active, False
         self.slide_progress = self.menu_progress = self.background_alpha = self.logo_alpha = 1
         self.render_intro()
+        if first:
+            self.begin()
 
-    def picked(self, path, folders):
+    def picked(self, path):
         self.picker = None
         if path is not None:
-            if folders:
-                self.output = path
-                self.status.set('Install folder selected.\n' + str(path)[-65:])
-            else:
-                self.source = path
-                self.status.set(path.name + '\nReady to install. Your original stays unchanged.')
-                self.focus_index = 4
-            self.layout()
+            self.source = path
+            self.begin()
+        else:
+            self.status.set('Select your original Windows AM2R 1.1 ZIP.')
 
-    def begin(self, check_existing=False):
+    def begin(self):
         if self.busy:
             return
-        if self.source is None and not check_existing:
-            self.browse(False)
+        if self.source is None:
+            self.browse()
             return
         self.busy = True
         for button in self.buttons:
             button.configure(state='disabled')
         self.progress_value = None
-        self.status.set('Checking installed files…' if check_existing else 'Checking your original game…')
-        source, output, edition = self.source, self.output, self.edition
+        self.status.set('Checking your original game…')
+        source = self.source
+
         def work():
             try:
-                result, digest = self.install_func(source, output, edition,
-                    lambda done, total, text: self.messages.put(('progress', done, total, text)))
-                self.messages.put(('done', result, digest))
+                self.library.install(source, lambda done, total, text: self.messages.put(('progress', done, total, text)))
+                self.messages.put(('done',))
             except Exception as error:
                 self.messages.put(('error', str(error)))
         threading.Thread(target=work, daemon=True).start()
@@ -252,24 +226,16 @@ class HandheldWindow:
             self.notice.action(action)
         elif self.picker is not None:
             self.picker.action(action)
-        elif action in ('up', 'down', 'left', 'right'):
-            count = 5 if self.source else 4
-            self.focus_index = (self.focus_index + (-1 if action in ('up', 'left') else 1)) % count
-            self.beep()
-            self.highlight()
         elif action in ('accept', 'finish'):
             self.buttons[self.focus_index].invoke()
-        elif action == 'folder':
-            self.beep()
-            self.browse(True)
         elif action == 'back':
             self.request_exit()
 
     def request_exit(self):
         if not self.busy:
             self.notice = Notice(self.root, 'EXIT INSTALLER?',
-                'Return to the system menu?\n\nYour original ZIP and installed games stay on the card.',
-                self.dismiss_notice, exit_action=self.close)
+                'Return to the system menu?\n\nYour original ZIP and saves stay on the card.',
+                self.stay, exit_action=self.close)
 
     def draw_progress(self):
         start = 0
@@ -300,21 +266,13 @@ class HandheldWindow:
             self.progress_value = 100 if message[0] == 'done' else 0
             for button in self.buttons:
                 button.configure(state='normal')
-            success = message[0] == 'done'
-            if success:
-                self.installed(message[1], message[2])
-                if self.closed:
-                    return
-            self.status.set((f'Ready: {message[1].name}\nExit to the {self.menu_name} menu to play.')
-                            if success else 'Installation stopped.\nYour existing games are unchanged.')
-            detail = (f'Open {message[1].name} from {self.menu_name}.\n\n'
-                      'Close this message, then press B to exit the Autopatcher. '
-                      f'Leave {self.menu_name} and reopen it if the new game is not listed.\n\n'
-                      'Installed in:\n' + str(message[1])) if success else message[1]
-            self.notice = Notice(self.root, 'INSTALLATION COMPLETE' if success else 'INSTALLATION STOPPED',
-                                 detail, self.dismiss_notice)
-            if not success:
-                print('Preparation failed:', message[1], flush=True)
+            if message[0] == 'done':
+                self.play = True
+                self.close()
+                return
+            self.status.set('Installation stopped.')
+            self.notice = Notice(self.root, 'INSTALLATION STOPPED', message[1], self.dismiss_notice)
+            print('Installation failed:', message[1], flush=True)
         if latest:
             _, done, total, text = latest
             self.progress_value = done * 100 / total if total > 1 else None
@@ -323,11 +281,13 @@ class HandheldWindow:
             self.draw_progress()
         self.poll_id = self.root.after(50, self.poll)
 
-    def installed(self, game, digest):
-        print('Prepared:', str(game), 'SHA-256:', digest, flush=True)
+    def stay(self):
+        self.notice = None
 
     def dismiss_notice(self):
         self.notice = None
+        self.source = None
+        self.status.set('Select your original Windows AM2R 1.1 ZIP.')
 
     def close(self):
         if not self.busy:
@@ -375,8 +335,8 @@ class Notice:
 
 
 class FilePicker:
-    def __init__(self, root, start, folders, callback, beep=lambda: None):
-        self.folders, self.callback = folders, callback
+    def __init__(self, root, start, callback, beep=lambda: None):
+        self.callback = callback
         self.beep = beep
         self.path = start if start.is_dir() else Path.cwd()
         self.frame = tk.Frame(root, bg=BG)
@@ -393,9 +353,7 @@ class FilePicker:
         self.bar.place(x=8, y=390, width=624, height=46)
         for text, command in [('BACK', self.back), ('UP', self.parent), ('OPEN', self.open)]:
             self.button(self.bar, text, command)
-        if folders:
-            self.button(self.bar, 'USE FOLDER', lambda: self.finish(self.path))
-        self.footer = tk.Label(self.frame, text='A: Open   B: Back   L1: Up' + ('   Start: Use' if folders else ''),
+        self.footer = tk.Label(self.frame, text='A: Open   B: Back   L1: Up',
                  bg=BG, fg=FG, font=('uni 05_53', -16))
         self.frame.bind('<Configure>', self.layout)
         self.refresh()
@@ -425,24 +383,21 @@ class FilePicker:
         location = str(self.path)
         if len(location) > 58:
             location = '…' + location[-57:]
-        self.heading.configure(text=('Choose installation folder\n' if self.folders else 'Choose original AM2R 1.1 ZIP\n') + location)
+        self.heading.configure(text='Choose original AM2R 1.1 ZIP\n' + location)
         self.items.delete(0, 'end')
         self.entries = []
-        if self.folders:
-            self.entries.append((self.path, 'use'))
-            self.items.insert('end', '[USE THIS FOLDER]')
         if self.path.parent != self.path:
-            self.entries.append((self.path.parent, 'parent'))
+            self.entries.append(self.path.parent)
             self.items.insert('end', '[..] Parent folder')
         try:
             children = sorted([p for p in self.path.iterdir() if not p.name.startswith('.') and
-                    (p.is_dir() or (not self.folders and p.suffix.lower() == '.zip'))],
+                    (p.is_dir() or p.suffix.lower() == '.zip')],
                     key=lambda p: (not p.is_dir(), p.name.casefold()))
         except OSError as error:
             children = []
             self.heading.configure(text=str(error))
         for entry in children:
-            self.entries.append((entry, 'open'))
+            self.entries.append(entry)
             self.items.insert('end', ('[DIR] ' if entry.is_dir() else '') + entry.name)
         if self.entries:
             self.items.selection_set(0)
@@ -456,19 +411,17 @@ class FilePicker:
 
     def finish(self, path):
         self.frame.destroy()
-        self.callback(path, self.folders)
+        self.callback(path)
 
     def open(self):
         selected = self.items.curselection()
         if not selected:
             return
-        path, action = self.entries[selected[0]]
-        if action == 'use':
-            self.finish(path)
-        elif path.is_dir():
+        path = self.entries[selected[0]]
+        if path.is_dir():
             self.path = path
             self.refresh()
-        elif not self.folders:
+        else:
             self.finish(path)
 
     def action(self, action):
@@ -486,13 +439,10 @@ class FilePicker:
             self.open()
         elif action == 'back':
             self.back()
-        elif action == 'finish' and self.folders:
-            self.finish(self.path)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', '--output', type=Path, help='Defaults to the folder containing this app')
     parser.add_argument('--size', help='Desktop preview window, for example 1280x720')
     args = parser.parse_args()
     size = None
@@ -504,15 +454,11 @@ def main():
             size = width, height
         except ValueError:
             parser.error('--size must be WIDTHxHEIGHT, at least 640x480 and at most 3840x2160')
+    from first_run import Library
     root = tk.Tk()
-    if os.environ.get('AM2ARM_FIRST_RUN') == '1':
-        from first_run import Library
-        from first_run_gui import PlayWindow
-        window = PlayWindow(root, Library.from_environment(), os.environ.get('AM2ARM_SINGLE_SCREEN') == '1', size)
-        root.mainloop()
-        return 0 if window.play else 2
-    HandheldWindow(root, args.out, size)
+    window = HandheldWindow(root, Library.from_environment(), size)
     root.mainloop()
+    return 0 if window.play else 2
 
 
 if __name__ == '__main__':

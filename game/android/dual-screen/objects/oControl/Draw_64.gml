@@ -8,7 +8,7 @@ if (global.ingame) {
             // anchored GUI mapping, which we no longer use).
             var _overlay_alpha = 1;
             // Let the reactor's white flash cover health and ammunition as well as the room.
-            if (thor_enabled && instance_exists(oA4EscapeExplosion)) {
+            if (dual_enabled && instance_exists(oA4EscapeExplosion)) {
                 _overlay_alpha = 1 - clamp(oA4EscapeExplosion.whitealpha, 0, 1);
             }
             var _sharp = sharp_scale_begin(gui_surface, display_scale);
@@ -19,9 +19,9 @@ if (global.ingame) {
 }
 
 // Fade the upper gameplay and its overlay together during room changes.
-if (thor_enabled && !thor_setup_needed && thor_room_alpha < 1) {
+if (dual_enabled && !dual_setup_needed && dual_room_alpha < 1) {
     draw_set_color(c_black);
-    draw_set_alpha(1 - thor_room_alpha);
+    draw_set_alpha(1 - dual_room_alpha);
     draw_rectangle(0, 0, window_get_width(), window_get_height(), false);
     draw_set_alpha(1);
     draw_set_color(c_white);
@@ -42,4 +42,4 @@ if (black > 0) {
 /*  */
 
 // Render after the upper composite; the lower canvas has fixed independent dimensions.
-thor_draw();
+dual_draw();

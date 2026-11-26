@@ -55,19 +55,43 @@ if (global.joydetected == 0 && !gamepad_is_connected(global.gamepadIndex)) {
     op[8].label = get_text("OptionsControl", "NoJoypad");
 }
 i++ // AHHHHHHHHHHHH
-op[9] = instance_create(x, y + sep * i, oOptionLR);
+op[9] = instance_create(x, y + sep * i, oOptionSlider);
+op[9].show_handle = true;
 op[9].optionid = 9;
 op[9].label = get_text("Android", "TouchScale");
-// Hide the overlay scale row when the game uses a lower display or a desktop window.
-if (os_type != os_android || oControl.thor_enabled) {
+// Hide the overlay rows when the game uses a lower display or a desktop window.
+if (os_type != os_android || oControl.dual_enabled) {
     op[9].visible = false;
     canedit[9] = 0;
     i --;
 }
 
 i++;
-op[10] = instance_create(x, y + sep * i, oPauseOption);
+op[10] = instance_create(x, y + sep * i, oOptionSlider);
+op[10].show_handle = true;
 op[10].optionid = 10;
-op[10].label = get_text("GlobalOptions", "Exit");
+op[10].label = get_text("Android", "TouchInset");
+if (op[10].label == "[!]") op[10].label = "Control Spacing";
+if (os_type != os_android || oControl.dual_enabled) {
+    op[10].visible = false;
+    canedit[10] = 0;
+    i--;
+}
+
+i++;
+op[11] = instance_create(x, y + sep * i, oOptionSlider);
+op[11].optionid = 11;
+op[11].show_handle = true;
+op[11].label = get_text("Android", "TouchAimBalance");
+if (os_type != os_android || oControl.dual_enabled) {
+    op[11].visible = false;
+    canedit[11] = 0;
+    i--;
+}
+
+i++;
+op[12] = instance_create(x, y + sep * i, oPauseOption);
+op[12].optionid = 12;
+op[12].label = get_text("GlobalOptions", "Exit");
 
 event_user(2);

@@ -1,2 +1,0 @@
-followtorizo = 0;
-

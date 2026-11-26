@@ -23,10 +23,10 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: edition
+    id: screens
     attributes:
-      label: Edition
-      options: [Standard, Dual Screen, Autopatcher before edition selection]
+      label: Screens
+      options: [One screen, Two screens, Autopatcher]
     validations:
       required: true
   - type: input
@@ -39,7 +39,7 @@ body:
   - type: input
     id: settings
     attributes:
-      label: Nano, display profile and system performance preset
+      label: Nano, display options and system performance preset
       placeholder: State the settings used; leave unknown details blank.
   - type: textarea
     id: problem

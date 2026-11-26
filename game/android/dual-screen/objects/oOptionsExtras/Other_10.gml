@@ -39,8 +39,8 @@ if (global.shaders_compiled) {
 op[num_IGT] = instance_create(x, y + sep * tempcount++, oOptionLR);
 op[num_IGT].label = get_text("ExtrasMenu", "IGT");
 op[num_IGT].optionid = num_IGT;
-// The lower screen already owns the timer in the dual-screen edition.
-if (oControl.thor_enabled || global.mod_gamebeaten == 0) {
+// The lower screen already owns the timer.
+if (oControl.dual_enabled || global.mod_gamebeaten == 0) {
     op[num_IGT].enabled = 0;
     canedit[num_IGT] = 0;
 }

@@ -26,7 +26,7 @@ if (state == "confirm") {
         var target = (pend_kind == "slot") ? "save" + string(pend_dst + 1) : "data.sav";
         var valid = scr_stage_normalize("restorestage_" + source) == 1;
         if (pend_kind != "slot" && scr_stage_normalize("restorestage_extras.sav") < 0) valid = false;
-        if (!valid || SaveTransfer_Apply(source, target) != 1) {
+        if (!valid || save_transfer_apply(source, target) != 1) {
             if (!valid) {
                 if (pend_kind == "slot") has_slot[pend_src] = 0;
                 else has_unlocks = 0;

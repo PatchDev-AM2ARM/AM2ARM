@@ -11,7 +11,7 @@ function init_languages() {
 	    file_text_readln(fid);
 	}
 	// Refresh the lower map's captions when rebuilding the language list.
-	thor_reset_area_titles();
+	dual_reset_area_titles();
 
 
 }

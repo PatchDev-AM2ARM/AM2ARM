@@ -1,3 +1,0 @@
-// Remove this block when the randomized route meets the listed equipment conditions.
-if (oControl.mod_randomgamebool == 1 && oControl.mod_previous_room == rm_a4a13 && global.spiderball == 0) instance_destroy();
-else link_tile(tlArea4Tower, 16, 160);

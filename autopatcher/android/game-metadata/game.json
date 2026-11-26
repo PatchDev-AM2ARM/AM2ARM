@@ -69,21 +69,11 @@
       "sha256": "5083e91c02a85cfc4b31a3a8ef845b3e2dd688ce0ee05051280d1d0d456548c8"
     }
   },
-  "editions": {
-    "standard": {
-      "edition": "Standard",
-      "application_label": "AM2ARM",
-      "package_name": "com.community.am2r",
-      "version_name": "1.6.2",
-      "version_code": 1005017
-    },
-    "dual": {
-      "edition": "Dual Screen",
-      "application_label": "AM2ARM DS",
-      "package_name": "com.community.am2rdual",
-      "version_name": "1.6.2",
-      "version_code": 1005017
-    }
+  "application": {
+    "application_label": "AM2ARM",
+    "package_name": "com.community.am2r",
+    "version_name": "1.6.2",
+    "version_code": 1005017
   },
   "reference_records": {
     "launchbox_android": "https://gamesdb.launchbox-app.com/games/details/421008-am2r-return-of-samus",

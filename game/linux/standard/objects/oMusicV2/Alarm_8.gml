@@ -1,2 +1,0 @@
-mus_pause(previousbgm);
-

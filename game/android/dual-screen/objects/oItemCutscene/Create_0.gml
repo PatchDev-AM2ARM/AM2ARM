@@ -29,7 +29,7 @@ var _src = oControl.screen_surface;
 surfoff = 0;
 if (oControl.widescreen) {
     _src = oControl.widescreen_surface;
-    surfoff = 53;
+    surfoff = oControl.widescreen_space / 2;
 }
 if (surface_exists(_src)) {
     surf = surface_create(surface_get_width(_src), surface_get_height(_src));

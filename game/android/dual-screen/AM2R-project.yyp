@@ -3609,6 +3609,15 @@
     },
     {
       "$GMIncludedFile": "",
+      "%Name": "port-text.json",
+      "CopyToMask": -1,
+      "filePath": "datafiles/lang",
+      "name": "port-text.json",
+      "resourceType": "GMIncludedFile",
+      "resourceVersion": "2.0"
+    },
+    {
+      "$GMIncludedFile": "",
       "%Name": "locale-font-notices.txt",
       "CopyToMask": -1,
       "filePath": "datafiles/lang/fonts",
@@ -3842,20 +3851,20 @@
     },
     {
       "id": {
-        "name": "AM2RThor",
-        "path": "extensions/AM2RThor/AM2RThor.yy"
+        "name": "AM2RDualScreen",
+        "path": "extensions/AM2RDualScreen/AM2RDualScreen.yy"
       }
     },
     {
       "id": {
-        "name": "thor_display",
-        "path": "scripts/thor_display/thor_display.yy"
+        "name": "dual_display",
+        "path": "scripts/dual_display/dual_display.yy"
       }
     },
     {
       "id": {
-        "name": "thor_frontend",
-        "path": "scripts/thor_frontend/thor_frontend.yy"
+        "name": "dual_frontend",
+        "path": "scripts/dual_frontend/dual_frontend.yy"
       }
     },
     {
@@ -14036,6 +14045,12 @@
     },
     {
       "id": {
+        "name": "scr_save_folder",
+        "path": "scripts/scr_save_folder/scr_save_folder.yy"
+      }
+    },
+    {
+      "id": {
         "name": "scr_save_sync",
         "path": "scripts/scr_save_sync/scr_save_sync.yy"
       }
@@ -14932,6 +14947,12 @@
       "id": {
         "name": "touch_keys",
         "path": "scripts/touch_keys/touch_keys.yy"
+      }
+    },
+    {
+      "id": {
+        "name": "touch_layout",
+        "path": "scripts/touch_layout/touch_layout.yy"
       }
     },
     {
@@ -30164,32 +30185,32 @@
     },
     {
       "id": {
-        "name": "sThorHudHeader",
-        "path": "sprites/sThorHudHeader/sThorHudHeader.yy"
+        "name": "sDualHudHeader",
+        "path": "sprites/sDualHudHeader/sDualHudHeader.yy"
       }
     },
     {
       "id": {
-        "name": "sThorHudFooter",
-        "path": "sprites/sThorHudFooter/sThorHudFooter.yy"
+        "name": "sDualHudFooter",
+        "path": "sprites/sDualHudFooter/sDualHudFooter.yy"
       }
     },
     {
       "id": {
-        "name": "sThorHudIcons",
-        "path": "sprites/sThorHudIcons/sThorHudIcons.yy"
+        "name": "sDualHudIcons",
+        "path": "sprites/sDualHudIcons/sDualHudIcons.yy"
       }
     },
     {
       "id": {
-        "name": "sThorHudMenuFooter",
-        "path": "sprites/sThorHudMenuFooter/sThorHudMenuFooter.yy"
+        "name": "sDualHudMenuFooter",
+        "path": "sprites/sDualHudMenuFooter/sDualHudMenuFooter.yy"
       }
     },
     {
       "id": {
-        "name": "thor_hud_artwork",
-        "path": "scripts/thor_hud_artwork/thor_hud_artwork.yy"
+        "name": "dual_hud_artwork",
+        "path": "scripts/dual_hud_artwork/dual_hud_artwork.yy"
       }
     },
     {
@@ -30202,6 +30223,12 @@
       "id": {
         "name": "nano_light_cache",
         "path": "scripts/nano_light_cache/nano_light_cache.yy"
+      }
+    },
+    {
+      "id": {
+        "name": "nano_render_cache",
+        "path": "scripts/nano_render_cache/nano_render_cache.yy"
       }
     },
     {
@@ -30236,56 +30263,56 @@
     },
     {
       "id": {
-        "name": "thor_device_setup",
-        "path": "scripts/thor_device_setup/thor_device_setup.yy"
+        "name": "dual_setup",
+        "path": "scripts/dual_setup/dual_setup.yy"
       }
     },
     {
       "id": {
-        "name": "thor_map_input",
-        "path": "scripts/thor_map_input/thor_map_input.yy"
+        "name": "dual_map_input",
+        "path": "scripts/dual_map_input/dual_map_input.yy"
       }
     },
     {
       "id": {
-        "name": "thor_map_cache",
-        "path": "scripts/thor_map_cache/thor_map_cache.yy"
+        "name": "dual_map_cache",
+        "path": "scripts/dual_map_cache/dual_map_cache.yy"
       }
     },
     {
       "id": {
-        "name": "thor_area_titles",
-        "path": "scripts/thor_area_titles/thor_area_titles.yy"
+        "name": "dual_area_titles",
+        "path": "scripts/dual_area_titles/dual_area_titles.yy"
       }
     },
     {
       "id": {
-        "name": "thor_hud_status",
-        "path": "scripts/thor_hud_status/thor_hud_status.yy"
+        "name": "dual_hud_status",
+        "path": "scripts/dual_hud_status/dual_hud_status.yy"
       }
     },
     {
       "id": {
-        "name": "thor_presentation",
-        "path": "scripts/thor_presentation/thor_presentation.yy"
+        "name": "dual_presentation",
+        "path": "scripts/dual_presentation/dual_presentation.yy"
       }
     },
     {
       "id": {
-        "name": "thor_hud_titles",
-        "path": "scripts/thor_hud_titles/thor_hud_titles.yy"
+        "name": "dual_hud_titles",
+        "path": "scripts/dual_hud_titles/dual_hud_titles.yy"
       }
     },
     {
       "id": {
-        "name": "thor_hud_cache",
-        "path": "scripts/thor_hud_cache/thor_hud_cache.yy"
+        "name": "dual_hud_cache",
+        "path": "scripts/dual_hud_cache/dual_hud_cache.yy"
       }
     },
     {
       "id": {
-        "name": "thor_hud_output",
-        "path": "scripts/thor_hud_output/thor_hud_output.yy"
+        "name": "dual_hud_output",
+        "path": "scripts/dual_hud_output/dual_hud_output.yy"
       }
     },
     {

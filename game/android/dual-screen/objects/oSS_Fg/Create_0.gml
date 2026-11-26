@@ -1,7 +1,7 @@
 // Begin the pause fade from transparent and prepare the labels and counters displayed by its pages.
 ealpha = 0;
-thor_fade_started = current_time;
-thor_fade_from = 0;
+dual_fade_started = current_time;
+dual_fade_from = 0;
 active = 0;
 fadeout = 0;
 fadein = 1;

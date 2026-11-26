@@ -44,3 +44,5 @@ for (var _i = 0; _i < 15; ++_i) {
         string_char_at(_tile,4), string_char_at(_tile,5), string_char_at(_tile,6),
         string_char_at(_tile,7)];
 }
+
+nano_render_map_revision++;

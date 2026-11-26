@@ -1,9 +1,9 @@
 global.curropt = 0;
-lastitem = 10;
+lastitem = 12;
 active = 0;
 alarm[0] = 5;
 i = 0;
-repeat (11) {
+repeat (13) {
     canedit[i] = 1;
     i += 1;
 }
@@ -26,14 +26,25 @@ else
 tip[7] = get_text("Android", "CompatibilityMode_Tip");
 tip[8] = get_text("OptionsControl", "JoypadSettings_Tip");
 tip[9] = get_text("Android", "TouchScale_Tip");
-tip[10] = get_text("GlobalOptions", "ExitMain_Tip");
-// Allow touch-overlay scale editing only on the Android single-screen control path.
-if (os_type == os_android && !oControl.thor_enabled) {
+tip[10] = get_text("Android", "TouchInset_Tip");
+if (tip[10] == "[!]") tip[10] = "Moves touch controls inward to reduce their separation.";
+tip[11] = get_text("Android", "TouchAimBalance_Tip");
+tip[12] = get_text("GlobalOptions", "ExitMain_Tip");
+// Allow touch-overlay editing only on the Android single-screen control path.
+if (os_type == os_android && !oControl.dual_enabled) {
     canedit[9] = 1;
+    canedit[10] = 1;
+    canedit[11] = 1;
 } else {
     canedit[9] = 0;
     op[9].enabled = 0;
+    canedit[10] = 0;
+    op[10].enabled = 0;
+    canedit[11] = 0;
+    op[11].enabled = 0;
 }
 global.tiptext = tip[global.curropt];
 alarm[1] = 1;
 inputdel = 0;
+touch_slider_finger = -1;
+touch_slider_row = -1;

@@ -1,10 +1,24 @@
 """Title artwork and flat, pixel-lettered controls for the handheld installer."""
+import ctypes
+import ctypes.util
 import math
+import os
 import tkinter as tk
 
 BG, FG, ACCENT = '#000000', '#ffffff', '#ffffff'
-STYLES = {'normal': '', 'focused': '#4b4b4b',
-          'selected': '#282828', 'pressed': '#707070'}
+STYLES = {'normal': '', 'focused': '#4b4b4b', 'pressed': '#707070'}
+
+
+def load_fonts(assets):
+    try:
+        library = ctypes.CDLL(ctypes.util.find_library('fontconfig') or 'libfontconfig.so.1')
+        library.FcConfigGetCurrent.restype = ctypes.c_void_p
+        library.FcConfigAppFontAddFile.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+        config = library.FcConfigGetCurrent()
+        for file in assets.glob('*.ttf'):
+            library.FcConfigAppFontAddFile(config, os.fsencode(file))
+    except (OSError, AttributeError, TypeError):
+        pass
 
 
 def pixel_font(font, scale):

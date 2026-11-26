@@ -6,4 +6,4 @@ with (oSS_Control) {
 state = 2;
 with (oSS_Fg) hidetext = 0;
 // The lower compositor handles the visual transition, so the dual-screen selector can finish immediately.
-if (oControl.thor_enabled) instance_destroy();
+if (oControl.dual_enabled) instance_destroy();

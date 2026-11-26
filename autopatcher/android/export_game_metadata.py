@@ -21,9 +21,8 @@ def export_metadata(source, destination):
         if hashlib.sha256(content).hexdigest() != entry["sha256"]:
             raise ValueError("Artwork has changed: " + entry["path"])
         members[entry["path"]] = content
-    for name, edition in data["editions"].items():
-        resolved = dict(data["game"], **edition, release=data["release"], artwork=data["artwork"])
-        members[name + ".json"] = (json.dumps(resolved, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    resolved = dict(data["game"], **data["application"], release=data["release"], artwork=data["artwork"])
+    members["application.json"] = (json.dumps(resolved, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     if (source / "README.txt").exists():
         members["README.txt"] = (source / "README.txt").read_bytes()
     members["SHA256SUMS"] = "".join(
